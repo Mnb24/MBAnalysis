@@ -1,8 +1,3 @@
-import streamlit as st
-from collections import Counter
-import re
-import matplotlib.pyplot as plt
-
 def count_word_in_text(text, word):
     words = re.findall(r'\w+', text.lower())
     return words.count(word.lower())
