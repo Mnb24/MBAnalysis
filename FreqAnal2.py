@@ -26,7 +26,7 @@ if st.button('Analyze'):
             st.write(f'Frequency of "{word_to_search}" in file {i}: {count}')
 
         # Create a bar plot
-        plt.bar(range(1, 4), counts, tick_label=[f'File {i}' for i in range(1, 4)])
+        plt.bar(range(1, 4), counts, tick_label=[f'File {_}' for _ in range(1, 4)])
         plt.xlabel('File')
         plt.ylabel('Frequency')
         plt.title(f'Frequency of "{word_to_search}" in each file')
