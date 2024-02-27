@@ -14,6 +14,11 @@ st.title('Word Frequency Analyzer')
 
 words_to_search = st.text_input("Enter words to search (comma separated):")
 
+# Define the file paths
+file_paths = ['https://raw.githubusercontent.com/Mnb24/MBfreq/main/BD1.txt', 
+              'https://raw.githubusercontent.com/Mnb24/MBfreq/main/KMG1.txt', 
+              'https://raw.githubusercontent.com/Mnb24/MBfreq/main/MND1.txt']
+
 # Define the file names
 file_names = ['BD', 'KMG', 'MND']
 
