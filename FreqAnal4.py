@@ -14,21 +14,19 @@ st.title('Word Frequency Analyzer')
 
 words_to_search = st.text_input("Enter words to search (comma separated):")
 
-# Define the file paths
-file_paths = ['https://raw.githubusercontent.com/Mnb24/MBfreq/main/BD1.txt', 
-              'https://raw.githubusercontent.com/Mnb24/MBfreq/main/KMG1.txt', 
-              'https://raw.githubusercontent.com/Mnb24/MBfreq/main/MND1.txt']
+# Define the file names
+file_names = ['BD', 'KMG', 'MND']
 
 if st.button('Analyze'):
     if words_to_search:
         words_to_search = [word.strip() for word in words_to_search.split(',')]
         data = []
-        for file_path in file_paths:
+        for file_path, file_name in zip(file_paths, file_names):
             response = requests.get(file_path)
             text = response.text
             counts = count_words_in_text(text, words_to_search)
             for word, count in zip(words_to_search, counts):
-                data.append([file_path, word, count])
+                data.append([file_name, word, count])
 
         # Create a DataFrame
         df = pd.DataFrame(data, columns=['File', 'Word', 'Frequency'])
