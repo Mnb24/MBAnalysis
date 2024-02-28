@@ -45,9 +45,9 @@ def main():
 
     # Dictionary containing file names and their corresponding URLs
     files = {
-        'File 1': 'https://raw.githubusercontent.com/your_username/your_repository/main/file1.txt',
-        'File 2': 'https://raw.githubusercontent.com/your_username/your_repository/main/file2.txt',
-        'File 3': 'https://raw.githubusercontent.com/your_username/your_repository/main/file3.txt'
+        'BR': 'https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/BR-01-Complete.txt',
+        'KK': 'https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/KK-01-Complete.txt',
+        'SV': 'https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/SV-01-Complete.txt'
     }
 
     # Input field for the target string
