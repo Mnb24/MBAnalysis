@@ -21,9 +21,9 @@ def perform_concordance(text, target_word):
 def main():
     # URLs of the text files
     file_paths = [
-        'https://raw.githubusercontent.com/Mnb24/MBfreq/main/BD1.txt', 
-        'https://raw.githubusercontent.com/Mnb24/MBfreq/main/MND1.txt', 
-        'https://raw.githubusercontent.com/Mnb24/MBfreq/main/KMG1.txt'
+        'https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/BD1.txt', 
+        'https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/KMG1.txt', 
+        'https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/MND1.txt'
     ]
     text_names = ['BD1', 'MND1', 'KMG1']
 
