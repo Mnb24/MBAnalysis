@@ -1,10 +1,10 @@
 import streamlit as st
-import nltk
 from nltk.tokenize import word_tokenize
 from nltk.text import Text
 import requests
+import nltk
 
-# Download NLTK resources
+# Download nltk resources
 nltk.download('punkt')
 
 def perform_concordance(text, target_word):
@@ -20,7 +20,10 @@ def perform_concordance(text, target_word):
         right_context = " ".join(entry.right)
         line_number = text.count('\n', 0, entry.offset) + 1  # Calculate line number
 
-        st.write(f"Line {line_number}: {left_context} {target_word} {right_context}")
+        # Highlight the target word with a color
+        highlighted_text = f"{left_context} <span style='color: red'>{target_word}</span> {right_context}"
+        
+        st.write(f"Line {line_number}: {highlighted_text}", unsafe_allow_html=True)
 
 def main():
     # URLs of the text files
