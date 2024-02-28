@@ -1,9 +1,12 @@
 import streamlit as st
+import nltk
 from nltk.tokenize import word_tokenize
 from nltk.text import Text
 import requests
 
+# Download NLTK resources
 nltk.download('punkt')
+
 def perform_concordance(text, target_word):
     tokens = word_tokenize(text)
     text_object = Text(tokens)
@@ -39,4 +42,5 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
