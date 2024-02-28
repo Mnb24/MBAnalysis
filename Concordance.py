@@ -35,7 +35,7 @@ def main():
         'https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/KMG1.txt', 
         'https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/MND1.txt'
     ]
-    text_names = ['BD1', 'MND1', 'KMG1']
+    text_names = ['BD1', 'KMG1', 'MND1']
 
     target_word = st.text_input("Enter the word for concordance analysis: ")
 
