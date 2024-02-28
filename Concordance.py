@@ -2,7 +2,7 @@ import streamlit as st
 from nltk.tokenize import word_tokenize
 from nltk.text import Text
 import requests
-
+nltk.download('punkt')
 def perform_concordance(text, target_word):
     tokens = word_tokenize(text)
     text_object = Text(tokens)
