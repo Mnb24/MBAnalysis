@@ -18,6 +18,7 @@ def perform_concordance(texts, target_word):
 
     # Print concordance results in groups of three occurrences
     group_index = 0
+    occurrences_count = 0
     while True:
         group_found = False
         for i, (concordance_list, file_name) in enumerate(concordance_lists):
@@ -32,15 +33,16 @@ def perform_concordance(texts, target_word):
                 st.write(f"Line {line_number} ({file_name}): {highlighted_text}", unsafe_allow_html=True)
                 
                 group_found = True
+                occurrences_count += 1
 
         if not group_found:
             break
 
-        # Add a symbol after each group of three occurrences
-        if (group_index + 1) % 3 == 0:
-            st.write("***")
-
         group_index += 1
+
+        # Add a symbol after each group of three occurrences
+        if occurrences_count % 3 == 0:
+            st.write("***")
 
 def main():
     # URLs of the text files
@@ -62,5 +64,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-
