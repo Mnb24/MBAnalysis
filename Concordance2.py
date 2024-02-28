@@ -20,7 +20,7 @@ def perform_concordance(texts, target_word):
     group_index = 0
     while True:
         group_found = False
-        for concordance_list, file_name in concordance_lists:
+        for i, (concordance_list, file_name) in enumerate(concordance_lists):
             if group_index < len(concordance_list):
                 entry = concordance_list[group_index]
                 left_context = " ".join(entry.left)
@@ -35,6 +35,10 @@ def perform_concordance(texts, target_word):
 
         if not group_found:
             break
+
+        # Add a symbol after each group of three occurrences
+        if (group_index + 1) % 3 == 0:
+            st.write("***")
 
         group_index += 1
 
@@ -58,4 +62,5 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
