@@ -10,25 +10,26 @@ nltk.download('punkt')
 def perform_concordance(texts, target_word):
     # Initialize concordance lists for each text
     concordance_lists = []
-    for text in texts:
+    file_names = ['BD', 'KMG', 'MND']
+    for text, file_name in zip(texts, file_names):
         tokens = word_tokenize(text)
         text_object = Text(tokens)
-        concordance_lists.append(text_object.concordance_list(target_word))
+        concordance_lists.append((text_object.concordance_list(target_word), file_name))
 
     # Print concordance results in groups of three occurrences
     group_index = 0
     while True:
         group_found = False
-        for i, concordance_list in enumerate(concordance_lists):
+        for concordance_list, file_name in concordance_lists:
             if group_index < len(concordance_list):
                 entry = concordance_list[group_index]
                 left_context = " ".join(entry.left)
                 right_context = " ".join(entry.right)
-                line_number = texts[i].count('\n', 0, entry.offset) + 1  # Calculate line number
+                line_number = text.count('\n', 0, entry.offset) + 1  # Calculate line number
 
                 # Highlight the target word with a color
                 highlighted_text = f"{left_context} <span style='color: red'>{target_word}</span> {right_context}"
-                st.write(f"Line {line_number} ({i+1}): {highlighted_text}", unsafe_allow_html=True)
+                st.write(f"Line {line_number} ({file_name}): {highlighted_text}", unsafe_allow_html=True)
                 
                 group_found = True
 
@@ -57,3 +58,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
