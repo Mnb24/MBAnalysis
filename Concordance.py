@@ -26,6 +26,9 @@ def perform_concordance(text, target_word):
         st.write(f"Line {line_number}: {highlighted_text}", unsafe_allow_html=True)
 
 def main():
+    # Displaying heading
+    st.title("Concordance Analyzer")
+
     # URLs of the text files
     file_paths = [
         'https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/BD1.txt', 
@@ -45,5 +48,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-
