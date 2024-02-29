@@ -27,6 +27,9 @@ file_paths = [
 # User input for Devanagari letter
 devanagari_letter = st.text_input("Enter a Devanagari letter:")
 
+# Dictionary to map file names to their index
+file_names = {0: "BORI", 1: "Kumbakonam", 2: "Sastri-Vavilla"}
+
 if devanagari_letter:
     try:
         # Fetch content of files from GitHub
@@ -36,18 +39,18 @@ if devanagari_letter:
         # Fetch verses beginning with the specified letter
         verses = fetch_verses(devanagari_letter, texts)
 
-         # Display verses
+        # Display verses
         if verses:
             st.write(f"Verses beginning with '{devanagari_letter}':")
-            for i, text in enumerate(texts, 1):
-                st.markdown(f"**File {i} -**")
+            for i, text in enumerate(texts):
+                st.markdown(f"**{file_names[i]} -**")
                 file_verses = [verse for verse in text if verse.startswith(devanagari_letter)]
                 if file_verses:
                     for verse in file_verses:
                         highlighted_verse = verse.replace(devanagari_letter, f"<span style='color:red'>{devanagari_letter}</span>", 1)
                         st.write(highlighted_verse, unsafe_allow_html=True)
                 else:
-                    st.write(f"No verses found beginning with '{devanagari_letter}' in File {i}.")
+                    st.write(f"No verses found beginning with '{devanagari_letter}' in {file_names[i]}.")
         else:
             st.write(f"No verses found beginning with '{devanagari_letter}'.")
     except Exception as e:
