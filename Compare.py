@@ -61,10 +61,10 @@ if compare_button:
 
         if differences:
             for line_number, (original, modified) in differences:
-                st.markdown(f"### Line {line_number} - File 1")
+                st.markdown(f"### Line {line_number} - BORI")
                 st.markdown(f"#### Original")
                 st.markdown(original, unsafe_allow_html=True)
-                st.markdown(f"### Line {line_number} - File 2")
+                st.markdown(f"### Line {line_number} - Kumbakonam")
                 st.markdown(f"#### Modified")
                 st.markdown(modified, unsafe_allow_html=True)
         else:
