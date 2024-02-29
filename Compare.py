@@ -61,12 +61,12 @@ if compare_button:
 
         if differences:
             for line_number, (original, modified) in differences:
-            st.markdown(f"### File1 - BORI" if 'BORI' in original else f"### File2 - Kumbakonam")
-            st.markdown(f"#### {'Line ' + str(line_number) if 'BORI' in original else 'Line ' + str(line_number)}")
-            st.markdown(original, unsafe_allow_html=True)
-            st.markdown(f"### File2 - Kumbakonam" if 'Kumbakonam' in modified else f"### File1 - BORI")
-            st.markdown(f"#### {'Line ' + str(line_number) if 'Kumbakonam' in modified else 'Line ' + str(line_number)}")
-            st.markdown(modified, unsafe_allow_html=True)
+                st.markdown(f"### File1 - BORI" if 'BORI' in original else f"### File2 - Kumbakonam")
+                st.markdown(f"#### {'Line ' + str(line_number) if 'BORI' in original else 'Line ' + str(line_number)}")
+                st.markdown(original, unsafe_allow_html=True)
+                st.markdown(f"### File2 - Kumbakonam" if 'Kumbakonam' in modified else f"### File1 - BORI")
+                st.markdown(f"#### {'Line ' + str(line_number) if 'Kumbakonam' in modified else 'Line ' + str(line_number)}")
+                st.markdown(modified, unsafe_allow_html=True)
 
         else:
             st.write("No differences found.")
