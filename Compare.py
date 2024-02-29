@@ -1,6 +1,8 @@
 import streamlit as st
 import difflib
+import requests
 
+# Function to print colored differences between lines
 def print_colored_diff(line):
     original_sentence = []
     modified_sentence = []
@@ -19,14 +21,9 @@ def print_colored_diff(line):
 
     return f"Original: {original_sentence}", f"Modified: {modified_sentence}"
 
-def find_text_differences(file1_path, file2_path):
-    differences = []  # Variable to store differences
-
-    with open(file1_path, 'r', encoding='utf-8') as file1:
-        text1 = file1.readlines()
-
-    with open(file2_path, 'r', encoding='utf-8') as file2:
-        text2 = file2.readlines()
+# Function to find text differences line by line
+def find_text_differences(text1, text2):
+    differences = []
 
     differ = difflib.Differ()
 
@@ -42,26 +39,35 @@ def find_text_differences(file1_path, file2_path):
 # Streamlit UI
 st.title("File Comparison App")
 
-file1 = st.file_uploader("Upload File 1", type=["txt"])
-file2 = st.file_uploader("Upload File 2", type=["txt"])
+# URLs of the text files
+file_paths = [
+    'https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/BD1.txt', 
+    'https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/KMG1.txt'
+]
 
 compare_button = st.button("Compare Files")
 
 if compare_button:
-    if file1 and file2:
-        differences = find_text_differences(file1.name, file2.name)
+    try:
+        # Fetch content of File 1 from GitHub
+        response1 = requests.get(file_paths[0])
+        text1 = response1.text.splitlines()
+
+        # Fetch content of File 2 from GitHub
+        response2 = requests.get(file_paths[1])
+        text2 = response2.text.splitlines()
+
+        differences = find_text_differences(text1, text2)
 
         if differences:
             for line_number, (original, modified) in differences:
-                st.markdown(f"### Line {line_number} - {file1.name}")
+                st.markdown(f"### Line {line_number} - File 1")
                 st.markdown(f"#### Original")
                 st.markdown(original, unsafe_allow_html=True)
-                st.markdown(f"### Line {line_number} - {file2.name}")
+                st.markdown(f"### Line {line_number} - File 2")
                 st.markdown(f"#### Modified")
                 st.markdown(modified, unsafe_allow_html=True)
         else:
             st.write("No differences found.")
-    else:
-        st.write("Please upload both files before comparing.")
-
-
+    except Exception as e:
+        st.write(f"An error occurred: {str(e)}")
