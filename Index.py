@@ -40,7 +40,8 @@ if devanagari_letter:
         if verses:
             st.write(f"Verses beginning with '{devanagari_letter}':")
             for verse in verses:
-                st.write(verse)
+                highlighted_verse = verse.replace(devanagari_letter, f"<span style='color:red'>{devanagari_letter}</span>", 1)
+                st.write(highlighted_verse, unsafe_allow_html=True)
         else:
             st.write(f"No verses found beginning with '{devanagari_letter}'.")
     except Exception as e:
