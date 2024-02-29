@@ -60,18 +60,19 @@ if compare_button:
         differences = find_text_differences(texts[0], texts[1], texts[2])
 
         if differences:
-            for line_number, (original1, modified1, modified2) in differences:
-                st.markdown(f"### File1 - BORI")
-                st.markdown(f"#### Line {line_number}")
-                st.markdown(original1, unsafe_allow_html=True)
-                st.markdown(f"### File2 - Kumbakonam")
-                st.markdown(f"#### Line {line_number}")
+            for line_number, (original, modified1, modified2) in differences:
+                st.markdown(f"### Line {line_number} - File1")
+                st.markdown(f"#### Original")
+                st.markdown(original, unsafe_allow_html=True)
+                st.markdown(f"### Line {line_number} - File2")
+                st.markdown(f"#### Modified 1")
                 st.markdown(modified1, unsafe_allow_html=True)
-                st.markdown(f"### File3 - Sastri Vavilla")
-                st.markdown(f"#### Line {line_number}")
+                st.markdown(f"### Line {line_number} - File3")
+                st.markdown(f"#### Modified 2")
                 st.markdown(modified2, unsafe_allow_html=True)
-
         else:
             st.write("No differences found.")
     except Exception as e:
         st.write(f"An error occurred: {str(e)}")
+
+      
