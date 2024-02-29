@@ -43,7 +43,7 @@ if devanagari_letter:
         if verses:
             st.write(f"Verses beginning with '{devanagari_letter}':")
             for i, text in enumerate(texts):
-                st.markdown(f"**{file_names[i]} -**")
+                st.markdown(f"<h3 style='font-size:24px'>{file_names[i]}</h3>", unsafe_allow_html=True)
                 file_verses = [verse for verse in text if verse.startswith(devanagari_letter)]
                 if file_verses:
                     for verse in file_verses:
