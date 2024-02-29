@@ -66,7 +66,7 @@ if compare_button:
             # Print differences for each pair of files
             if differences_12:
                 original, modified = differences_12[0][1]
-                st.markdown(f"Line {line_number + 1}")
+                st.markdown(f"<h3>Line {line_number + 1}</h3>", unsafe_allow_html=True)
                 st.markdown("File1 - BORI")
                 st.markdown(original, unsafe_allow_html=True)
                 st.markdown("File2 - Kumbakonam")
@@ -74,7 +74,7 @@ if compare_button:
 
             if differences_23:
                 original, modified = differences_23[0][1]
-                st.markdown(f"Line {line_number + 1}")
+                st.markdown(f"<h3>Line {line_number + 1}</h3>", unsafe_allow_html=True)
                 st.markdown("File2 - Kumbakonam")
                 st.markdown(original, unsafe_allow_html=True)
                 st.markdown("File3 - Sastri Vavilla")
@@ -82,7 +82,7 @@ if compare_button:
 
             if differences_13:
                 original, modified = differences_13[0][1]
-                st.markdown(f"Line {line_number + 1}")
+                st.markdown(f"<h3>Line {line_number + 1}</h3>", unsafe_allow_html=True)
                 st.markdown("File1 - BORI")
                 st.markdown(original, unsafe_allow_html=True)
                 st.markdown("File3 - Sastri Vavilla")
