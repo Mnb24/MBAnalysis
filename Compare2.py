@@ -54,44 +54,43 @@ if compare_button:
         responses = [requests.get(file_path) for file_path in file_paths]
         texts = [response.text.splitlines() for response in responses]
 
-        # Determine the maximum number of lines among the files
-        max_lines = max(len(text) for text in texts)
+        # Get the number of lines in the shortest file
+        min_lines = min(len(text) for text in texts)
 
-        for line_number in range(max_lines):
-            st.markdown(f"### Line {line_number + 1}")
+        # Compare lines from each pair of files
+        for line_number in range(min_lines):
+            differences_12 = find_text_differences([texts[0][line_number]], [texts[1][line_number]])
+            differences_23 = find_text_differences([texts[1][line_number]], [texts[2][line_number]])
+            differences_13 = find_text_differences([texts[0][line_number]], [texts[2][line_number]])
 
-            # Compare line from File 1 and File 2
-            if line_number < len(texts[0]) and line_number < len(texts[1]):
-                differences_12 = find_text_differences([texts[0][line_number]], [texts[1][line_number]])
-                if differences_12:
-                    for original, modified in differences_12:
-                        st.markdown(f"#### File1 - BORI")
-                        st.markdown(original, unsafe_allow_html=True)
-                        st.markdown(f"#### File2 - Kumbakonam")
-                        st.markdown(modified, unsafe_allow_html=True)
-            
-            # Compare line from File 2 and File 3
-            if line_number < len(texts[1]) and line_number < len(texts[2]):
-                differences_23 = find_text_differences([texts[1][line_number]], [texts[2][line_number]])
-                if differences_23:
-                    for original, modified in differences_23:
-                        st.markdown(f"#### File2 - Kumbakonam")
-                        st.markdown(original, unsafe_allow_html=True)
-                        st.markdown(f"#### File3 - Sastri Vavilla")
-                        st.markdown(modified, unsafe_allow_html=True)
+            # Print differences for each pair of files
+            if differences_12:
+                original, modified = differences_12[0][1]
+                st.markdown(f"Line {line_number + 1}")
+                st.markdown("File1 - BORI")
+                st.markdown(original, unsafe_allow_html=True)
+                st.markdown("File2 - Kumbakonam")
+                st.markdown(modified, unsafe_allow_html=True)
 
-            # Compare line from File 1 and File 3
-            if line_number < len(texts[0]) and line_number < len(texts[2]):
-                differences_13 = find_text_differences([texts[0][line_number]], [texts[2][line_number]])
-                if differences_13:
-                    for original, modified in differences_13:
-                        st.markdown(f"#### File1 - BORI")
-                        st.markdown(original, unsafe_allow_html=True)
-                        st.markdown(f"#### File3 - Sastri Vavilla")
-                        st.markdown(modified, unsafe_allow_html=True)
-            
+            if differences_23:
+                original, modified = differences_23[0][1]
+                st.markdown(f"Line {line_number + 1}")
+                st.markdown("File2 - Kumbakonam")
+                st.markdown(original, unsafe_allow_html=True)
+                st.markdown("File3 - Sastri Vavilla")
+                st.markdown(modified, unsafe_allow_html=True)
+
+            if differences_13:
+                original, modified = differences_13[0][1]
+                st.markdown(f"Line {line_number + 1}")
+                st.markdown("File1 - BORI")
+                st.markdown(original, unsafe_allow_html=True)
+                st.markdown("File3 - Sastri Vavilla")
+                st.markdown(modified, unsafe_allow_html=True)
+
     except Exception as e:
         st.write(f"An error occurred: {str(e)}")
+
 
 
       
