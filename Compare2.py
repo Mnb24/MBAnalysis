@@ -22,20 +22,17 @@ def print_colored_diff(line):
     return f"Original: {original_sentence}", f"Modified: {modified_sentence}"
 
 # Function to find text differences line by line
-def find_text_differences(text1, text2, text3):
+def find_text_differences(text1, text2):
     differences = []
 
     differ = difflib.Differ()
 
     # Print the formatted differences with context
-    for line_number, (sentence1, sentence2, sentence3) in enumerate(zip(text1, text2, text3), start=1):
-        diff1 = list(differ.compare(sentence1.split(), sentence2.split()))
-        diff2 = list(differ.compare(sentence1.split(), sentence3.split()))
+    for line_number, (sentence1, sentence2) in enumerate(zip(text1, text2), start=1):
+        diff = list(differ.compare(sentence1.split(), sentence2.split()))
+        formatted_diff = [(code, word) for item in diff for code, word in [(item[:1], item[2:])]]
 
-        formatted_diff1 = [(code, word) for item in diff1 for code, word in [(item[:1], item[2:])]]
-        formatted_diff2 = [(code, word) for item in diff2 for code, word in [(item[:1], item[2:])]]
-
-        differences.append((line_number, print_colored_diff(formatted_diff1), print_colored_diff(formatted_diff2)))
+        differences.append((line_number, print_colored_diff(formatted_diff)))
 
     return differences
 
@@ -100,5 +97,6 @@ if compare_button:
             st.write("No differences found between File1 and File3.")
     except Exception as e:
         st.write(f"An error occurred: {str(e)}")
+
 
       
