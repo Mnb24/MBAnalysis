@@ -41,8 +41,8 @@ st.title("File Comparison App")
 
 # URLs of the text files
 file_paths = [
-    'https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/BR-01-Complete.txt', 
-    'https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/KK-01-Complete.txt'
+    'https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/BR_VS.txt', 
+    'https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/KK_VS.txt'
 ]
 
 compare_button = st.button("Compare Vishnu Sahasranama Files")
