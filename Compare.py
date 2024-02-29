@@ -45,7 +45,7 @@ file_paths = [
     'https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/KMG1.txt'
 ]
 
-compare_button = st.button("Compare Files")
+compare_button = st.button("Compare Vishnu Sahasranama Files")
 
 if compare_button:
     try:
