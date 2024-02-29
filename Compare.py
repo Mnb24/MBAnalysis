@@ -45,16 +45,22 @@ st.title("File Comparison App")
 file1 = st.file_uploader("Upload File 1", type=["txt"])
 file2 = st.file_uploader("Upload File 2", type=["txt"])
 
-if file1 and file2:
-    differences = find_text_differences(file1.name, file2.name)
+compare_button = st.button("Compare Files")
 
-    if differences:
-        for line_number, (original, modified) in differences:
-            st.markdown(f"### Line {line_number} - {file1.name}")
-            st.markdown(f"#### Original")
-            st.markdown(original, unsafe_allow_html=True)
-            st.markdown(f"### Line {line_number} - {file2.name}")
-            st.markdown(f"#### Modified")
-            st.markdown(modified, unsafe_allow_html=True)
+if compare_button:
+    if file1 and file2:
+        differences = find_text_differences(file1.name, file2.name)
+
+        if differences:
+            for line_number, (original, modified) in differences:
+                st.markdown(f"### Line {line_number} - {file1.name}")
+                st.markdown(f"#### Original")
+                st.markdown(original, unsafe_allow_html=True)
+                st.markdown(f"### Line {line_number} - {file2.name}")
+                st.markdown(f"#### Modified")
+                st.markdown(modified, unsafe_allow_html=True)
+        else:
+            st.write("No differences found.")
     else:
-        st.write("No differences found.")
+        st.write("Please upload both files before comparing.")
+
