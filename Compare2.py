@@ -54,47 +54,42 @@ if compare_button:
         responses = [requests.get(file_path) for file_path in file_paths]
         texts = [response.text.splitlines() for response in responses]
 
-        # Compare 1st and 2nd files
-        differences_12 = find_text_differences(texts[0], texts[1])
+        # Determine the maximum number of lines among the files
+        max_lines = max(len(text) for text in texts)
 
-        if differences_12:
-            for line_number, (original, modified) in differences_12:
-                st.markdown(f"### File1 - BORI")
-                st.markdown(f"#### Line {line_number}")
-                st.markdown(original, unsafe_allow_html=True)
-                st.markdown(f"### File2 - Kumbakonam")
-                st.markdown(f"#### Line {line_number}")
-                st.markdown(modified, unsafe_allow_html=True)
-        else:
-            st.write("No differences found between File1 and File2.")
+        for line_number in range(max_lines):
+            st.markdown(f"### Line {line_number + 1}")
 
-        # Compare 2nd and 3rd files
-        differences_23 = find_text_differences(texts[1], texts[2])
+            # Compare line from File 1 and File 2
+            if line_number < len(texts[0]) and line_number < len(texts[1]):
+                differences_12 = find_text_differences([texts[0][line_number]], [texts[1][line_number]])
+                if differences_12:
+                    for original, modified in differences_12:
+                        st.markdown(f"#### File1 - BORI")
+                        st.markdown(original, unsafe_allow_html=True)
+                        st.markdown(f"#### File2 - Kumbakonam")
+                        st.markdown(modified, unsafe_allow_html=True)
+            
+            # Compare line from File 2 and File 3
+            if line_number < len(texts[1]) and line_number < len(texts[2]):
+                differences_23 = find_text_differences([texts[1][line_number]], [texts[2][line_number]])
+                if differences_23:
+                    for original, modified in differences_23:
+                        st.markdown(f"#### File2 - Kumbakonam")
+                        st.markdown(original, unsafe_allow_html=True)
+                        st.markdown(f"#### File3 - Sastri Vavilla")
+                        st.markdown(modified, unsafe_allow_html=True)
 
-        if differences_23:
-            for line_number, (original, modified) in differences_23:
-                st.markdown(f"### File2 - Kumbakonam")
-                st.markdown(f"#### Line {line_number}")
-                st.markdown(original, unsafe_allow_html=True)
-                st.markdown(f"### File3 - Sastri Vavilla")
-                st.markdown(f"#### Line {line_number}")
-                st.markdown(modified, unsafe_allow_html=True)
-        else:
-            st.write("No differences found between File2 and File3.")
-
-        # Compare 1st and 3rd files
-        differences_13 = find_text_differences(texts[0], texts[2])
-
-        if differences_13:
-            for line_number, (original, modified) in differences_13:
-                st.markdown(f"### File1 - BORI")
-                st.markdown(f"#### Line {line_number}")
-                st.markdown(original, unsafe_allow_html=True)
-                st.markdown(f"### File3 - Sastri Vavilla")
-                st.markdown(f"#### Line {line_number}")
-                st.markdown(modified, unsafe_allow_html=True)
-        else:
-            st.write("No differences found between File1 and File3.")
+            # Compare line from File 1 and File 3
+            if line_number < len(texts[0]) and line_number < len(texts[2]):
+                differences_13 = find_text_differences([texts[0][line_number]], [texts[2][line_number]])
+                if differences_13:
+                    for original, modified in differences_13:
+                        st.markdown(f"#### File1 - BORI")
+                        st.markdown(original, unsafe_allow_html=True)
+                        st.markdown(f"#### File3 - Sastri Vavilla")
+                        st.markdown(modified, unsafe_allow_html=True)
+            
     except Exception as e:
         st.write(f"An error occurred: {str(e)}")
 
