@@ -18,10 +18,10 @@ def preprocess_text(text):
 
 # Function to get section content
 def get_section(file_content, section_number):
-    sections = file_content.split('Section ')
+    sections = file_content.split('\n\n')
     for section in sections:
-        if section.startswith(str(section_number) + '.'):
-            return section
+        if section.strip().startswith(f"Section {section_number}"):
+            return section[len(f"Section {section_number}"):].strip()
     return "Section not found."
 
 # Function to generate summary
@@ -51,7 +51,7 @@ if uploaded_file is not None:
         st.write(f"**Section {section_number} Content:**")
         st.write(section_content)
 
-        if st.button("Summarize Section"):
+        if st.button("Summarize"):
             summary = generate_summary(section_content)
             st.write("**Summary:**")
             st.write(summary)
