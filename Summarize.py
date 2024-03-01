@@ -3,13 +3,8 @@ import nltk
 from nltk.tokenize import sent_tokenize
 from nltk.corpus import stopwords
 from sklearn.metrics.pairwise import cosine_similarity
-from sklearn.feature_extraction.text import TfidfVectorizer
 import numpy as np
 import re
-from scipy.sparse import csr_matrix
-from scipy.sparse.csgraph import reverse_cuthill_mckee
-nltk.download('punkt')
-nltk.download('stopwords')
 
 def get_section(file_name, section_number):
     content = file_name.read().decode()
@@ -24,43 +19,35 @@ def truncate_text(text, word_limit):
     truncated_text = ' '.join(words[:word_limit])
     return truncated_text
 
-def build_similarity_matrix(sentences, stop_words):
-    vectorizer = TfidfVectorizer(stop_words=stop_words)
-    tfidf_matrix = vectorizer.fit_transform(sentences)
-    similarity_matrix = cosine_similarity(tfidf_matrix, tfidf_matrix)
-    return similarity_matrix
-
-def pagerank(M, num_iterations=100, d=0.85):
-    N = M.shape[1]
-    v = np.random.rand(N, 1)
-    v = v / np.linalg.norm(v, 1)
-    M_hat = (d * M + (1 - d) / N)
-    for i in range(num_iterations):
-        v = M_hat @ v
-    return v
-
 def generate_summary(file_name, section_number, word_limit=200, top_n=5):
     section = get_section(file_name, section_number)
     if section == "Section not found.":
         return section
 
+    # Truncate the section if it exceeds the word limit
     if len(section.split()) > word_limit:
         section = truncate_text(section, word_limit)
 
+    # Tokenize sentences
     sentences = nltk.sent_tokenize(section)
     stop_words = set(stopwords.words('english'))
 
+    # Generate similarity matrix across sentences
     sentence_similarity_matrix = build_similarity_matrix(sentences, stop_words)
 
-    scores = pagerank(csr_matrix(sentence_similarity_matrix))
+    # Rank sentences using PageRank algorithm
+    scores = pagerank(sentence_similarity_matrix)
 
+    # Flatten the scores array
     scores = scores.flatten()
 
+    # Sort the rank and pick top sentences
     ranked_sentences = [sentences[i] for i in np.argsort(scores)[::-1][:top_n]]
     summary = ' '.join(ranked_sentences)
 
     return summary
 
+# Streamlit code
 st.title('Document Summarizer')
 
 num_files = st.number_input('Enter the number of files:', min_value=1, step=1)
@@ -79,4 +66,3 @@ if st.button('Summarize'):
         st.write(f"Summary for {file_name.name}:")
         st.write(summary)
         st.write("-" * 50)
-
