@@ -45,7 +45,7 @@ def perform_concordance(texts, target_word):
             st.write("***")
 
 def main():
-    st.title("Concordance Analyzer")
+    st.title("Concordance Analyzer - Adi Parva")
     # URLs of the text files
     file_paths = [
         'https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/BD1.txt', 
