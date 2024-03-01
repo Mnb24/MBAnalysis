@@ -42,8 +42,6 @@ uploaded_file = st.file_uploader("Upload a text file", type=["txt"])
 
 if uploaded_file is not None:
     text = uploaded_file.read().decode("utf-8")
-    st.write("**Original Text:**")
-    st.write(text)
 
     # Allow user to input section number
     section_number = st.number_input('Enter the section number:', min_value=1, step=1)
@@ -59,4 +57,3 @@ if uploaded_file is not None:
             st.write(summary)
     else:
         st.write("Section not found.")
-
