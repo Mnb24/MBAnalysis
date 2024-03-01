@@ -2,75 +2,43 @@ import streamlit as st
 import nltk
 from nltk.tokenize import sent_tokenize
 from nltk.corpus import stopwords
-from sklearn.metrics.pairwise import cosine_similarity
-import numpy as np
-import re
 from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.metrics.pairwise import cosine_similarity
 
-# Define the build_similarity_matrix function
-def build_similarity_matrix(sentences, stop_words):
-    vectorizer = TfidfVectorizer(stop_words=stop_words)
-    tfidf_matrix = vectorizer.fit_transform(sentences)
-    cosine_sim = cosine_similarity(tfidf_matrix, tfidf_matrix)
-    return cosine_sim
+# Download NLTK data
+nltk.download('punkt')
+nltk.download('stopwords')
 
-def get_section(file_name, section_number):
-    content = file_name.read().decode()
-    sections = re.split(r'Section \d+', content)
-    if section_number < len(sections):
-        return sections[section_number]
-    else:
-        return "Section not found."
-
-def truncate_text(text, word_limit):
-    words = nltk.word_tokenize(text)
-    truncated_text = ' '.join(words[:word_limit])
-    return truncated_text
-
-def generate_summary(file_name, section_number, word_limit=200, top_n=5):
-    section = get_section(file_name, section_number)
-    if section == "Section not found.":
-        return section
-
-    # Truncate the section if it exceeds the word limit
-    if len(section.split()) > word_limit:
-        section = truncate_text(section, word_limit)
-
-    # Tokenize sentences
-    sentences = nltk.sent_tokenize(section)
+# Function to preprocess and tokenize text
+def preprocess_text(text):
+    sentences = sent_tokenize(text)
     stop_words = set(stopwords.words('english'))
+    preprocessed_sentences = [sentence.lower() for sentence in sentences if sentence.strip() != ""]
+    return preprocessed_sentences
 
-    # Generate similarity matrix across sentences
-    sentence_similarity_matrix = build_similarity_matrix(sentences, stop_words)
-
-    # Rank sentences using PageRank algorithm
-    scores = pagerank(sentence_similarity_matrix)
-
-    # Flatten the scores array
-    scores = scores.flatten()
-
-    # Sort the rank and pick top sentences
-    ranked_sentences = [sentences[i] for i in np.argsort(scores)[::-1][:top_n]]
-    summary = ' '.join(ranked_sentences)
-
+# Function to generate summary
+def generate_summary(text):
+    sentences = preprocess_text(text)
+    vectorizer = TfidfVectorizer()
+    X = vectorizer.fit_transform(sentences)
+    similarity_matrix = cosine_similarity(X, X)
+    scores = similarity_matrix.sum(axis=1)
+    summary_sentences = [sentences[i] for i in scores.argsort()[-5:]]
+    summary = ' '.join(summary_sentences)
     return summary
 
-# Streamlit code
+# Streamlit UI
 st.title('Document Summarizer')
 
-num_files = st.number_input('Enter the number of files:', min_value=1, step=1)
-file_names = []
-for i in range(num_files):
-    file_name = st.file_uploader(f'Choose file {i+1}', type=['txt'])
-    if file_name is not None:
-        file_names.append(file_name)
+uploaded_file = st.file_uploader("Upload a text file", type=["txt"])
 
-section_number = st.number_input('Enter the section number:', min_value=1, step=1)
+if uploaded_file is not None:
+    text = uploaded_file.read().decode("utf-8")
+    st.write("**Original Text:**")
+    st.write(text)
 
-if st.button('Summarize'):
-    st.write('Summaries for each file:\n')
-    for file_name in file_names:
-        summary = generate_summary(file_name, section_number)
-        st.write(f"Summary for {file_name.name}:")
+    if st.button("Summarize"):
+        summary = generate_summary(text)
+        st.write("**Summary:**")
         st.write(summary)
-        st.write("-" * 50)
+
