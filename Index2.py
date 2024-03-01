@@ -43,12 +43,11 @@ if devanagari_letter:
             st.write(f"Verses beginning with '{devanagari_letter}':")
             for i in range(0, len(verses), 3):
                 st.markdown("***", unsafe_allow_html=True)
-                for j, text in enumerate(texts):
+                for j in range(min(3, len(verses) - i)):
                     st.markdown(f"<h3 style='font-size:24px'>{file_names[j]}</h3>", unsafe_allow_html=True)
-                    for k in range(i, min(i + 3, len(verses))):
-                        verse = verses[k]
-                        highlighted_verse = verse.replace(devanagari_letter, f"<span style='color:red'>{devanagari_letter}</span>", 1)
-                        st.write(highlighted_verse, unsafe_allow_html=True)
+                    verse = verses[i + j]
+                    highlighted_verse = verse.replace(devanagari_letter, f"<span style='color:red'>{devanagari_letter}</span>", 1)
+                    st.write(highlighted_verse, unsafe_allow_html=True)
         else:
             st.write(f"No verses found beginning with '{devanagari_letter}'.")
     except Exception as e:
