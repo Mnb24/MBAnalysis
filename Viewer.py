@@ -1,11 +1,15 @@
 import streamlit as st
+import re
 
 def get_section(file_content, section_number):
-    sections = file_content.split('\n\n')
-    for section in sections:
-        if section.strip().startswith(f"Section {section_number}"):
-            return section[len(f"Section {section_number}"):].strip()
-    return "Section not found."
+    # Add a placeholder for the end of the document
+    file_content += "\n\nSection End:"
+    # Use regex to find the section
+    match = re.search(f"Section {section_number}:(.*?)(?=Section \d+:)", file_content, re.DOTALL)
+    if match:
+        return match.group(1).strip()
+    else:
+        return "Section not found."
 
 # Streamlit UI
 st.title('Document Viewer')
