@@ -27,7 +27,6 @@ file_paths = ['https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/BD1.txt',
 section_number = st.number_input('Enter the section number:', min_value=1, step=1)
 
 if st.button('View Section'):
-    st.write(f"Attempting to view Section {section_number}")
     for i, file_path in enumerate(file_paths, 1):
         response = requests.get(file_path)
         file_content = response.text
