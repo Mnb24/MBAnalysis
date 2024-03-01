@@ -1,59 +1,54 @@
 import streamlit as st
+import re
 from transformers import pipeline
-import requests
 
-# Load the summarization pipeline
-summarizer = pipeline("summarization", model='t5-small')
+summarizer = pipeline("summarization")
 
 def summarize_section(text, max_length=250, min_length=30, do_sample=False):
-    # Truncate the input text to fit within the maximum sequence length
-    if len(text) > 1000:
-        text = text[:1000]  # Truncate the text if it exceeds 1000 characters
-
-    # Adjust the max_length parameter based on the length of the input text
-    max_length = min(max_length, len(text) // 2)  # Set max_length to half of the input length
+    if len(text.split()) > 1024:
+        return "Words exceed input limit."
 
     # Generate the summary
     summary = summarizer(text, max_length=max_length, min_length=min_length, do_sample=do_sample)[0]['summary_text']
     return summary
 
-# Streamlit UI
-st.title("Text Summarizer")
+# Streamlit code
+st.title('Document Summarizer')
 
-# File paths
-file_paths = ['https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/BD1.txt', 
-              'https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/KMG1.txt', 
-              'https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/KMG1.txt']
+num_files = st.number_input('Enter the number of files:', min_value=1, step=1)
+file_names = []
+for i in range(num_files):
+    file_name = st.file_uploader(f'Choose file {i+1}', type=['txt'])
+    if file_name is not None:
+        file_names.append(file_name)
 
-# Accept user input for the section number
-section_number = st.number_input("Enter the section number:", min_value=0, step=1)
+section_number = st.number_input('Enter the section number:', min_value=1, step=1)
 
-# Iterate over each file
-for file_path in file_paths:
-    st.write(f"\nSummarizing {file_path}:")
+if st.button('Summarize'):
+    st.write('Summaries for each file:\n')
+    for file_name in file_names:
+        # Read the content of the file
+        content = file_name.read().decode()
 
-    # Initialize an empty string to store the content of the specified section
-    section_content = ""
+        # Use regular expressions to find sections based on the section number
+        pattern = rf"Section\s+{section_number}\b([\s\S]+?)(?=(Section\s+\d+|$))"
+        match = re.search(pattern, content)
 
-    # Read the content of the specified section from the text file
-    response = requests.get(file_path)
-    section_content = response.text
+        if match:
+            section_content = match.group(1).strip()
 
-    # Split the content into sections based on the "Section" keyword
-    sections = section_content.split("Section")
+            # Summarize the section
+            summary = summarize_section(section_content)
 
-    # Check if the section number is valid
-    if section_number < 0 or section_number >= len(sections):
-        st.write("Section not found.")
-    else:
-        # Extract the specified section
-        section_content = sections[section_number]
-
-        # Summarize the section
-        summary = summarize_section(section_content)
-
-        # Split the summary at each full stop and print each sentence on a new line
-        st.write(f"Summary of Section {section_number}:")
-        sentences = summary.split(".")
-        for sentence in sentences:
-            st.write(sentence.strip() + ".")
+            # Check if the summary is an error message
+            if summary == "Words exceed input limit.":
+                st.write("Error: Words exceed input limit.")
+            else:
+                # Split the summary at each full stop and print each sentence on a new line
+                st.write(f"Summary of Section {section_number} in {file_name.name}:")
+                sentences = summary.split(".")
+                for sentence in sentences:
+                    st.write(sentence.strip() + ".")
+                st.write("-" * 50)
+        else:
+            st.write(f"Section {section_number} not found in {file_name.name}.")
