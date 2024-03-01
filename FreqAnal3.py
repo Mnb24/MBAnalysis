@@ -10,7 +10,7 @@ def count_words_in_text(text, words):
     words_text = re.findall(r'\w+', text.lower())
     return [words_text.count(word.lower()) for word in words]
 
-st.title('Word Frequency Analyzer')
+st.title('Word Frequency Analyzer - Adi Parva')
 
 words_to_search = st.text_input("Enter words to search (comma separated):")
 
