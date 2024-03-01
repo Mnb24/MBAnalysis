@@ -23,13 +23,16 @@ file_paths = ['https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/BD1.txt',
               'https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/KMG1.txt', 
               'https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/MND1.txt']
 
+# File names
+file_names = ["Bibek Debroy's", "KM Ganguly's", "MN Dutt's"]
+
 # Allow user to input section number
 section_number = st.number_input('Enter the section number:', min_value=1, step=1)
 
 if st.button('View Section'):
-    for i, file_path in enumerate(file_paths, 1):
+    for i, (file_path, file_name) in enumerate(zip(file_paths, file_names)):
         response = requests.get(file_path)
         file_content = response.text
         section_content = get_section(file_content, section_number)
-        st.write(f"Extracted content of Section {section_number} from file {i}:")
+        st.markdown(f"## Extracted content of Section {section_number} from {file_name}:")
         st.write(section_content)
