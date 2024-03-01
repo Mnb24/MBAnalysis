@@ -14,7 +14,7 @@ def fetch_verses(letter, texts):
     return verses
 
 # Streamlit UI
-st.title("Appendix")
+st.title("Index - Adi Parva")
 
 # URLs of the text files
 file_paths = [
