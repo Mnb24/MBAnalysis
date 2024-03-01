@@ -14,14 +14,15 @@ uploaded_file = st.file_uploader("Upload a text file", type=["txt"])
 
 if uploaded_file is not None:
     text = uploaded_file.read().decode("utf-8")
+    st.write("Full Text:")
+    st.write(text)
 
     # Allow user to input section number
     section_number = st.number_input('Enter the section number:', min_value=1, step=1)
 
     if st.button('View Section'):
+        st.write(f"Attempting to view Section {section_number}")
         section_content = get_section(text, section_number)
-        if section_content != "Section not found.":
-            st.write(f"**Section {section_number} Content:**")
-            st.write(section_content)
-        else:
-            st.write("Section not found.")
+        st.write(f"Extracted content of Section {section_number}:")
+        st.write(section_content)
+
