@@ -5,6 +5,12 @@ from nltk.corpus import stopwords
 from sklearn.metrics.pairwise import cosine_similarity
 import numpy as np
 import re
+# Define the build_similarity_matrix function
+def build_similarity_matrix(sentences, stop_words):
+    vectorizer = TfidfVectorizer(stop_words=stop_words)
+    tfidf_matrix = vectorizer.fit_transform(sentences)
+    cosine_sim = cosine_similarity(tfidf_matrix, tfidf_matrix)
+    return cosine_sim
 
 def get_section(file_name, section_number):
     content = file_name.read().decode()
