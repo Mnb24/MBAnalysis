@@ -34,5 +34,5 @@ if st.button('View Section'):
         response = requests.get(file_path)
         file_content = response.text
         section_content = get_section(file_content, section_number)
-        st.markdown(f"## Extracted content of Section {section_number} from {file_name}:")
+        st.markdown(f"## Section {section_number} from {file_name}:")
         st.write(section_content)
