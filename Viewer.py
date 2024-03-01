@@ -27,7 +27,7 @@ file_paths = ['https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/BD1.txt',
 file_names = ["Bibek Debroy's", "KM Ganguly's", "MN Dutt's"]
 
 # Allow user to input section number
-section_number = st.number_input('Enter the section number:', min_value=1, step=1)
+section_number = st.number_input('Enter the section number (1 to 236):', min_value=1, step=1)
 
 if st.button('View Section'):
     for i, (file_path, file_name) in enumerate(zip(file_paths, file_names)):
