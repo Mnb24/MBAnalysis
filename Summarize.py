@@ -18,9 +18,10 @@ if uploaded_file is not None:
     # Allow user to input section number
     section_number = st.number_input('Enter the section number:', min_value=1, step=1)
 
-    section_content = get_section(text, section_number)
-    if section_content != "Section not found.":
-        st.write(f"**Section {section_number} Content:**")
-        st.write(section_content)
-    else:
-        st.write("Section not found.")
+    if st.button('View Section'):
+        section_content = get_section(text, section_number)
+        if section_content != "Section not found.":
+            st.write(f"**Section {section_number} Content:**")
+            st.write(section_content)
+        else:
+            st.write("Section not found.")
