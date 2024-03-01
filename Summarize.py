@@ -1,5 +1,6 @@
 import streamlit as st
 from transformers import pipeline
+import requests
 
 # Load the summarization pipeline
 summarizer = pipeline("summarization")
@@ -19,32 +20,24 @@ def summarize_section(text, max_length=250, min_length=30, do_sample=False):
 # Streamlit UI
 st.title("Text Summarizer")
 
-# User input for the number of files
-num_files = st.number_input("Enter the number of files:", min_value=1, step=1)
-
-# Initialize an empty list to store file names
-file_names = []
-
-# Prompt for file names and store them in the list
-for i in range(num_files):
-    file_name = st.text_input(f"Enter the name of file {i + 1}: ")
-    file_names.append(file_name)
+# File paths
+file_paths = ['https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/BD1.txt', 
+              'https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/KMG1.txt', 
+              'https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/KMG1.txt']
 
 # Accept user input for the section number
 section_number = st.number_input("Enter the section number:", min_value=0, step=1)
 
 # Iterate over each file
-for file_name in file_names:
-    st.write(f"\nSummarizing {file_name}:")
+for file_path in file_paths:
+    st.write(f"\nSummarizing {file_path}:")
 
     # Initialize an empty string to store the content of the specified section
     section_content = ""
 
     # Read the content of the specified section from the text file
-    with open(file_name, 'r') as file:
-        # Read the file in chunks to handle larger files
-        for chunk in iter(lambda: file.read(4096), ''):
-            section_content += chunk
+    response = requests.get(file_path)
+    section_content = response.text
 
     # Split the content into sections based on the "Section" keyword
     sections = section_content.split("Section")
