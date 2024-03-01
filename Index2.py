@@ -38,7 +38,7 @@ if devanagari_letter:
         # Fetch verses beginning with the specified letter
         verses = fetch_verses(devanagari_letter, texts)
 
-        # Display verses in groups of three
+        # Display verses in sets of three
         if verses:
             st.write(f"Verses beginning with '{devanagari_letter}':")
             for i in range(0, len(verses), 3):
