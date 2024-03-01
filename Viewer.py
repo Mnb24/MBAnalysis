@@ -21,7 +21,7 @@ st.title('Document Viewer')
 # File paths
 file_paths = ['https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/BD1.txt', 
               'https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/KMG1.txt', 
-              'https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/KMG1.txt']
+              'https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/MND1.txt']
 
 # Allow user to input section number
 section_number = st.number_input('Enter the section number:', min_value=1, step=1)
