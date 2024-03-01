@@ -47,8 +47,8 @@ if devanagari_letter:
                         highlighted_verse = file_verses[i].replace(devanagari_letter, f"<span style='color:red'>{devanagari_letter}</span>", 1)
                         st.markdown(f"<h3 style='font-size:24px'>{file_names[j]}</h3>", unsafe_allow_html=True)
                         st.write(highlighted_verse, unsafe_allow_html=True)
+                st.markdown("*****", unsafe_allow_html=True)
         else:
             st.write(f"No verses found beginning with '{devanagari_letter}'.")
     except Exception as e:
         st.write(f"An error occurred: {str(e)}")
-
