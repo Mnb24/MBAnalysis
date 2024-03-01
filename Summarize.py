@@ -3,7 +3,7 @@ from transformers import pipeline
 import requests
 
 # Load the summarization pipeline
-summarizer = pipeline("summarization")
+summarizer = pipeline("summarization", model='t5-small')
 
 def summarize_section(text, max_length=250, min_length=30, do_sample=False):
     # Truncate the input text to fit within the maximum sequence length
