@@ -27,7 +27,7 @@ def perform_concordance(text, target_word):
 
 def main():
     # Displaying heading
-    st.title("Concordance Analyzer")
+    st.title("Concordance Analyzer - Adi Parva")
 
     # URLs of the text files
     file_paths = [
