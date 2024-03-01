@@ -1,4 +1,5 @@
 import streamlit as st
+import requests
 
 def get_section(file_content, section_number):
     sections = file_content.split('\n')
@@ -17,16 +18,19 @@ def get_section(file_content, section_number):
 # Streamlit UI
 st.title('Document Viewer')
 
-uploaded_file = st.file_uploader("Upload a text file", type=["txt"])
+# File paths
+file_paths = ['https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/BD1.txt', 
+              'https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/KMG1.txt', 
+              'https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/KMG1.txt']
 
-if uploaded_file is not None:
-    file_content = uploaded_file.read().decode()
+# Allow user to input section number
+section_number = st.number_input('Enter the section number:', min_value=1, step=1)
 
-    # Allow user to input section number
-    section_number = st.number_input('Enter the section number:', min_value=1, step=1)
-
-    if st.button('View Section'):
-        st.write(f"Attempting to view Section {section_number}")
+if st.button('View Section'):
+    st.write(f"Attempting to view Section {section_number}")
+    for i, file_path in enumerate(file_paths, 1):
+        response = requests.get(file_path)
+        file_content = response.text
         section_content = get_section(file_content, section_number)
-        st.write(f"Extracted content of Section {section_number}:")
+        st.write(f"Extracted content of Section {section_number} from file {i}:")
         st.write(section_content)
