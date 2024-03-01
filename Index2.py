@@ -7,9 +7,8 @@ def fetch_verses(letter, texts):
 
     # Iterate through each file
     for text in texts:
-        for verse in text:
-            if verse.startswith(letter):
-                verses.append(verse)
+        file_verses = [verse for verse in text if verse.startswith(letter)]
+        verses.append(file_verses)
     
     return verses
 
@@ -38,17 +37,18 @@ if devanagari_letter:
         # Fetch verses beginning with the specified letter
         verses = fetch_verses(devanagari_letter, texts)
 
-        # Display verses in sets of three
-        if verses:
+        # Display verses
+        if any(verses):
             st.write(f"Verses beginning with '{devanagari_letter}':")
-            for i in range(0, len(verses), 3):
-                st.markdown("***", unsafe_allow_html=True)
-                for j in range(min(3, len(verses) - i)):
-                    st.markdown(f"<h3 style='font-size:24px'>{file_names[j]}</h3>", unsafe_allow_html=True)
-                    verse = verses[i + j]
-                    highlighted_verse = verse.replace(devanagari_letter, f"<span style='color:red'>{devanagari_letter}</span>", 1)
-                    st.write(highlighted_verse, unsafe_allow_html=True)
+            max_len = max([len(file_verses) for file_verses in verses])
+            for i in range(max_len):
+                for j, file_verses in enumerate(verses):
+                    if i < len(file_verses):
+                        highlighted_verse = file_verses[i].replace(devanagari_letter, f"<span style='color:red'>{devanagari_letter}</span>", 1)
+                        st.markdown(f"<h3 style='font-size:24px'>{file_names[j]}</h3>", unsafe_allow_html=True)
+                        st.write(highlighted_verse, unsafe_allow_html=True)
         else:
             st.write(f"No verses found beginning with '{devanagari_letter}'.")
     except Exception as e:
         st.write(f"An error occurred: {str(e)}")
+
