@@ -1,8 +1,11 @@
 import streamlit as st
 import re
+from transformers import BartForConditionalGeneration, BartTokenizer
 from transformers import pipeline
 
-summarizer = pipeline("summarization")
+model = BartForConditionalGeneration.from_pretrained("sshleifer/distilbart-cnn-12-6")
+tokenizer = BartTokenizer.from_pretrained("sshleifer/distilbart-cnn-12-6")
+summarizer = pipeline("summarization", model=model, tokenizer=tokenizer)
 
 def summarize_section(text, max_length=250, min_length=30, do_sample=False):
     if len(text.split()) > 1024:
