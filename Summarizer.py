@@ -7,6 +7,10 @@ from sklearn.metrics.pairwise import cosine_similarity
 import re
 import requests
 
+# Download NLTK data
+nltk.download('punkt')
+nltk.download('stopwords')
+
 def get_section(file_url, section_number):
     content = requests.get(file_url).text
     sections = re.split(r'Section \d+', content)
