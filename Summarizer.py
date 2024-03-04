@@ -13,18 +13,13 @@ nltk.download('stopwords')
 
 # Function to extract a section from the content
 def get_section(file_content, section_number):
-    sections = file_content.split('\n')
-    found_sections = []
-    for line in sections:
-        if line.strip().startswith("Section"):
-            current_section_number = line.strip().split(" ")[1]
-            if current_section_number == str(section_number):
-                found_sections.append(line)
-            elif found_sections:
-                break
-        elif found_sections:
-            found_sections.append(line)
-    return '\n'.join(found_sections)
+    sections = file_content.split('\nSection ')
+    for section in sections:
+        lines = section.strip().split('\n')
+        current_section_number = lines[0].split(' ')[0]
+        if current_section_number == str(section_number):
+            return '\n'.join(lines[1:])  # Exclude the section number line
+    return "Section not found."
 
 # Function to truncate text to a word limit
 def truncate_text(text, word_limit):
@@ -71,12 +66,16 @@ def pagerank(similarity_matrix, damping=0.85, epsilon=1.0e-8, max_iterations=100
         p = new_p
     return p
 
-# Function to generate a summary for a given text content
-def generate_summary(text_content, word_limit=200, top_n=5):
-    if len(word_tokenize(text_content)) > word_limit:
-        text_content = truncate_text(text_content, word_limit)
+# Function to generate a summary for a given file content and section number
+def generate_summary(file_content, section_number, word_limit=200, top_n=5):
+    section = get_section(file_content, section_number)
+    if section == "Section not found.":
+        return section
 
-    sentences = sent_tokenize(text_content)
+    if len(word_tokenize(section)) > word_limit:
+        section = truncate_text(section, word_limit)
+
+    sentences = sent_tokenize(section)
     stop_words = set(stopwords.words('english'))
 
     sentence_similarity_matrix = build_similarity_matrix(sentences, stop_words)
@@ -92,28 +91,26 @@ st.title('Document Viewer - Adi Parva')
 
 # File paths
 file_paths = ['https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/BD1.txt', 
-              'https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/KMG1.txt' 
-              ]
+              'https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/KMG1.txt']
 
 # File names
-file_names = ["Bibek Debroy's", "KM Ganguly's", "MN Dutt's"]
+file_names = ["Bibek Debroy's", "KM Ganguly's"]
 
 # Allow user to input section number
 section_number = st.number_input('Enter the section number (1 to 236):', min_value=1, step=1)
 
-if st.button('View Section'):
-    for i, (file_path, file_name) in enumerate(zip(file_paths, file_names)):
-        response = requests.get(file_path)
-        file_content = response.text
-        section_content = get_section(file_content, section_number)
-        st.markdown(f"## Section {section_number} from {file_name}:")
-        st.write(section_content)   
+view_section = st.button('View Section')
+summarize_section = st.button('Summarize Section')
 
-if st.button('Summarize'):
+if view_section or summarize_section:
     for i, (file_path, file_name) in enumerate(zip(file_paths, file_names)):
         response = requests.get(file_path)
         file_content = response.text
-        section_content = get_section(file_content, section_number)
-        summary = generate_summary(section_content)
-        st.markdown(f"## Summary for Section {section_number} from {file_name}:")
-        st.write(summary)
+        if view_section:
+            section_content = get_section(file_content, section_number)
+            st.markdown(f"## Section {section_number} from {file_name}:")
+            st.write(section_content)
+        if summarize_section:
+            summary = generate_summary(file_content, section_number)
+            st.markdown(f"## Summary for Section {section_number} from {file_name}:")
+            st.write(summary)
