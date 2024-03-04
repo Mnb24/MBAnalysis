@@ -92,8 +92,8 @@ st.title('Document Viewer - Adi Parva')
 
 # File paths
 file_paths = ['https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/BD1.txt', 
-              'https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/KMG1.txt', 
-              'https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/MND1.txt']
+              'https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/KMG1.txt' 
+              ]
 
 # File names
 file_names = ["Bibek Debroy's", "KM Ganguly's", "MN Dutt's"]
