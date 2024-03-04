@@ -1,15 +1,51 @@
-import re
 import streamlit as st
-from transformers import pipeline
+import nltk
+from nltk.tokenize import sent_tokenize, word_tokenize
+from nltk.corpus import stopwords
+import numpy as np
+from sklearn.metrics.pairwise import cosine_similarity
+import re
 
-summarizer = pipeline("summarization")
+def get_section(file_name, section_number):
+    with open(file_name, 'r') as file:
+        content = file.read()
+        sections = re.split(r'Section \d+', content)
+        if section_number < len(sections):
+            return sections[section_number]
+        else:
+            return "Section not found."
 
-def summarize_section(text, max_length=250, min_length=30, do_sample=False):
-    if len(text.split()) > 1024:
-        return "Words exceed input limit."
+def truncate_text(text, word_limit):
+    words = word_tokenize(text)
+    truncated_text = ' '.join(words[:word_limit])
+    return truncated_text
 
-    # Generate the summary
-    summary = summarizer(text, max_length=max_length, min_length=min_length, do_sample=do_sample)[0]['summary_text']
+def generate_summary(file_name, section_number, word_limit=200, top_n=5):
+    section = get_section(file_name, section_number)
+    if section == "Section not found.":
+        return section
+
+    # Truncate the section if it exceeds the word limit
+    if len(section.split()) > word_limit:
+        section = truncate_text(section, word_limit)
+
+    # Tokenize sentences
+    sentences = sent_tokenize(section)
+    stop_words = set(stopwords.words('english'))
+
+    # Generate similarity matrix across sentences
+    sentence_similarity_matrix = build_similarity_matrix(sentences, stop_words)
+
+    # Rank sentences using PageRank algorithm
+    scores = pagerank(sentence_similarity_matrix)
+
+    # Flatten the scores array
+    scores = scores.flatten()
+
+    # Sort the rank and pick top sentences
+    ranked_sentences = [sentences[i] for i in np.argsort(scores)[::-1][:top_n]]
+    summary = ' '.join(ranked_sentences)
+
     return summary
 
 num_files = st.number_input("Enter the number of files:", min_value=1, step=1)
@@ -20,31 +56,9 @@ for i in range(num_files):
 
 section_number = st.number_input("Enter the section number: ", min_value=1, step=1)
 
-st.write("\nSummaries for each file:\n")
+st.write("\nUsing TextRank Summarization:")
 for file_name in file_names:
-    # Read the content of the file
-    with open(file_name, 'r') as file:
-        content = file.read()
-
-    # Use regular expressions to find sections based on the section number
-    pattern = rf"Section\s+{section_number}\b([\s\S]+?)(?=(Section\s+\d+|$))"
-    match = re.search(pattern, content)
-
-    if match:
-        section_content = match.group(1).strip()
-
-        # Summarize the section
-        summary = summarize_section(section_content)
-
-        # Check if the summary is an error message
-        if summary == "Words exceed input limit.":
-            st.write("Error: Words exceed input limit.")
-        else:
-            # Split the summary at each full stop and print each sentence on a new line
-            st.write(f"Summary of Section {section_number} in {file_name}:")
-            sentences = summary.split(".")
-            for sentence in sentences:
-                st.write(sentence.strip() + ".")
-            st.write("-" * 50)
-    else:
-        st.write(f"Section {section_number} not found in {file_name}.")
+    st.write(f"Summary for {file_name}:")
+    summary = generate_summary(file_name, section_number)
+    st.write(summary)
+    st.write("-" * 50)
