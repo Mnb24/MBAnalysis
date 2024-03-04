@@ -1,23 +1,16 @@
 import streamlit as st
 import requests
-from transformers import pipeline
+from transformers import BartTokenizer, BartForConditionalGeneration
 
-# Initialize the summarization pipeline
-summarizer = pipeline("summarization", model="t5-base", tokenizer="t5-base", framework="pt")
+# Load BART model and tokenizer
+tokenizer = BartTokenizer.from_pretrained('facebook/bart-large-cnn')
+model = BartForConditionalGeneration.from_pretrained('facebook/bart-large-cnn')
 
-def get_section(file_content, section_number):
-    sections = file_content.split('\n')
-    found_sections = []
-    for line in sections:
-        if line.strip().startswith("Section"):
-            current_section_number = line.strip().split(" ")[1]
-            if current_section_number == str(section_number):
-                found_sections.append(line)
-            elif found_sections:
-                break
-        elif found_sections:
-            found_sections.append(line)
-    return '\n'.join(found_sections)
+def summarize_text(text):
+    inputs = tokenizer([text], max_length=1024, return_tensors='pt', truncation=True)
+    summary_ids = model.generate(inputs['input_ids'], num_beams=4, max_length=150, early_stopping=True)
+    summary = tokenizer.decode(summary_ids[0], skip_special_tokens=True)
+    return summary
 
 # Streamlit UI
 st.title('Document Viewer - Adi Parva')
@@ -43,6 +36,7 @@ if st.button('View Section'):
 
         # Summarize section content
         st.markdown(f"## Summary of Section {section_number} from {file_name}:")
-        summary = summarizer(section_content, max_length=150, min_length=30, do_sample=False)[0]['summary_text']
+        summary = summarize_text(section_content)
         st.write(summary)
+
 
