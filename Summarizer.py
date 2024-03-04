@@ -87,7 +87,7 @@ def generate_summary(file_content, section_number, word_limit=200, top_n=5):
     return summary
 
 # Streamlit UI
-st.title('Document Viewer - Adi Parva')
+st.title('Document Summarizer - Adi Parva')
 
 # File paths
 file_paths = ['https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/BD1.txt', 
