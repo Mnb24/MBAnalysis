@@ -88,13 +88,12 @@ if __name__ == "__main__":
     st.title('Text Summarizer - Adi Parva')
 
     file_paths = ['https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/BD1.txt', 
-                  'https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/KMG1.txt', 
-                  'https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/MND1.txt']
+                  'https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/KMG1.txt']
 
     section_number = st.number_input("Enter the section number:", min_value=1, step=1)
 
     if st.button('Summarize'):
-        for file_path, file_name in zip(file_paths, ['Bibek Debroy', 'KM Ganguly', 'MN Dutt']):
+        for file_path, file_name in zip(file_paths, ['Bibek Debroy', 'KM Ganguly']):
             response = requests.get(file_path)
             if response.status_code == 200:
                 file_content = response.text
