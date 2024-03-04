@@ -5,23 +5,23 @@ from nltk.corpus import stopwords
 import numpy as np
 from sklearn.metrics.pairwise import cosine_similarity
 import re
+import requests
 
-def get_section(file_name, section_number):
-    with open(file_name, 'r') as file:
-        content = file.read()
-        sections = re.split(r'Section \d+', content)
-        if section_number < len(sections):
-            return sections[section_number]
-        else:
-            return "Section not found."
+def get_section(file_url, section_number):
+    content = requests.get(file_url).text
+    sections = re.split(r'Section \d+', content)
+    if section_number < len(sections):
+        return sections[section_number]
+    else:
+        return "Section not found."
 
 def truncate_text(text, word_limit):
     words = word_tokenize(text)
     truncated_text = ' '.join(words[:word_limit])
     return truncated_text
 
-def generate_summary(file_name, section_number, word_limit=200, top_n=5):
-    section = get_section(file_name, section_number)
+def generate_summary(file_url, section_number, word_limit=200, top_n=5):
+    section = get_section(file_url, section_number)
     if section == "Section not found.":
         return section
 
@@ -48,17 +48,23 @@ def generate_summary(file_name, section_number, word_limit=200, top_n=5):
 
     return summary
 
-num_files = st.number_input("Enter the number of files:", min_value=1, step=1)
-file_names = []
-for i in range(num_files):
-    file_name = st.text_input(f"Enter the name of file {i+1}: ")
-    file_names.append(file_name)
+# Streamlit UI
+st.title('Document Viewer - Adi Parva')
 
-section_number = st.number_input("Enter the section number: ", min_value=1, step=1)
+# File URLs
+file_urls = ['https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/BD1.txt', 
+              'https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/KMG1.txt', 
+              'https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/MND1.txt']
+
+# File names
+file_names = ["Bibek Debroy's", "KM Ganguly's", "MN Dutt's"]
+
+# Allow user to input section number
+section_number = st.number_input('Enter the section number (1 to 236):', min_value=1, step=1)
 
 st.write("\nUsing TextRank Summarization:")
-for file_name in file_names:
+for file_url, file_name in zip(file_urls, file_names):
     st.write(f"Summary for {file_name}:")
-    summary = generate_summary(file_name, section_number)
+    summary = generate_summary(file_url, section_number)
     st.write(summary)
     st.write("-" * 50)
