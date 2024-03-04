@@ -1,11 +1,11 @@
 import streamlit as st
+import requests
 import nltk
 from nltk.tokenize import sent_tokenize, word_tokenize
 from nltk.corpus import stopwords
 from sklearn.metrics.pairwise import cosine_similarity
 import numpy as np
 import re
-import requests
 
 # Download necessary NLTK resources
 nltk.download('punkt')
@@ -86,22 +86,32 @@ def generate_summary(file_content, section_number, word_limit=200, top_n=5):
 
     return summary
 
-if __name__ == "__main__":
-    st.title('Text Summarizer - Adi Parva')
+# Streamlit UI
+st.title('Document Viewer - Adi Parva')
 
-    file_paths = ['https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/BD1.txt', 
-                  'https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/KMG1.txt']
+# File paths
+file_paths = ['https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/BD1.txt', 
+              'https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/KMG1.txt', 
+              'https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/MND1.txt']
 
-    section_number = st.number_input("Enter the section number:", min_value=1, step=1)
+# File names
+file_names = ["Bibek Debroy's", "KM Ganguly's", "MN Dutt's"]
 
-    if st.button('Summarize'):
-        for file_path, file_name in zip(file_paths, ['Bibek Debroy', 'KM Ganguly']):
-            response = requests.get(file_path)
-            if response.status_code == 200:
-                file_content = response.text
-                st.write(f"Summary for {file_name}:")
-                summary = generate_summary(file_content, section_number)
-                st.write(summary)
-                st.write("-" * 50)
+# Allow user to input section number
+section_number = st.number_input('Enter the section number (1 to 236):', min_value=1, step=1)
 
+if st.button('View Section'):
+    for i, (file_path, file_name) in enumerate(zip(file_paths, file_names)):
+        response = requests.get(file_path)
+        file_content = response.text
+        section_content = get_section(file_content, section_number)
+        st.markdown(f"## Section {section_number} from {file_name}:")
+        st.write(section_content)
 
+if st.button('Summarize'):
+    for i, (file_path, file_name) in enumerate(zip(file_paths, file_names)):
+        response = requests.get(file_path)
+        file_content = response.text
+        summary = generate_summary(file_content, section_number)
+        st.markdown(f"## Summary for Section {section_number} from {file_name}:")
+        st.write(summary)
