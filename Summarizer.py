@@ -3,7 +3,7 @@ import requests
 from transformers import pipeline
 
 # Initialize the summarization pipeline
-summarizer = pipeline("summarization")
+summarizer = pipeline("summarization", model="t5-base", tokenizer="t5-base", framework="pt")
 
 def get_section(file_content, section_number):
     sections = file_content.split('\n')
