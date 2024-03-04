@@ -6,6 +6,7 @@ import numpy as np
 from sklearn.metrics.pairwise import cosine_similarity
 import re
 import requests
+from sklearn.feature_extraction.text import TfidfVectorizer
 
 # Download NLTK data
 nltk.download('punkt')
@@ -23,6 +24,16 @@ def truncate_text(text, word_limit):
     words = word_tokenize(text)
     truncated_text = ' '.join(words[:word_limit])
     return truncated_text
+
+def build_similarity_matrix(sentences, stop_words):
+    # Create a TF-IDF Vectorizer object
+    tfidf_vectorizer = TfidfVectorizer(stop_words=stop_words)
+
+    # Transform the sentences into TF-IDF vectors
+    tfidf_matrix = tfidf_vectorizer.fit_transform(sentences)
+
+    # Compute and return the cosine similarity matrix
+    return cosine_similarity(tfidf_matrix, tfidf_matrix)
 
 def generate_summary(file_url, section_number, word_limit=200, top_n=5):
     section = get_section(file_url, section_number)
