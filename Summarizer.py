@@ -7,11 +7,11 @@ import numpy as np
 import re
 import requests
 
-st.title('Text Summarizer - Adi Parva')
-
+# Download necessary NLTK resources
 nltk.download('punkt')
 nltk.download('stopwords')
 
+# Function to extract a section from the content
 def get_section(content, section_number):
     sections = re.split(r'Section \d+', content)
     if section_number <= len(sections) and section_number > 0:
@@ -19,11 +19,13 @@ def get_section(content, section_number):
     else:
         return "Section not found."
 
+# Function to truncate text to a word limit
 def truncate_text(text, word_limit):
     words = word_tokenize(text)
     truncated_text = ' '.join(words[:word_limit])
     return truncated_text
 
+# Function to build a similarity matrix
 def build_similarity_matrix(sentences, stop_words):
     clean_sentences = [sentence.lower() for sentence in sentences if sentence not in stop_words]
     similarity_matrix = np.zeros((len(sentences), len(sentences)))
@@ -34,6 +36,7 @@ def build_similarity_matrix(sentences, stop_words):
                 similarity_matrix[idx1][idx2] = sentence_similarity(clean_sentences[idx1], clean_sentences[idx2])
     return similarity_matrix
 
+# Function to compute sentence similarity
 def sentence_similarity(sent1, sent2):
     stop_words = set(stopwords.words('english'))
     words1 = [word.lower() for word in word_tokenize(sent1) if word.lower() not in stop_words]
@@ -49,6 +52,7 @@ def sentence_similarity(sent1, sent2):
     
     return cosine_similarity([vector1], [vector2])[0,0]
 
+# Function to perform PageRank
 def pagerank(similarity_matrix, damping=0.85, epsilon=1.0e-8, max_iterations=100):
     n = similarity_matrix.shape[0]
     p = np.ones(n) / n  
@@ -60,6 +64,7 @@ def pagerank(similarity_matrix, damping=0.85, epsilon=1.0e-8, max_iterations=100
         p = new_p
     return p
 
+# Function to generate a summary for a given file content and section number
 def generate_summary(file_content, section_number, word_limit=200, top_n=5):
     section = get_section(file_content, section_number)
     if section == "Section not found.":
@@ -80,6 +85,8 @@ def generate_summary(file_content, section_number, word_limit=200, top_n=5):
     return summary
 
 if __name__ == "__main__":
+    st.title('Text Summarizer - Adi Parva')
+
     file_paths = ['https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/BD1.txt', 
                   'https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/KMG1.txt', 
                   'https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/MND1.txt']
@@ -87,11 +94,12 @@ if __name__ == "__main__":
     section_number = st.number_input("Enter the section number:", min_value=1, step=1)
 
     if st.button('Summarize'):
-        for i, file_path in enumerate(file_paths):
+        for file_path, file_name in zip(file_paths, ['Bibek Debroy', 'KM Ganguly', 'MN Dutt']):
             response = requests.get(file_path)
             if response.status_code == 200:
                 file_content = response.text
-                st.write(f"{'Bibek Debroy\'s' if i == 0 else 'KM Ganguly\'s' if i == 1 else 'MN Dutt\'s'} Summary for {file_path}:")
+                st.write(f"Summary for {file_name}:")
                 summary = generate_summary(file_content, section_number)
                 st.write(summary)
                 st.write("-" * 50)
+
