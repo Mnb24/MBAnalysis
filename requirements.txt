@@ -7,4 +7,3 @@ pandas==1.4.0
 nltk
 requests
 numpy
-torch torchvision torchaudio
