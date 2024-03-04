@@ -13,18 +13,13 @@ nltk.download('stopwords')
 
 # Function to extract a section from the content
 def get_section(file_content, section_number):
-    sections = file_content.split('\n')
-    found_sections = []
-    for line in sections:
-        if line.strip().startswith("Section"):
-            current_section_number = line.strip().split(" ")[1]
-            if current_section_number == str(section_number):
-                found_sections.append(line)
-            elif found_sections:
-                break
-        elif found_sections:
-            found_sections.append(line)
-    return '\n'.join(found_sections)
+    sections = file_content.split('\nSection ')
+    for section in sections:
+        lines = section.strip().split('\n')
+        current_section_number = lines[0].split(' ')[0]
+        if current_section_number == str(section_number):
+            return '\n'.join(lines[1:])  # Exclude the section number line
+    return "Section not found."
 
 # Function to truncate text to a word limit
 def truncate_text(text, word_limit):
