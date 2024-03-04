@@ -14,8 +14,8 @@ nltk.download('stopwords')
 def get_section(file_url, section_number):
     content = requests.get(file_url).text
     sections = re.split(r'Section \d+', content)
-    if section_number < len(sections):
-        return sections[section_number]
+    if section_number - 1 < len(sections):
+        return sections[section_number - 1]
     else:
         return "Section not found."
 
