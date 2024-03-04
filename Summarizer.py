@@ -7,6 +7,8 @@ import numpy as np
 import re
 import requests
 
+st.title('Text Summarizer - Adi Parva')
+
 nltk.download('punkt')
 nltk.download('stopwords')
 
@@ -84,11 +86,12 @@ if __name__ == "__main__":
 
     section_number = st.number_input("Enter the section number:", min_value=1, step=1)
 
-    for file_path in file_paths:
-        response = requests.get(file_path)
-        if response.status_code == 200:
-            file_content = response.text
-            print(f"Summary for {file_path}:")
-            summary = generate_summary(file_content, section_number)
-            print(summary)
-            print("-" * 50)
+    if st.button('Summarize'):
+        for i, file_path in enumerate(file_paths):
+            response = requests.get(file_path)
+            if response.status_code == 200:
+                file_content = response.text
+                st.write(f"{'Bibek Debroy\'s' if i == 0 else 'KM Ganguly\'s' if i == 1 else 'MN Dutt\'s'} Summary for {file_path}:")
+                summary = generate_summary(file_content, section_number)
+                st.write(summary)
+                st.write("-" * 50)
