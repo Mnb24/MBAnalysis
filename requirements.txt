@@ -8,3 +8,5 @@ nltk
 requests
 numpy
 networkx 
+gensim
+scikit-learn
