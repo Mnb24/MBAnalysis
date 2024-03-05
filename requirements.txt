@@ -8,3 +8,4 @@ nltk
 requests
 numpy
 networkx 
+spacy==3.1.3
