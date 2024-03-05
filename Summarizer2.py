@@ -19,6 +19,21 @@ def preprocess_text(text):
     text = text.lower()
     return text
 
+def get_section(file_content, section_number):
+    sections = file_content.split('\n')
+    found_sections = []
+    for line in sections:
+        if line.strip().startswith("Section"):
+            current_section_number = line.strip().split(" ")[1]
+            if current_section_number == str(section_number):
+                found_sections.append(line)
+            elif found_sections:
+                break
+        elif found_sections:
+            found_sections.append(line)
+    return '\n'.join(found_sections)
+
+
 def build_similarity_matrix(sentences):
     # Create an empty similarity matrix
     similarity_matrix = np.zeros((len(sentences), len(sentences)))
