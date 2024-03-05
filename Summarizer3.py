@@ -4,6 +4,8 @@ from nltk.tokenize import sent_tokenize
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.decomposition import TruncatedSVD
 import re
+import nltk
+nltk.download('punkt')
 
 # Streamlit UI
 st.title('Document Summarizer (LSA) - Adi Parva')
