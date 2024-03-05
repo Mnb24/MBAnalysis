@@ -1,4 +1,5 @@
 import os
+import subprocess
 import streamlit as st
 import spacy
 import requests
@@ -7,7 +8,7 @@ import requests
 try:
     nlp = spacy.load("en_core_web_sm")
 except OSError:
-    os.system("python -m spacy download en_core_web_sm")
+    subprocess.check_call(["python", "-m", "spacy", "download", "en_core_web_sm"])
     nlp = spacy.load("en_core_web_sm")
 
 # Function to extract a section from the content
