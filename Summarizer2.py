@@ -73,7 +73,7 @@ def textrank_summary(sentences, top_n=5):
     return summary
 
 # Streamlit UI
-st.title('Text Summarizer - TextRank Algorithm')
+st.title('Document Summarizer (TextRanker) - Adi Parva')
 
 # File paths
 file_paths = ['https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/BD1.txt', 
