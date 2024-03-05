@@ -72,7 +72,7 @@ if col1.button('View Section'):
 
 # Summarize Section button using LSA
 if col2.button('Summarize Section (LSA)'):
-    for file_path in file_paths:
+    for i, (file_path, file_name) in enumerate(zip(file_paths, file_names)):
         response = requests.get(file_path)
         file_content = response.text
         sentences = sent_tokenize(get_section(file_content, section_number))
