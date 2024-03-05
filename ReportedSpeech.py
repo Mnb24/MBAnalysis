@@ -1,9 +1,14 @@
+import os
 import streamlit as st
 import spacy
 import requests
 
-# Load the English language model
-nlp = spacy.load("en_core_web_sm")
+# Check if the model is downloaded, if not download it
+try:
+    nlp = spacy.load("en_core_web_sm")
+except OSError:
+    os.system("python -m spacy download en_core_web_sm")
+    nlp = spacy.load("en_core_web_sm")
 
 # Function to extract a section from the content
 def get_section(file_content, section_number):
