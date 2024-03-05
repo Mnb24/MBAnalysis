@@ -65,8 +65,8 @@ def textrank_summary(sentences, top_n=5):
 
     # Apply PageRank algorithm
     nx_graph = nx.from_numpy_array(similarity_matrix)
-    scores = nx.pagerank(nx_graph)
-
+    scores = nx.pagerank(nx_graph, max_iter=1000)
+    
     # Sort sentences by score and pick top sentences
     ranked_sentences = sorted(((scores[i], sentence) for i, sentence in enumerate(sentences)), reverse=True)
     summary = ' '.join([sentence for score, sentence in ranked_sentences[:top_n]])
