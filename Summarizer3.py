@@ -51,6 +51,8 @@ def lsa_summary(sentences, num_sentences=5):
 file_paths = ['https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/BD1.txt', 
               'https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/KMG1.txt']
 
+file_names = ['BD1', 'KMG1']
+
 # Allow user to input section number
 section_number = st.number_input('Enter the section number (1 to 236):', min_value=1, step=1)
 
