@@ -85,8 +85,11 @@ file_names = ["Bibek Debroy's", "KM Ganguly's"]
 # Allow user to input section number
 section_number = st.number_input('Enter the section number (1 to 236):', min_value=1, step=1)
 
+# Display both buttons side by side
+col1, col2 = st.columns(2)
+
 # View Section button
-if st.button('View Section'):
+if col1.button('View Section'):
     for i, (file_path, file_name) in enumerate(zip(file_paths, file_names)):
         response = requests.get(file_path)
         file_content = response.text
@@ -95,7 +98,7 @@ if st.button('View Section'):
         st.write(section_content)
 
 # Summarize Section button using TextRank
-if st.button('Summarize Section (TextRank)'):
+if col2.button('Summarize Section (TextRank)'):
     for i, (file_path, file_name) in enumerate(zip(file_paths, file_names)):
         response = requests.get(file_path)
         file_content = response.text
@@ -103,3 +106,4 @@ if st.button('Summarize Section (TextRank)'):
         summary = textrank_summary(sentences)
         st.markdown(f"## Summary for Section {section_number} from {file_name}:")
         st.write(summary)
+
