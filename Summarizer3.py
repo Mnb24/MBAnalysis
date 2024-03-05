@@ -77,5 +77,5 @@ if col2.button('Summarize Section (LSA)'):
         file_content = response.text
         sentences = sent_tokenize(get_section(file_content, section_number))
         summary = lsa_summary(sentences)
-        st.markdown(f"## Summary for Section {section_number}:")
+        st.markdown(f"## Summary for Section {section_number} from {file_name}:")
         st.write(summary)
