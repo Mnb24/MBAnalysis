@@ -10,3 +10,4 @@ numpy
 networkx 
 gensim
 scikit-learn
+torch
