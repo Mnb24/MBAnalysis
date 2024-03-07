@@ -28,6 +28,7 @@ def perform_string_matching(files, target_word):
     df = pd.DataFrame(list(occurrences.items()), columns=['File', 'Occurrences'])
 
     # Plot word distribution
+    st.write("Word Distribution:")
     st.bar_chart(df.set_index('File'))
 
 def main():
