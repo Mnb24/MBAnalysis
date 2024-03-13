@@ -1,11 +1,10 @@
-import streamlit as st
-from wordcloud import WordCloud
 import matplotlib.pyplot as plt
-import requests
+from wordcloud import WordCloud
+import streamlit as st
 
-def fetch_section_content(translation_url, section_number):
-    response = requests.get(translation_url)
-    content = response.text
+def fetch_section_content(file_path, section_number):
+    with open(file_path, 'r') as file:
+        content = file.read()
     sections = content.split("\n\n")  # Assuming sections are separated by double line breaks
     section_content = ""
     for section in sections:
@@ -29,21 +28,21 @@ def main():
     # Displaying heading
     st.title("Word Cloud Generator")
 
-    # Translation options
-    translations = {
-        "Bibek Debroy": 'https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/BD1.txt',
-        "KM Ganguly": 'https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/KMG1.txt',
-        "MN Dutt": 'https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/MND1.txt'
+    # File paths to the text files
+    file_paths = {
+        "Bibek Debroy": '/path/to/BD1.txt',
+        "KM Ganguly": '/path/to/KMG1.txt',
+        "MN Dutt": '/path/to/MND1.txt'
     }
+
+    # Dropdown for selecting the file
+    file_path = st.selectbox("Select File:", list(file_paths.keys()))
 
     # User input for section number
     section_number = st.number_input("Enter the section number (1 to 236):", min_value=1, max_value=236, step=1)
 
-    # Dropdown for selecting the translation
-    translation = st.selectbox("Select Translation:", list(translations.keys()))
-
-    # Fetch content of the selected section from the chosen translation
-    section_content = fetch_section_content(translations[translation], section_number)
+    # Fetch content of the selected section from the chosen file
+    section_content = fetch_section_content(file_paths[file_path], section_number)
 
     # Generate and display word cloud
     if st.button('Generate Word Cloud'):
@@ -51,4 +50,5 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
