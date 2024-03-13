@@ -2,19 +2,32 @@ import requests
 import streamlit as st
 from nltk.tokenize import word_tokenize
 from nltk.corpus import stopwords
-from nltk import pos_tag
 import string
 
 def preprocess_text(text):
     # Tokenize the text
     tokens = word_tokenize(text)
-    # Remove punctuation and lowercase all tokens
-    table = str.maketrans('', '', string.punctuation)
-    stripped = [w.translate(table).lower() for w in tokens]
+    # Remove punctuation except commas and full stops
+    table = str.maketrans('', '', string.punctuation.replace('.', '').replace(',', ''))
+    words = [w.translate(table) for w in tokens]
     # Remove stopwords
     stop_words = set(stopwords.words('english'))
-    words = [word for word in stripped if word.isalpha() and word not in stop_words]
+    words = [word for word in words if word.lower() not in stop_words]
     return words
+
+def get_section(file_content, section_number):
+    sections = file_content.split('\n')
+    found_sections = []
+    for line in sections:
+        if line.strip().startswith("Section"):
+            current_section_number = line.strip().split(" ")[1]
+            if current_section_number == str(section_number):
+                found_sections.append(line)
+            elif found_sections:
+                break
+        elif found_sections:
+            found_sections.append(line)
+    return '\n'.join(found_sections)
 
 def get_common_words(text1, text2):
     words1 = preprocess_text(text1)
@@ -48,4 +61,3 @@ if st.button('Compare Sections'):
     
     st.write("Common Words:")
     st.write(common_words)
-
