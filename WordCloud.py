@@ -27,11 +27,9 @@ def main():
     st.title("Word Cloud Generator")
 
     # File paths to the text files
-    file_paths = {
-        "Bibek Debroy": '/path/to/BD1.txt',
-        "KM Ganguly": '/path/to/KMG1.txt',
-        "MN Dutt": '/path/to/MND1.txt'
-    }
+    file_paths = ['https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/BD1.txt', 
+              'https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/KMG1.txt', 
+              'https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/MND1.txt']
 
     # Dropdown for selecting the file
     file_path = st.selectbox("Select File:", list(file_paths.keys()))
