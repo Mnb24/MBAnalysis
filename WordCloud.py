@@ -28,9 +28,9 @@ def main():
 
     # File paths to the text files
     file_paths = {
-        'BD1.txt': 'https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/BD1.txt', 
-        'KMG1.txt': 'https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/KMG1.txt', 
-        'MND1.txt': 'https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/MND1.txt'
+        'Bibek Debroy': 'https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/BD1.txt', 
+        'KM Ganguly': 'https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/KMG1.txt', 
+        'MN Dutt': 'https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/MND1.txt'
     }
 
     # Dropdown for selecting the file
