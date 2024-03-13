@@ -33,7 +33,7 @@ def get_common_words(text1, text2):
     words1 = preprocess_text(text1)
     words2 = preprocess_text(text2)
     common_words = set(words1) & set(words2)
-    return list(common_words)
+    return [word for word in common_words if word.isalpha()]  # Exclude non-alphabetic words
 
 # Streamlit UI
 st.title('Compare Sections - Adi Parva')
