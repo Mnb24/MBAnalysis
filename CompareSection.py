@@ -35,6 +35,13 @@ def get_common_words(text1, text2):
     common_words = set(words1) & set(words2)
     return [word for word in common_words if word.isalpha()]  # Exclude non-alphabetic words
 
+def jaccard_similarity(text1, text2):
+    words1 = set(preprocess_text(text1))
+    words2 = set(preprocess_text(text2))
+    intersection = len(words1.intersection(words2))
+    union = len(words1.union(words2))
+    return intersection / union if union != 0 else 0
+
 # Streamlit UI
 st.title('Compare Sections - Adi Parva')
 
@@ -59,5 +66,9 @@ if st.button('Compare Sections'):
     
     common_words = get_common_words(section_content1, section_content2)
     
+    similarity_score = jaccard_similarity(section_content1, section_content2)
+    
+    st.write("Jaccard Similarity Score:", similarity_score)
     st.write("Common Words:")
     st.write(common_words)
+
