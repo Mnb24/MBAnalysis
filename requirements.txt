@@ -11,3 +11,4 @@ networkx
 gensim
 scikit-learn
 torch
+wordcloud==1.8.1
