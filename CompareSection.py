@@ -1,12 +1,15 @@
-import requests
-import nltk
-from nltk.tokenize import word_tokenize
-from nltk.corpus import stopwords
 import streamlit as st
+import requests
+import re
+from collections import Counter
 
-nltk.download('punkt')
-nltk.download('stopwords')
+# Function to preprocess text
+def preprocess_text(text):
+    # Remove quotation marks
+    text = re.sub(r'["“”]', '', text)
+    return text
 
+# Function to get section content from file content
 def get_section(file_content, section_number):
     sections = file_content.split('\n')
     found_sections = []
@@ -21,23 +24,11 @@ def get_section(file_content, section_number):
             found_sections.append(line)
     return '\n'.join(found_sections)
 
-def compare_sections(section_content1, section_content2):
-    # Tokenize the content of each section
-    tokens1 = word_tokenize(section_content1)
-    tokens2 = word_tokenize(section_content2)
-
-    # Filter out stopwords
-    stop_words = set(stopwords.words('english'))
-    filtered_tokens1 = [word.lower() for word in tokens1 if word.lower() not in stop_words]
-    filtered_tokens2 = [word.lower() for word in tokens2 if word.lower() not in stop_words]
-
-    # Calculate Jaccard similarity score
-    jaccard_similarity = len(set(filtered_tokens1).intersection(filtered_tokens2)) / len(set(filtered_tokens1).union(filtered_tokens2))
-
-    # Find common words between the two sections
-    common_words = list(set(filtered_tokens1).intersection(filtered_tokens2))
-
-    return jaccard_similarity, common_words
+# Function to calculate Jaccard similarity
+def jaccard_similarity(list1, list2):
+    intersection = len(list(set(list1).intersection(list2)))
+    union = (len(list1) + len(list2)) - intersection
+    return float(intersection) / union if union != 0 else 0
 
 # Streamlit UI
 st.title('Compare Sections - Adi Parva')
@@ -47,24 +38,37 @@ file_paths = ['https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/BD1.txt',
               'https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/KMG1.txt']
 
 # File names
-file_names = ["Bibek Debroy's", "KM Ganguly's", "MN Dutt's"]
+file_names = ["Bibek Debroy's", "KM Ganguly's"]
 
 # Allow user to input section number
 section_number = st.number_input('Enter the section number (1 to 236):', min_value=1, step=1)
 
-if st.button('Compare Section'):
-    # Fetch section content for each file
-    section_contents = []
-    for file_path, file_name in zip(file_paths, file_names):
+if st.button('View Section'):
+    section_texts = []
+    for i, (file_path, file_name) in enumerate(zip(file_paths, file_names)):
         response = requests.get(file_path)
         file_content = response.text
         section_content = get_section(file_content, section_number)
-        section_contents.append((file_name, section_content))
+        section_texts.append(preprocess_text(section_content))
+        st.markdown(f"## Section {section_number} from {file_name}:")
+        st.write(section_content)
 
-    # Compare sections and display results
-    for i in range(len(section_contents)):
-        for j in range(i+1, len(section_contents)):
-            st.markdown(f"## Comparing Section {section_number} from {section_contents[i][0]} with {section_contents[j][0]}:")
-            similarity_score, common_words = compare_sections(section_contents[i][1], section_contents[j][1])
-            st.write(f"Jaccard Similarity Score: {similarity_score}")
-            st.write("Common significant words between the specified sections:", common_words)
+    if len(section_texts) == 2:
+        # Tokenize the text
+        words1 = set(section_texts[0].split())
+        words2 = set(section_texts[1].split())
+
+        # Calculate Jaccard similarity
+        similarity_score = jaccard_similarity(words1, words2)
+
+        # Get common words excluding stopwords and quotation marks
+        common_words = list(words1.intersection(words2))
+
+        # Display similarity score and common words
+        st.write(f"Similarity Score: {similarity_score}")
+        st.write("Common Words:")
+        for word in common_words:
+            st.write(word)
+    else:
+        st.write("Please select exactly 2 files.")
+
