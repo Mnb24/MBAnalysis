@@ -25,7 +25,6 @@ def generate_word_cloud(section_content):
     plt.show()
     st.pyplot()
 
-
 def main():
     # Displaying heading
     st.title("Word Cloud Generator")
@@ -52,3 +51,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
