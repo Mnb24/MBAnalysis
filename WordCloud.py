@@ -15,12 +15,16 @@ def fetch_section_content(translation_url, section_number):
     return section_content
 
 def generate_word_cloud(section_content):
+    if not section_content:
+        st.write("No content available for the selected section.")
+        return
     wordcloud = WordCloud(width=800, height=400, background_color='white').generate(section_content)
     plt.figure(figsize=(10, 5))
     plt.imshow(wordcloud, interpolation='bilinear')
     plt.axis('off')
     plt.show()
     st.pyplot()
+
 
 def main():
     # Displaying heading
