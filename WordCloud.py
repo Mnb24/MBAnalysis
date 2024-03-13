@@ -2,15 +2,13 @@ import matplotlib.pyplot as plt
 from wordcloud import WordCloud
 import streamlit as st
 
+import re
+
 def fetch_section_content(file_path, section_number):
     with open(file_path, 'r') as file:
         content = file.read()
-    sections = content.split("\n\n")  # Assuming sections are separated by double line breaks
-    section_content = ""
-    for section in sections:
-        if f"Section {section_number}" in section:
-            section_content = section
-            break
+    sections = re.split('Section \d+', content)  # Split content based on 'Section (number)'
+    section_content = sections[section_number] if section_number < len(sections) else ""
     return section_content
 
 def generate_word_cloud(section_content):
