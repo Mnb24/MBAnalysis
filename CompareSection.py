@@ -2,6 +2,7 @@ import requests
 import nltk
 from nltk.tokenize import word_tokenize
 from nltk.corpus import stopwords
+import streamlit as st
 
 nltk.download('punkt')
 nltk.download('stopwords')
