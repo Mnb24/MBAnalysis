@@ -32,7 +32,7 @@ section_number = st.number_input("Enter section number:", min_value=1, max_value
 
 # Extract text for the specified section
 sections = text.split('Section')
-section_text = sections[section_number].strip() if section_number <= len(sections) else ''
+section_text = sections[int(section_number) - 1].strip() if 1 <= int(section_number) <= len(sections) else ''
 
 if st.button('Generate Heatmap'):
     # Count words in the text
