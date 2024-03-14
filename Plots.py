@@ -6,7 +6,6 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import pandas as pd
 from nltk import pos_tag, word_tokenize
-from wordcloud import STOPWORDS
 
 def count_words_in_text(text):
     words_text = re.findall(r'\w+', text)
@@ -49,9 +48,6 @@ if st.button('Analyze'):
     # Count words in the section text
     word_counts = count_words_in_text(section_text)
     
-    # Remove stopwords from word counts
-    word_counts = {word: count for word, count in word_counts.items() if word.lower() not in STOPWORDS}
-    
     # Sort words by frequency
     sorted_word_counts = sorted(word_counts.items(), key=lambda x: x[1], reverse=True)
     
@@ -65,16 +61,12 @@ if st.button('Analyze'):
     plt.figure(figsize=(10, 6))
     sns.barplot(x='Word', y='Frequency', data=df)
     plt.title('Top 10 Words in Section {}'.format(section_number))
-    plt.xticks(rotation=45, fontsize=12)  # Increase font size
-    plt.yticks(fontsize=12)  # Increase font size
-    plt.xlabel('Word', fontsize=14)  # Increase font size
-    plt.ylabel('Frequency', fontsize=14)  # Increase font size
-    
-    # Add frequency as text on bars
+    plt.xticks(rotation=45, fontsize=12)
+    plt.yticks(fontsize=12)
+    plt.xlabel('Word', fontsize=14)
+    plt.ylabel('Frequency', fontsize=14)
     for i, v in enumerate(df['Frequency']):
         plt.text(i, v + 0.5, str(v), ha='center', va='bottom', fontsize=12)
-    
-    plt.tight_layout()
     st.pyplot(plt)
     
     # Count POS in the section text
@@ -83,16 +75,18 @@ if st.button('Analyze'):
     # Create a DataFrame for POS counts
     pos_df = pd.DataFrame(pos_counts.items(), columns=['POS', 'Count'])
     
+    # Create a color map for the pie chart
+    colors = plt.cm.tab20.colors[:len(pos_df)]
+    
     # Create a pie chart for POS counts
     plt.figure(figsize=(8, 8))
-    colors = plt.cm.tab10.colors[:len(pos_df)]
-    patches, texts = plt.pie(pos_df['Count'], colors=colors, startangle=140, autopct='%1.1f%%')
+    patches, _ = plt.pie(pos_df['Count'], colors=colors, startangle=140, autopct='%1.1f%%')
     plt.axis('equal')
     plt.title('Part-of-Speech Distribution')
     
-    # Create legend with percentage values
-    labels = ['{0} - {1:1.1f}%'.format(pos, count) for pos, count in zip(pos_df['POS'], pos_df['Count'])]
-    plt.legend(patches, labels, loc="best")
+    # Create a legend with percentage values
+    plt.legend(patches, pos_df['POS'], loc='center left', bbox_to_anchor=(1, 0.5), fontsize=12)
     
     st.pyplot(plt)
+
 
