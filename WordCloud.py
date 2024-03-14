@@ -3,6 +3,8 @@ from wordcloud import WordCloud
 from collections import Counter
 import re
 import requests
+import numpy as np
+from PIL import Image
 
 # Function to count words in text
 def count_words_in_text(text):
@@ -29,11 +31,11 @@ if st.button('Generate Word Cloud'):
     # Count words in the text
     word_counts = count_words_in_text(text)
     
-    try:
-        # Generate word cloud
-        wordcloud = WordCloud(font_path='times.ttf', max_words=100).generate_from_frequencies(word_counts)
-        
-        # Display word cloud
-        st.image(wordcloud.to_array())
-    except Exception as e:
-        st.error(f"An error occurred: {str(e)}")
+    # Generate word cloud
+    wordcloud = WordCloud(max_words=100).generate_from_frequencies(word_counts)
+    
+    # Convert word cloud to image array
+    image_array = wordcloud.to_array()
+
+    # Display word cloud using st.image()
+    st.image(image_array, use_column_width=True)
