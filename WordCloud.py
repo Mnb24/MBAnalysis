@@ -16,10 +16,10 @@ def fetch_text_content(file_url):
     return response.text
 
 # Function to generate word cloud
-def generate_word_cloud(text):
-    wordcloud = WordCloud(width=800, height=400, background_color='white', max_font_size=100).generate(text)
-    plt.figure(figsize=(10, 5))
-    plt.imshow(wordcloud, interpolation='bilinear')
+def generate_word_cloud(all_text):
+    wordcloud = WordCloud(width=800, height=400, random_state=21, max_font_size=110).generate(all_text)
+    plt.figure(figsize=(10, 6))
+    plt.imshow(wordcloud, interpolation="bilinear")
     plt.axis('off')
     plt.show()
 
@@ -38,15 +38,18 @@ def main():
 
     # Display word cloud for the selected section
     if st.button("Generate Word Cloud"):
-        # Split text into sections
-        sections = text_content.split('\n\n')  # Assuming sections are separated by double line breaks
+        # Split text into sections based on the section headings
+        sections = text_content.split('Section')
 
         # Check if section number is valid
         if section_number > len(sections):
             st.error("Invalid Section Number! Please enter a valid section number.")
         else:
-            section_text = sections[section_number - 1]
+            section_text = sections[section_number].strip()  # Extract the text of the selected section
+            
+            # Generate word cloud
             generate_word_cloud(section_text)
 
 if __name__ == "__main__":
     main()
+
