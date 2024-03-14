@@ -31,7 +31,7 @@ if st.button('Generate Word Cloud'):
     
     try:
         # Generate word cloud
-        wordcloud = WordCloud(max_words=100).generate_from_frequencies(word_counts)
+        wordcloud = WordCloud(font_path='arial.ttf', max_words=100).generate_from_frequencies(word_counts)
         
         # Display word cloud
         st.image(wordcloud.to_array())
