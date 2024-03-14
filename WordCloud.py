@@ -48,4 +48,3 @@ text = fetch_text(file_urls[selected_translation])
 if st.button('Generate Heatmap'):
     create_heatmap(text)
     st.pyplot()
-
