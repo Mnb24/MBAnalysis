@@ -99,7 +99,7 @@ if st.button('Analyze'):
     # Create a bar plot for POS counts
     plt.figure(figsize=(10, 6))
     ax = sns.barplot(x='POS', y='Count', data=pos_df)
-    plt.title('Part-of-Speech Frequencies', fontsize=16, fontweight='bold')  # Increase font size and make it bold
+    plt.title('Part-of-Speech Frequencies\n\n\n', fontsize=20, fontweight='bold')  # Increase font size and make it bold
     plt.xticks(rotation=45, fontsize=12)  # Increase font size
     plt.yticks(fontsize=12)  # Increase font size
     plt.xlabel('Part of Speech', fontsize=14)  # Increase font size
