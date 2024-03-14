@@ -5,7 +5,6 @@ import re
 import matplotlib.pyplot as plt
 import seaborn as sns
 import pandas as pd
-from wordcloud import STOPWORDS
 
 def count_words_in_text(text):
     words_text = re.findall(r'\w+', text)
@@ -42,9 +41,6 @@ if st.button('Analyze'):
     # Count words in the section text
     word_counts = count_words_in_text(section_text)
     
-    # Remove stopwords from word counts
-    word_counts = {word: count for word, count in word_counts.items() if word.lower() not in STOPWORDS}
-    
     # Sort words by frequency
     sorted_word_counts = sorted(word_counts.items(), key=lambda x: x[1], reverse=True)
     
@@ -54,28 +50,32 @@ if st.button('Analyze'):
     # Create a DataFrame for the top words
     df = pd.DataFrame(top_words, columns=['Word', 'Frequency'])
     
-    # Create a histogram for word frequencies
-    st.subheader("Histogram of Word Frequencies")
+    # Plot 1: Bar Plot for top words
     plt.figure(figsize=(10, 6))
-    sns.histplot(df['Frequency'], bins=20, kde=True)
-    plt.xlabel('Frequency')
-    plt.ylabel('Count')
-    plt.grid(True)
+    sns.barplot(x='Word', y='Frequency', data=df)
+    plt.title('Top 10 Words')
+    plt.xticks(rotation=45, fontsize=12)
+    plt.yticks(fontsize=12)
+    plt.xlabel('Word', fontsize=14)
+    plt.ylabel('Frequency', fontsize=14)
+    for i, v in enumerate(df['Frequency']):
+        plt.text(i, v + 0.5, str(v), ha='center', va='bottom', fontsize=12)
     st.pyplot(plt)
-
-    # Create a pie chart for word frequencies
-    st.subheader("Pie Chart of Word Frequencies")
+    
+    # Plot 2: Pie Chart for word frequencies
     plt.figure(figsize=(8, 8))
     plt.pie(df['Frequency'], labels=df['Word'], autopct='%1.1f%%', startangle=140)
     plt.axis('equal')
+    plt.title('Word Frequency Distribution (Pie Chart)')
     st.pyplot(plt)
-
-    # Create a line plot for word frequencies
-    st.subheader("Line Plot of Word Frequencies")
+    
+    # Plot 3: Line Plot for word frequencies
     plt.figure(figsize=(10, 6))
     plt.plot(df['Word'], df['Frequency'], marker='o', linestyle='-')
-    plt.xlabel('Word')
-    plt.ylabel('Frequency')
-    plt.xticks(rotation=45)
-    plt.grid(True)
+    plt.xlabel('Word', fontsize=14)
+    plt.ylabel('Frequency', fontsize=14)
+    plt.title('Word Frequency Distribution (Line Plot)')
+    plt.xticks(rotation=45, fontsize=12)
+    plt.yticks(fontsize=12)
     st.pyplot(plt)
+
