@@ -2,6 +2,7 @@ import streamlit as st
 import requests
 import seaborn as sns
 import pandas as pd
+import matplotlib.pyplot as plt
 from sklearn.feature_extraction.text import CountVectorizer
 
 # Function to fetch text from URL
@@ -47,3 +48,4 @@ text = fetch_text(file_urls[selected_translation])
 if st.button('Generate Heatmap'):
     create_heatmap(text)
     st.pyplot()
+
