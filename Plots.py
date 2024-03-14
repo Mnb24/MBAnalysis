@@ -5,11 +5,8 @@ import re
 import matplotlib.pyplot as plt
 import seaborn as sns
 import pandas as pd
-from wordcloud import STOPWORDS
-import nltk
 from nltk import pos_tag, word_tokenize
-nltk.download('punkt')
-nltk.download('averaged_perceptron_tagger')
+from wordcloud import STOPWORDS
 
 def count_words_in_text(text):
     words_text = re.findall(r'\w+', text)
@@ -88,7 +85,14 @@ if st.button('Analyze'):
     
     # Create a pie chart for POS counts
     plt.figure(figsize=(8, 8))
-    plt.pie(pos_df['Count'], labels=pos_df['POS'], autopct='%1.1f%%', startangle=140)
+    colors = plt.cm.tab10.colors[:len(pos_df)]
+    patches, texts = plt.pie(pos_df['Count'], colors=colors, startangle=140, autopct='%1.1f%%')
     plt.axis('equal')
     plt.title('Part-of-Speech Distribution')
+    
+    # Create legend with percentage values
+    labels = ['{0} - {1:1.1f}%'.format(pos, count) for pos, count in zip(pos_df['POS'], pos_df['Count'])]
+    plt.legend(patches, labels, loc="best")
+    
     st.pyplot(plt)
+
