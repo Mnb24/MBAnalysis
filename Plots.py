@@ -111,5 +111,10 @@ if st.button('Analyze'):
                  ha='center', va='bottom', fontsize=12)
 
     plt.tight_layout()
-    st.pyplot(plt) 
+    st.pyplot(plt)
+    
+    # Count word co-occurrences
+    words = word_tokenize(section_text)
+    word_pairs = [(words[i], words[i+1]) for i in range(len(words)-1)]
+    word_cooccurrences = Counter(word_pairs)
 
