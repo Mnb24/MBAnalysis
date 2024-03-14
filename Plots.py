@@ -76,8 +76,7 @@ if st.button('Analyze'):
     pos_df = pd.DataFrame(pos_counts.items(), columns=['POS', 'Count'])
     
     # Create a color map for the pie chart
-    colors = plt.cm.tab20.colors[:len(pos_df)]
-    
+    colors = plt.cm.tab20.colors[:len(pos_df)]    
     # Create a pie chart for POS counts
     plt.figure(figsize=(8, 8))
     patches, _ = plt.pie(pos_df['Count'], colors=colors, startangle=140, autopct='%1.1f%%')
