@@ -1,17 +1,35 @@
 import streamlit as st
-from wordcloud import WordCloud
-from collections import Counter
-import re
 import requests
-import numpy as np
-from PIL import Image
+import seaborn as sns
+import pandas as pd
+from sklearn.feature_extraction.text import CountVectorizer
 
-# Function to count words in text
-def count_words_in_text(text):
-    words_text = re.findall(r'\w+', text.lower())
-    return Counter(words_text)
+# Function to fetch text from URL
+def fetch_text(url):
+    response = requests.get(url)
+    return response.text
 
-st.title('Word Cloud Generator')
+# Function to create a heatmap
+def create_heatmap(text):
+    # Initialize CountVectorizer to convert text into a matrix of word counts
+    vectorizer = CountVectorizer()
+    X = vectorizer.fit_transform([text])
+
+    # Convert the word counts matrix into a DataFrame
+    df = pd.DataFrame(X.toarray(), columns=vectorizer.get_feature_names_out())
+
+    # Compute the correlation matrix
+    corr_matrix = df.corr()
+
+    # Create a heatmap using seaborn
+    plt.figure(figsize=(12, 8))
+    sns.heatmap(corr_matrix, cmap="YlGnBu")
+    plt.title('Word Co-occurrence Heatmap')
+    plt.xlabel('Words')
+    plt.ylabel('Words')
+
+# Streamlit app
+st.title('Word Co-occurrence Heatmap')
 
 # File URLs
 file_urls = {
@@ -24,18 +42,8 @@ file_urls = {
 selected_translation = st.selectbox("Select translation:", list(file_urls.keys()))
 
 # Get text from selected translation URL
-response = requests.get(file_urls[selected_translation])
-text = response.text
+text = fetch_text(file_urls[selected_translation])
 
-if st.button('Generate Word Cloud'):
-    # Count words in the text
-    word_counts = count_words_in_text(text)
-    
-    # Generate word cloud
-    wordcloud = WordCloud(max_words=100).generate_from_frequencies(word_counts)
-    
-    # Convert word cloud to image array
-    image_array = wordcloud.to_array()
-
-    # Display word cloud using st.image()
-    st.image(image_array, use_column_width=True)
+if st.button('Generate Heatmap'):
+    create_heatmap(text)
+    st.pyplot()
