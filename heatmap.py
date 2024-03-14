@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 from collections import Counter
 import re
+import pandas as pd
 
 # Function to count words in text
 def count_words_in_text(text):
