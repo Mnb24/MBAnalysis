@@ -11,7 +11,7 @@ def count_words_in_text(text):
     words_text = re.findall(r'\w+', text)
     return Counter(words_text)
 
-st.title('Word Frequency Analyzer - Adi Parva')
+st.title('Plots for Adi Parva Sections')
 
 section_number = st.number_input("Enter section number:", min_value=1, max_value=236, value=1, step=1)
 
