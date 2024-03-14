@@ -15,12 +15,7 @@ def count_words_in_text(text):
 def count_pos(text):
     words = word_tokenize(text)
     pos_tags = pos_tag(words)
-    pos_counts = Counter()
-    for word, tag in pos_tags:
-        if tag.startswith('P'):
-            pos_counts['Punctuation'] += 1
-        else:
-            pos_counts[tag] += 1
+    pos_counts = Counter(tag for word, tag in pos_tags)
     return pos_counts
 
 st.title('Plots for Adi Parva Sections')
@@ -68,7 +63,7 @@ if st.button('Analyze'):
     
     plt.figure(figsize=(10, 6))
     ax = sns.barplot(x='Word', y='Frequency', data=df)
-    plt.title('Top 10 Words in Section {}\n\n\n\n'.format(section_number), fontsize=20, fontweight='bold')  
+    plt.title('Top 10 Words in Section {}'.format(section_number), fontsize=20, fontweight='bold')  
     plt.xticks(rotation=45, fontsize=12)  # Increase font size
     plt.yticks(fontsize=12)  # Increase font size
     plt.xlabel('Word', fontsize=14)  # Increase font size
@@ -87,7 +82,7 @@ if st.button('Analyze'):
     plt.figure(figsize=(8, 8))
     plt.pie(df['Frequency'], labels=df['Word'], autopct='%1.1f%%', startangle=140)
     plt.axis('equal')
-    plt.title('Distribution of Top 10 Words\n\n\n\n', fontsize=16, fontweight='bold')
+    plt.title('Distribution of Top 10 Words', fontsize=16, fontweight='bold')
     plt.rcParams['font.size'] = 10  # Adjust font size of pie chart labels and percentages
     
     st.pyplot(plt)
@@ -95,8 +90,11 @@ if st.button('Analyze'):
     # Count POS in the section text
     pos_counts = count_pos(section_text)
     
-    # Create a DataFrame for POS counts
-    pos_df = pd.DataFrame(pos_counts.items(), columns=['POS', 'Count'])
+    # Filter out punctuation POS tags
+    filtered_pos_counts = {pos: count for pos, count in pos_counts.items() if pos.isalpha()}
+    
+    # Create a DataFrame for filtered POS counts
+    pos_df = pd.DataFrame(filtered_pos_counts.items(), columns=['POS', 'Count'])
     
     # Create a bar plot for POS counts
     plt.figure(figsize=(10, 6))
@@ -113,5 +111,5 @@ if st.button('Analyze'):
                  ha='center', va='bottom', fontsize=12)
 
     plt.tight_layout()
-    st.pyplot(plt)
+    st.pyplot(plt) 
 
