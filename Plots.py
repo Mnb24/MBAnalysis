@@ -69,13 +69,13 @@ if st.button('Analyze'):
     plt.xlabel('Word', fontsize=14)  # Increase font size
     plt.ylabel('Frequency', fontsize=14)  # Increase font size
 
-# Add frequency as text on bars within the plot's rectangle
-for bar, frequency in zip(ax.patches, df['Frequency']):
-    plt.text(bar.get_x() + bar.get_width() / 2, bar.get_height() + 0.5, frequency,
-             ha='center', va='bottom', fontsize=12)
+    # Add frequency as text on bars within the plot's rectangle
+    for bar, frequency in zip(ax.patches, df['Frequency']):
+        plt.text(bar.get_x() + bar.get_width() / 2, bar.get_height() + 0.5, frequency,
+                 ha='center', va='bottom', fontsize=12)
 
-plt.tight_layout()
-st.pyplot(plt)
+    plt.tight_layout()
+    st.pyplot(plt)
       
     
     # Create a pie chart for the distribution of the top 10 words
