@@ -1,61 +1,53 @@
-import matplotlib.pyplot as plt
-from wordcloud import WordCloud
 import streamlit as st
 import requests
-import re
-import traceback
+from wordcloud import WordCloud
+import matplotlib.pyplot as plt
+from io import StringIO
 
-def fetch_section_content(file_path, section_number):
-    response = requests.get(file_path)
-    content = response.text
-    sections = re.split('Section \d+', content)  # Split content based on 'Section (number)'
-    print("section_number:", section_number)
-    print("len(sections):", len(sections))
-    section_content = sections[section_number - 1] if section_number <= len(sections) else ""
-    return section_content
+# File paths
+file_paths = {
+    'Bibek Debroy': 'https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/BD1.txt', 
+    'KM Ganguly': 'https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/KMG1.txt', 
+    'MN Dutt': 'https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/MND1.txt'
+}
 
-    
-def generate_word_cloud(section_content):
-    if not section_content:
-        st.write("No content available for the selected section.")
-        return
-    
-    try:
-        wordcloud = WordCloud(width=800, height=400, background_color='white').generate(section_content)
-        plt.figure(figsize=(10, 5))
-        plt.imshow(wordcloud, interpolation='bilinear')
-        plt.axis('off')
-        plt.show()
-        st.pyplot()
-    except Exception as e:
-        st.write("An error occurred while generating the word cloud:")
-        st.write(traceback.format_exc())
+# Function to fetch text content
+def fetch_text_content(file_url):
+    response = requests.get(file_url)
+    return response.text
 
+# Function to generate word cloud
+def generate_word_cloud(text):
+    wordcloud = WordCloud(width=800, height=400, background_color ='white').generate(text)
+    plt.figure(figsize=(10, 5))
+    plt.imshow(wordcloud, interpolation='bilinear')
+    plt.axis('off')
+    plt.show()
+
+# Streamlit app
 def main():
-    # Displaying heading
-    st.title("Word Cloud Generator")
+    st.title("Section-wise Word Cloud Generator")
 
-    # File paths to the text files
-    file_paths = {
-        'Bibek Debroy': 'https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/BD1.txt', 
-        'KM Ganguly': 'https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/KMG1.txt', 
-        'MN Dutt': 'https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/MND1.txt'
-    }
+    # Select text from dropdown
+    selected_text = st.selectbox("Select Text", list(file_paths.keys()))
 
-    # Dropdown for selecting the file
-    file_path = st.selectbox("Select File:", list(file_paths.keys()))
+    # Fetch text content
+    text_content = fetch_text_content(file_paths[selected_text])
 
-    # User input for section number
-    section_number = st.number_input("Enter the section number (1 to 236):", min_value=1, max_value=236, step=1)
+    # Display section number input field
+    section_number = st.number_input("Enter Section Number", min_value=1, max_value=236, value=1, step=1)
 
-    # Fetch content of the selected section from the chosen file
-    section_content = fetch_section_content(file_paths[file_path], section_number)
+    # Display word cloud for the selected section
+    if st.button("Generate Word Cloud"):
+        # Split text into sections
+        sections = text_content.split('\n\n')  # Assuming sections are separated by double line breaks
 
-    # Generate and display word cloud
-    if st.button('Generate Word Cloud'):
-        generate_word_cloud(section_content)
+        # Check if section number is valid
+        if section_number > len(sections):
+            st.error("Invalid Section Number! Please enter a valid section number.")
+        else:
+            section_text = sections[section_number - 1]
+            generate_word_cloud(section_text)
 
 if __name__ == "__main__":
     main()
-
-
