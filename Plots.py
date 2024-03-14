@@ -81,7 +81,7 @@ if st.button('Analyze'):
     plt.figure(figsize=(8, 8))
     plt.pie(df['Frequency'], labels=df['Word'], autopct='%1.1f%%', startangle=140)
     plt.axis('equal')
-    plt.title('Distribution of Top 10 Words')
+    plt.title('Distribution of Top 10 Words\n')
     plt.rcParams['font.size'] = 10  # Adjust font size of pie chart labels and percentages
     
     st.pyplot(plt)
