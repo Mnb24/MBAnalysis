@@ -1,16 +1,18 @@
 import streamlit as st
 import requests
-from collections import Counter
 import re
-import matplotlib.pyplot as plt
-import seaborn as sns
 import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
 
-def count_words_in_text(text):
-    words_text = re.findall(r'\b\w+\b', text.lower())  # Only alphabetic words
-    return Counter(words_text)
+# Function to count word co-occurrences in text
+def count_word_cooccurrences(text, words1, words2):
+    words_text = re.findall(r'\b\w+\b', text.lower())
+    word_pairs = [(word1, word2) for word1 in words1 for word2 in words2]
+    word_cooccurrences = Counter(pair for pair in zip(words_text, words_text[1:]) if pair in word_pairs)
+    return word_cooccurrences
 
-st.title('Heatmap Generator')
+st.title('Word Co-occurrence Heatmap')
 
 # File URLs
 file_urls = {
@@ -26,31 +28,29 @@ selected_translation = st.selectbox("Select translation:", list(file_urls.keys()
 response = requests.get(file_urls[selected_translation])
 text = response.text
 
-# Section number input
-section_number = st.number_input("Enter section number:", min_value=1, max_value=236, value=1, step=1)
+# Input word sets
+word_set1 = st.text_input("Enter words in first set (comma-separated):")
+word_set2 = st.text_input("Enter words in second set (comma-separated):")
 
 if st.button('Generate Heatmap'):
-    # Split text into sections based on the section headings
-    sections = text.split('Section')
-
-    # Extract text of the selected section
-    section_text = sections[int(section_number) - 1].strip() if 1 <= int(section_number) <= len(sections) else ''
-
-    # Count words in the section text
-    word_counts = count_words_in_text(section_text)
+    # Split words and remove empty strings
+    words1 = [word.strip() for word in word_set1.split(',') if word.strip()]
+    words2 = [word.strip() for word in word_set2.split(',') if word.strip()]
     
-    # Create DataFrame from word counts
-    df = pd.DataFrame(word_counts.items(), columns=['Word', 'Frequency'])
+    # Count word co-occurrences
+    word_cooccurrences = count_word_cooccurrences(text, words1, words2)
     
-    # Create pivot table
-    pivot_df = df.pivot(index='Word', columns='Frequency', values='Frequency').fillna(0)
+    # Create DataFrame from word co-occurrences
+    df = pd.DataFrame.from_dict(word_cooccurrences, orient='index', columns=['Frequency'])
     
     # Create heatmap
-    plt.figure(figsize=(12, 8))
-    sns.heatmap(pivot_df, cmap="YlGnBu", cbar_kws={'label': 'Frequency'})
-    plt.title(f'Word Frequency Heatmap for Section {section_number}')
-    plt.xlabel('Frequency')
-    plt.ylabel('Word')
-    plt.tight_layout()
+    plt.figure(figsize=(10, 8))
+    sns.heatmap(df, cmap="YlGnBu", cbar_kws={'label': 'Frequency'})
+    plt.title('Word Co-occurrence Heatmap')
+    plt.xlabel('Second Word')
+    plt.ylabel('First Word')
+    plt.xticks(rotation=45)
+    plt.yticks(rotation=0)
     
     st.pyplot(plt)
+
