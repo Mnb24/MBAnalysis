@@ -3,6 +3,7 @@ from wordcloud import WordCloud
 import streamlit as st
 import requests
 import re
+import traceback
 
 def fetch_section_content(file_path, section_number):
     response = requests.get(file_path)
@@ -15,12 +16,17 @@ def generate_word_cloud(section_content):
     if not section_content:
         st.write("No content available for the selected section.")
         return
-    wordcloud = WordCloud(width=800, height=400, background_color='white').generate(section_content)
-    plt.figure(figsize=(10, 5))
-    plt.imshow(wordcloud, interpolation='bilinear')
-    plt.axis('off')
-    plt.show()
-    st.pyplot()
+    
+    try:
+        wordcloud = WordCloud(width=800, height=400, background_color='white').generate(section_content)
+        plt.figure(figsize=(10, 5))
+        plt.imshow(wordcloud, interpolation='bilinear')
+        plt.axis('off')
+        plt.show()
+        st.pyplot()
+    except Exception as e:
+        st.write("An error occurred while generating the word cloud:")
+        st.write(traceback.format_exc())
 
 def main():
     # Displaying heading
