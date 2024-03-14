@@ -2,6 +2,7 @@ import matplotlib.pyplot as plt
 from wordcloud import WordCloud
 import streamlit as st
 import requests
+import re
 
 def fetch_section_content(file_path, section_number):
     response = requests.get(file_path)
