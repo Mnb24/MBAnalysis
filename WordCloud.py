@@ -9,8 +9,11 @@ def fetch_section_content(file_path, section_number):
     response = requests.get(file_path)
     content = response.text
     sections = re.split('Section \d+', content)  # Split content based on 'Section (number)'
+    print("section_number:", section_number)
+    print("len(sections):", len(sections))
     section_content = sections[section_number - 1] if section_number <= len(sections) else ""
     return section_content
+
     
 def generate_word_cloud(section_content):
     if not section_content:
