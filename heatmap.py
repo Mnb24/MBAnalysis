@@ -4,6 +4,7 @@ import re
 import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
+from collections import Counter
 
 # Function to count word co-occurrences in text
 def count_word_cooccurrences(text, words1, words2):
