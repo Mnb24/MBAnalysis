@@ -5,12 +5,20 @@ import re
 import matplotlib.pyplot as plt
 import seaborn as sns
 import pandas as pd
+from nltk import pos_tag, word_tokenize
+from wordcloud import STOPWORDS
 
 def count_words_in_text(text):
     words_text = re.findall(r'\w+', text)
     return Counter(words_text)
 
-st.title('Word Frequency Analyzer - Adi Parva')
+def count_pos(text):
+    words = word_tokenize(text)
+    pos_tags = pos_tag(words)
+    pos_counts = Counter(tag for word, tag in pos_tags)
+    return pos_counts
+
+st.title('Plots for Adi Parva Sections')
 
 section_number = st.number_input("Enter section number:", min_value=1, max_value=236, value=1, step=1)
 
@@ -41,6 +49,9 @@ if st.button('Analyze'):
     # Count words in the section text
     word_counts = count_words_in_text(section_text)
     
+    # Remove stopwords from word counts
+    word_counts = {word: count for word, count in word_counts.items() if word.lower() not in STOPWORDS}
+    
     # Sort words by frequency
     sorted_word_counts = sorted(word_counts.items(), key=lambda x: x[1], reverse=True)
     
@@ -50,32 +61,31 @@ if st.button('Analyze'):
     # Create a DataFrame for the top words
     df = pd.DataFrame(top_words, columns=['Word', 'Frequency'])
     
-    # Plot 1: Bar Plot for top words
+    # Create a bar plot for the top words
     plt.figure(figsize=(10, 6))
     sns.barplot(x='Word', y='Frequency', data=df)
-    plt.title('Top 10 Words')
-    plt.xticks(rotation=45, fontsize=12)
-    plt.yticks(fontsize=12)
-    plt.xlabel('Word', fontsize=14)
-    plt.ylabel('Frequency', fontsize=14)
+    plt.title('Top 10 Words in Section {}'.format(section_number))
+    plt.xticks(rotation=45, fontsize=12)  # Increase font size
+    plt.yticks(fontsize=12)  # Increase font size
+    plt.xlabel('Word', fontsize=14)  # Increase font size
+    plt.ylabel('Frequency', fontsize=14)  # Increase font size
+    
+    # Add frequency as text on bars
     for i, v in enumerate(df['Frequency']):
         plt.text(i, v + 0.5, str(v), ha='center', va='bottom', fontsize=12)
+    
+    plt.tight_layout()
     st.pyplot(plt)
     
-    # Plot 2: Pie Chart for word frequencies
+    # Count POS in the section text
+    pos_counts = count_pos(section_text)
+    
+    # Create a DataFrame for POS counts
+    pos_df = pd.DataFrame(pos_counts.items(), columns=['POS', 'Count'])
+    
+    # Create a pie chart for POS counts
     plt.figure(figsize=(8, 8))
-    plt.pie(df['Frequency'], labels=df['Word'], autopct='%1.1f%%', startangle=140)
+    plt.pie(pos_df['Count'], labels=pos_df['POS'], autopct='%1.1f%%', startangle=140)
     plt.axis('equal')
-    plt.title('Word Frequency Distribution (Pie Chart)')
+    plt.title('Part-of-Speech Distribution')
     st.pyplot(plt)
-    
-    # Plot 3: Line Plot for word frequencies
-    plt.figure(figsize=(10, 6))
-    plt.plot(df['Word'], df['Frequency'], marker='o', linestyle='-')
-    plt.xlabel('Word', fontsize=14)
-    plt.ylabel('Frequency', fontsize=14)
-    plt.title('Word Frequency Distribution (Line Plot)')
-    plt.xticks(rotation=45, fontsize=12)
-    plt.yticks(fontsize=12)
-    st.pyplot(plt)
-
