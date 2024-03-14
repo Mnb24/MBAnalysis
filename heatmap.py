@@ -40,17 +40,17 @@ if st.button('Generate Heatmap'):
     word_counts = count_words_in_text(section_text)
     
     # Create DataFrame from word counts
-    df = pd.DataFrame.from_dict(word_counts, orient='index', columns=['Frequency'])
-    df.reset_index(inplace=True)
-    df.columns = ['Word', 'Frequency']
+    df = pd.DataFrame(word_counts.items(), columns=['Word', 'Frequency'])
+    
+    # Create pivot table
+    pivot_df = df.pivot(index='Word', columns='Frequency', values='Frequency').fillna(0)
     
     # Create heatmap
     plt.figure(figsize=(12, 8))
-    sns.heatmap(df.pivot("Word", "Frequency", "Frequency"), cmap="YlGnBu", cbar_kws={'label': 'Frequency'})
+    sns.heatmap(pivot_df, cmap="YlGnBu", cbar_kws={'label': 'Frequency'})
     plt.title(f'Word Frequency Heatmap for Section {section_number}')
     plt.xlabel('Frequency')
     plt.ylabel('Word')
     plt.tight_layout()
     
     st.pyplot(plt)
-
