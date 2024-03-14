@@ -8,13 +8,13 @@ from collections import Counter
 import numpy as np
 
 # Function to count word co-occurrences in text
-def count_word_cooccurrences(text, words1, words2):
+def count_word_cooccurrences(text):
     words_text = re.findall(r'\b\w+\b', text.lower())
-    word_pairs = [(word1, word2) for word1 in words1 for word2 in words2]
-    word_cooccurrences = Counter(pair for pair in zip(words_text, words_text[1:]) if pair in word_pairs)
+    word_pairs = [(words_text[i], words_text[i+1]) for i in range(len(words_text)-1)]
+    word_cooccurrences = Counter(word_pairs)
     return word_cooccurrences
 
-st.title('Word Co-occurrence Heatmap')
+st.title('Top 10 Word Pairs Co-occurrence Heatmap')
 
 # File URLs
 file_urls = {
@@ -30,32 +30,20 @@ selected_translation = st.selectbox("Select translation:", list(file_urls.keys()
 response = requests.get(file_urls[selected_translation])
 text = response.text
 
-# Input word sets
-word_set1 = st.text_input("Enter words in first set (comma-separated):")
-word_set2 = st.text_input("Enter words in second set (comma-separated):")
-
 if st.button('Generate Heatmap'):
-    # Split words and remove empty strings
-    words1 = [word.strip() for word in word_set1.split(',') if word.strip()]
-    words2 = [word.strip() for word in word_set2.split(',') if word.strip()]
-    
     # Count word co-occurrences
-    word_cooccurrences = count_word_cooccurrences(text, words1, words2)
+    word_cooccurrences = count_word_cooccurrences(text)
     
-    # Create DataFrame from word co-occurrences
+    # Convert to DataFrame and select top 10 word pairs
     df = pd.DataFrame.from_dict(word_cooccurrences, orient='index', columns=['Frequency'])
-    
-    # Check for NaN values in DataFrame and replace them with 0
-    df.fillna(0, inplace=True)
+    df = df.sort_values(by='Frequency', ascending=False).head(10)
     
     # Create heatmap
     plt.figure(figsize=(10, 8))
-    sns.heatmap(df, cmap="YlGnBu", cbar_kws={'label': 'Frequency'})
-    plt.title('Word Co-occurrence Heatmap')
+    sns.heatmap(df, cmap="YlGnBu", annot=True, fmt="d", cbar_kws={'label': 'Frequency'})
+    plt.title('Top 10 Word Pairs Co-occurrence Heatmap')
     plt.xlabel('Second Word')
     plt.ylabel('First Word')
-    plt.xticks(rotation=45)
-    plt.yticks(rotation=0)
     
     st.pyplot(plt)
 
