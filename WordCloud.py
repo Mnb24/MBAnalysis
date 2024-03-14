@@ -18,11 +18,12 @@ def fetch_text_content(file_url):
 
 # Function to generate word cloud
 def generate_word_cloud(text):
-    wordcloud = WordCloud(width=800, height=400, background_color ='white').generate(text)
+    wordcloud = WordCloud(width=800, height=400, background_color='white', max_font_size=100).generate(text)
     plt.figure(figsize=(10, 5))
     plt.imshow(wordcloud, interpolation='bilinear')
     plt.axis('off')
     plt.show()
+
 
 # Streamlit app
 def main():
