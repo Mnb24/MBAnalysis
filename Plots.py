@@ -15,7 +15,12 @@ def count_words_in_text(text):
 def count_pos(text):
     words = word_tokenize(text)
     pos_tags = pos_tag(words)
-    pos_counts = Counter(tag for word, tag in pos_tags)
+    pos_counts = Counter()
+    for word, tag in pos_tags:
+        if tag.startswith('P'):
+            pos_counts['Punctuation'] += 1
+        else:
+            pos_counts[tag] += 1
     return pos_counts
 
 st.title('Plots for Adi Parva Sections')
@@ -108,4 +113,5 @@ if st.button('Analyze'):
                  ha='center', va='bottom', fontsize=12)
 
     plt.tight_layout()
-    st.pyplot(plt) 
+    st.pyplot(plt)
+
