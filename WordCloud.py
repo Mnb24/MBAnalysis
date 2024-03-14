@@ -29,8 +29,11 @@ if st.button('Generate Word Cloud'):
     # Count words in the text
     word_counts = count_words_in_text(text)
     
-    # Generate word cloud
-    wordcloud = WordCloud().generate_from_frequencies(word_counts)
-    
-    # Display word cloud
-    st.image(wordcloud.to_array())
+    try:
+        # Generate word cloud
+        wordcloud = WordCloud(max_words=100).generate_from_frequencies(word_counts)
+        
+        # Display word cloud
+        st.image(wordcloud.to_array())
+    except Exception as e:
+        st.error(f"An error occurred: {str(e)}")
