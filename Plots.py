@@ -1,55 +1,68 @@
 import streamlit as st
-import requests
-from wordcloud import WordCloud
+from collections import Counter
+import re
 import matplotlib.pyplot as plt
+import seaborn as sns
+import pandas as pd
+import requests
 
-# File paths
-file_paths = {
+def count_words_in_text(text, words):
+    words_text = re.findall(r'\w+', text.lower())
+    return Counter(words_text)
+
+st.title('Word Frequency Analyzer - Adi Parva')
+
+words_to_search = st.text_input("Enter words to search (comma separated):")
+section_number = st.number_input("Enter section number:", min_value=1, max_value=236, value=1, step=1)
+
+# Define the file paths and translations
+translations = {
+    'Bibek Debroy': 'BD',
+    'KM Ganguly': 'KMG',
+    'MN Dutt': 'MND'
+}
+
+selected_translation = st.selectbox("Select translation:", list(translations.keys()))
+
+# Define the file path for the selected translation
+selected_translation_path = {
     'Bibek Debroy': 'https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/BD1.txt', 
     'KM Ganguly': 'https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/KMG1.txt', 
     'MN Dutt': 'https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/MND1.txt'
-}
+}[selected_translation]
 
-# Function to fetch text content
-def fetch_text_content(file_url):
-    response = requests.get(file_url)
-    return response.text
-
-# Function to generate word cloud
-def generate_word_cloud(all_text):
-    wordcloud = WordCloud(width=800, height=400, random_state=21, max_font_size=110).generate(all_text)
-    plt.figure(figsize=(10, 6))
-    plt.imshow(wordcloud, interpolation="bilinear")
-    plt.axis('off')
-    plt.show()
-
-# Streamlit app
-def main():
-    st.title("Section-wise Word Cloud Generator")
-
-    # Select text from dropdown
-    selected_text = st.selectbox("Select Text", list(file_paths.keys()))
-
-    # Fetch text content
-    text_content = fetch_text_content(file_paths[selected_text])
-
-    # Display section number input field
-    section_number = st.number_input("Enter Section Number", min_value=1, max_value=236, value=1, step=1)
-
-    # Display word cloud for the selected section
-    if st.button("Generate Word Cloud"):
+if st.button('Analyze'):
+    if words_to_search:
+        words_to_search = [word.strip() for word in words_to_search.split(',')]
+        response = requests.get(selected_translation_path)
+        text = response.text
+        
         # Split text into sections based on the section headings
-        sections = text_content.split('Section')
-
-        # Check if section number is valid
-        if section_number > len(sections):
-            st.error("Invalid Section Number! Please enter a valid section number.")
-        else:
-            section_text = sections[section_number].strip()  # Extract the text of the selected section
-            
-            # Generate word cloud
-            generate_word_cloud(section_text)
-
-if __name__ == "__main__":
-    main()
-
+        sections = text.split('Section')
+        section_text = sections[section_number].strip() if section_number <= len(sections) else ''
+        
+        # Count words in the section text
+        word_counts = count_words_in_text(section_text, words_to_search)
+        
+        # Sort words by frequency
+        sorted_word_counts = sorted(word_counts.items(), key=lambda x: x[1], reverse=True)
+        
+        # Get top 10 words
+        top_words = [word for word, _ in sorted_word_counts[:10]]
+        
+        # Create a DataFrame
+        df = pd.DataFrame(sorted_word_counts, columns=['Word', 'Frequency'])
+        
+        # Filter DataFrame to only include top words
+        df_top_words = df[df['Word'].isin(top_words)]
+        
+        # Create a bar plot
+        sns.barplot(x='Word', y='Frequency', data=df_top_words)
+        plt.title('Top Words in Section {}'.format(section_number))
+        plt.xticks(rotation=45)
+        plt.xlabel('Word')
+        plt.ylabel('Frequency')
+        st.pyplot(plt)
+        
+    else:
+        st.write("Please input words (comma separated).")
