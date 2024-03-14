@@ -8,7 +8,7 @@ import pandas as pd
 from wordcloud import STOPWORDS
 
 def count_words_in_text(text):
-    words_text = re.findall(r'\w+', text.lower())
+    words_text = re.findall(r'\w+', text)
     return Counter(words_text)
 
 st.title('Word Frequency Analyzer - Adi Parva')
@@ -58,8 +58,14 @@ if st.button('Analyze'):
     plt.figure(figsize=(10, 6))
     sns.barplot(x='Word', y='Frequency', data=df)
     plt.title('Top 10 Words in Section {}'.format(section_number))
-    plt.xticks(rotation=45)
-    plt.xlabel('Word')
-    plt.ylabel('Frequency')
+    plt.xticks(rotation=45, fontsize=12)  # Increase font size
+    plt.yticks(fontsize=12)  # Increase font size
+    plt.xlabel('Word', fontsize=14)  # Increase font size
+    plt.ylabel('Frequency', fontsize=14)  # Increase font size
+    
+    # Add frequency as text on bars
+    for i, v in enumerate(df['Frequency']):
+        plt.text(i, v + 0.5, str(v), ha='center', va='bottom', fontsize=12)
+    
     plt.tight_layout()
     st.pyplot(plt)
