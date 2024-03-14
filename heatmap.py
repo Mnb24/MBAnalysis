@@ -5,6 +5,7 @@ import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
 from collections import Counter
+import numpy as np
 
 # Function to count word co-occurrences in text
 def count_word_cooccurrences(text, words1, words2):
@@ -43,6 +44,9 @@ if st.button('Generate Heatmap'):
     
     # Create DataFrame from word co-occurrences
     df = pd.DataFrame.from_dict(word_cooccurrences, orient='index', columns=['Frequency'])
+    
+    # Check for NaN values in DataFrame and replace them with 0
+    df.fillna(0, inplace=True)
     
     # Create heatmap
     plt.figure(figsize=(10, 8))
