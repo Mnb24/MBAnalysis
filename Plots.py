@@ -63,7 +63,7 @@ if st.button('Analyze'):
     
     plt.figure(figsize=(10, 6))
     ax = sns.barplot(x='Word', y='Frequency', data=df)
-    plt.title('Top 10 Words in Section {}'.format(section_number), fontsize=20, fontweight='bold')  
+    plt.title('Top 10 Words in Section {}\n\n\n\n'.format(section_number), fontsize=20, fontweight='bold')  
     plt.xticks(rotation=45, fontsize=12)  # Increase font size
     plt.yticks(fontsize=12)  # Increase font size
     plt.xlabel('Word', fontsize=14)  # Increase font size
@@ -82,7 +82,7 @@ if st.button('Analyze'):
     plt.figure(figsize=(8, 8))
     plt.pie(df['Frequency'], labels=df['Word'], autopct='%1.1f%%', startangle=140)
     plt.axis('equal')
-    plt.title('Distribution of Top 10 Words', fontsize=16, fontweight='bold')
+    plt.title('Distribution of Top 10 Words\n\n\n\n', fontsize=16, fontweight='bold')
     plt.rcParams['font.size'] = 10  # Adjust font size of pie chart labels and percentages
     
     st.pyplot(plt)
