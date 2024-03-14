@@ -87,3 +87,25 @@ if st.button('Analyze'):
     
     st.pyplot(plt)
 
+    # Count POS in the section text
+    pos_counts = count_pos(section_text)
+    
+    # Create a DataFrame for POS counts
+    pos_df = pd.DataFrame(pos_counts.items(), columns=['POS', 'Count'])
+    
+    # Create a bar plot for POS counts
+    plt.figure(figsize=(10, 6))
+    ax = sns.barplot(x='POS', y='Count', data=pos_df)
+    plt.title('Part-of-Speech Distribution', fontsize=16, fontweight='bold')  # Increase font size and make it bold
+    plt.xticks(rotation=45, fontsize=12)  # Increase font size
+    plt.yticks(fontsize=12)  # Increase font size
+    plt.xlabel('Part of Speech', fontsize=14)  # Increase font size
+    plt.ylabel('Count', fontsize=14)  # Increase font size
+
+    # Add frequency as text on bars within the plot's rectangle
+    for bar, count in zip(ax.patches, pos_df['Count']):
+        plt.text(bar.get_x() + bar.get_width() / 2, bar.get_height(), count,
+                 ha='center', va='bottom', fontsize=12)
+
+    plt.tight_layout()
+    st.pyplot(plt) 
