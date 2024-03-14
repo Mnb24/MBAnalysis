@@ -9,7 +9,7 @@ from nltk import pos_tag, word_tokenize
 from wordcloud import STOPWORDS
 
 def count_words_in_text(text):
-    words_text = re.findall(r'\b(?![0-9]+\b)\w+\b', text)
+    words_text = re.findall(r'\b[A-Za-z]+\b', text)  # Omit numbers and punctuation marks
     return Counter(words_text)
 
 def count_pos(text):
@@ -77,19 +77,12 @@ if st.button('Analyze'):
     plt.tight_layout()
     st.pyplot(plt)
     
-    # Count POS in the section text
-    pos_counts = count_pos(section_text)
-    
-    # Create a DataFrame for POS counts
-    pos_df = pd.DataFrame(pos_counts.items(), columns=['POS', 'Count'])
-    
-    # Create a pie chart for POS counts
+    # Create a pie chart for the distribution of the top 10 words
     plt.figure(figsize=(8, 8))
-    plt.pie(pos_df['Count'], labels=pos_df['POS'], autopct='%1.1f%%', startangle=140)
+    plt.pie(df['Frequency'], labels=df['Word'], autopct='%1.1f%%', startangle=140)
     plt.axis('equal')
-    plt.title('Part-of-Speech Distribution')
-    
-    # Adjust font size of pie chart labels and percentages
-    plt.rcParams['font.size'] = 10
+    plt.title('Distribution of Top 10 Words')
+    plt.rcParams['font.size'] = 10  # Adjust font size of pie chart labels and percentages
     
     st.pyplot(plt)
+
