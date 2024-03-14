@@ -20,15 +20,16 @@ def fetch_text_content(file_url):
 def generate_word_cloud(text):
     try:
         wordcloud = WordCloud(width=800, height=400, background_color='white', max_font_size=100).generate(text)
-        plt.figure(figsize=(10, 5))
         plt.imshow(wordcloud, interpolation='bilinear')
         plt.axis('off')
         plt.show()
+        print("Word cloud generated successfully.")
     except Exception as e:
         print("Error generating word cloud:", e)
         print("Text causing the error:", text)
 
 
+# Streamlit app
 # Streamlit app
 def main():
     st.title("Section-wise Word Cloud Generator")
@@ -52,7 +53,10 @@ def main():
             st.error("Invalid Section Number! Please enter a valid section number.")
         else:
             section_text = sections[section_number - 1]
+            print("Generating word cloud for section:")
+            print(section_text)  # Log the section text before generating the word cloud
             generate_word_cloud(section_text)
+
 
 if __name__ == "__main__":
     main()
