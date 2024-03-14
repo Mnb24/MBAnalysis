@@ -61,21 +61,22 @@ if st.button('Analyze'):
     # Create a DataFrame for the top words
     df = pd.DataFrame(top_words, columns=['Word', 'Frequency'])
     
-    # Create a bar plot for the top words
-    plt.figure(figsize=(10, 6))
-    sns.barplot(x='Word', y='Frequency', data=df)
-    plt.title('Top 10 Words in Section {}\n\n\n\n\n\n\n\n\n\n'.format(section_number))
+   plt.figure(figsize=(10, 6))
+    ax = sns.barplot(x='Word', y='Frequency', data=df)
+    plt.title('Top 10 Words in Section {}'.format(section_number))
     plt.xticks(rotation=45, fontsize=12)  # Increase font size
     plt.yticks(fontsize=12)  # Increase font size
     plt.xlabel('Word', fontsize=14)  # Increase font size
     plt.ylabel('Frequency', fontsize=14)  # Increase font size
-    
-    # Add frequency as text on bars
-    for i, v in enumerate(df['Frequency']):
-        plt.text(i, v + 0.5, str(v), ha='center', va='bottom', fontsize=12)
-    
-    plt.tight_layout()
-    st.pyplot(plt)
+
+# Add frequency as text on bars within the plot's rectangle
+for bar, frequency in zip(ax.patches, df['Frequency']):
+    plt.text(bar.get_x() + bar.get_width() / 2, bar.get_height() + 0.5, frequency,
+             ha='center', va='bottom', fontsize=12)
+
+plt.tight_layout()
+st.pyplot(plt)
+      
     
     # Create a pie chart for the distribution of the top 10 words
     plt.figure(figsize=(8, 8))
