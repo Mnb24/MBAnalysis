@@ -64,7 +64,7 @@ if st.button('Analyze'):
     # Create a bar plot for the top words
     plt.figure(figsize=(10, 6))
     sns.barplot(x='Word', y='Frequency', data=df)
-    plt.title('Top 10 Words in Section {}'.format(section_number))
+    plt.title('Top 10 Words in Section {}\n\n\n\n'.format(section_number))
     plt.xticks(rotation=45, fontsize=12)  # Increase font size
     plt.yticks(fontsize=12)  # Increase font size
     plt.xlabel('Word', fontsize=14)  # Increase font size
@@ -81,7 +81,7 @@ if st.button('Analyze'):
     plt.figure(figsize=(8, 8))
     plt.pie(df['Frequency'], labels=df['Word'], autopct='%1.1f%%', startangle=140)
     plt.axis('equal')
-    plt.title('Distribution of Top 10 Words\n\n')
+    plt.title('Distribution of Top 10 Words\n\n\n\n')
     plt.rcParams['font.size'] = 10  # Adjust font size of pie chart labels and percentages
     
     st.pyplot(plt)
