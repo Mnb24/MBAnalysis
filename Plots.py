@@ -61,7 +61,7 @@ if st.button('Analyze'):
     # Create a DataFrame for the top words
     df = pd.DataFrame(top_words, columns=['Word', 'Frequency'])
     
-   plt.figure(figsize=(10, 6))
+    plt.figure(figsize=(10, 6))
     ax = sns.barplot(x='Word', y='Frequency', data=df)
     plt.title('Top 10 Words in Section {}'.format(section_number))
     plt.xticks(rotation=45, fontsize=12)  # Increase font size
