@@ -113,19 +113,3 @@ if st.button('Analyze'):
     plt.tight_layout()
     st.pyplot(plt) 
 
-if st.button('Generate Heatmap'):
-    # Count word co-occurrences
-    word_cooccurrences = count_word_cooccurrences(text)
-    
-    # Convert to DataFrame and select top 10 word pairs
-    df = pd.DataFrame.from_dict(word_cooccurrences, orient='index', columns=['Frequency'])
-    df = df.sort_values(by='Frequency', ascending=False).head(10)
-    
-    # Create heatmap
-    plt.figure(figsize=(10, 8))
-    sns.heatmap(df, cmap="YlGnBu", annot=True, fmt="d", cbar_kws={'label': 'Frequency'})
-    plt.title('Top 10 Word Pairs Co-occurrence Heatmap')
-    plt.xlabel('Second Word')
-    plt.ylabel('First Word')
-    
-    st.pyplot(plt)
