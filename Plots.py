@@ -49,21 +49,17 @@ if st.button('Analyze'):
     sorted_word_counts = sorted(word_counts.items(), key=lambda x: x[1], reverse=True)
     
     # Get top 10 words
-    top_words = [word for word, _ in sorted_word_counts[:10]]
+    top_words = sorted_word_counts[:10]
     
-    # Create a DataFrame
-    df = pd.DataFrame(sorted_word_counts, columns=['Word', 'Frequency'])
+    # Create a DataFrame for the top words
+    df = pd.DataFrame(top_words, columns=['Word', 'Frequency'])
     
-    # Create a bar plot
-    fig, ax = plt.subplots()
-    sns.barplot(x='Word', y='Frequency', data=df, ax=ax)
-    plt.title('Top Words in Section {}'.format(section_number))
+    # Create a bar plot for the top words
+    plt.figure(figsize=(10, 6))
+    sns.barplot(x='Word', y='Frequency', data=df)
+    plt.title('Top 10 Words in Section {}'.format(section_number))
     plt.xticks(rotation=45)
     plt.xlabel('Word')
     plt.ylabel('Frequency')
-    
-    # Add frequency as text on bars
-    for i, v in enumerate(df['Frequency']):
-        ax.text(i, v + 0.5, str(v), ha='center', va='bottom')
-    
-    st.pyplot(fig)
+    plt.tight_layout()
+    st.pyplot(plt)
