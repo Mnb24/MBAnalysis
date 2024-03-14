@@ -7,9 +7,9 @@ import seaborn as sns
 import pandas as pd
 from wordcloud import STOPWORDS
 import nltk
-nltk.download('punkt')
 from nltk import pos_tag, word_tokenize
-
+nltk.download('punkt')
+nltk.download('averaged_perceptron_tagger')
 
 def count_words_in_text(text):
     words_text = re.findall(r'\w+', text)
