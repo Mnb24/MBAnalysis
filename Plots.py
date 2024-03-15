@@ -46,7 +46,7 @@ if st.button('Analyze'):
     sections = text.split('Section')
     section_text = sections[section_number].strip() if section_number <= len(sections) else ''
     
-    if section_text:
+    if section_text and section_text.strip() != '***':
         # Count words in the section text
         word_counts = count_words_in_text(section_text)
         
