@@ -121,8 +121,6 @@ if st.button('Analyze'):
     st.pyplot(plt)  
     
 # Integrate heatmap generation
-st.title('Top 10 Word Pairs Co-occurrence Heatmap')
-
 if st.button('Generate Heatmap'):
     # Count word co-occurrences
     word_cooccurrences = count_word_cooccurrences(section_text)
@@ -139,6 +137,3 @@ if st.button('Generate Heatmap'):
     plt.ylabel('First Word')
     
     st.pyplot(plt)
-
-    st.pyplot(plt)
-
