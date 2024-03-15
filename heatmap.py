@@ -18,6 +18,12 @@ def count_word_cooccurrences(text):
 def count_words_in_text(text):
     words_text = re.findall(r'\b[A-Za-z]+\b', text)  # Omit numbers and punctuation marks
     return Counter(words_text)
+   
+def count_pos(text):
+    words = word_tokenize(text)
+    pos_tags = pos_tag(words)
+    pos_counts = Counter(tag for word, tag in pos_tags)
+    return pos_counts
     
 st.title('Plots for Adi Parva Sections')
 
