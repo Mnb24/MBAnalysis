@@ -2,25 +2,18 @@ import streamlit as st
 import requests
 from collections import Counter
 import re
-import pandas as pd
-import seaborn as sns
 import matplotlib.pyplot as plt
+import seaborn as sns
+import pandas as pd
 from nltk import pos_tag, word_tokenize
 from wordcloud import STOPWORDS
-import nltk
 
-# Download NLTK data for tokenization
-nltk.download('punkt')
-
-def count_words_in_text(text):
-    words_text = re.findall(r'\b[A-Za-z]+\b', text)  # Omit numbers and punctuation marks
-    return Counter(words_text)
-
-def count_pos(text):
-    words = word_tokenize(text)
-    pos_tags = pos_tag(words)
-    pos_counts = Counter(tag for word, tag in pos_tags)
-    return pos_counts
+# Function to count word co-occurrences in text
+def count_word_cooccurrences(text):
+    words_text = re.findall(r'\b\w+\b', text.lower())
+    word_pairs = [(words_text[i], words_text[i+1]) for i in range(len(words_text)-1)]
+    word_cooccurrences = Counter(word_pairs)
+    return word_cooccurrences
 
 st.title('Plots for Adi Parva Sections')
 
