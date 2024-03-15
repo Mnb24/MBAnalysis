@@ -2,11 +2,15 @@ import streamlit as st
 import requests
 from collections import Counter
 import re
-import matplotlib.pyplot as plt
-import seaborn as sns
 import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
 from nltk import pos_tag, word_tokenize
 from wordcloud import STOPWORDS
+import nltk
+
+# Download NLTK data for tokenization
+nltk.download('punkt')
 
 def count_words_in_text(text):
     words_text = re.findall(r'\b[A-Za-z]+\b', text)  # Omit numbers and punctuation marks
@@ -111,9 +115,9 @@ if st.button('Analyze'):
                  ha='center', va='bottom', fontsize=12)
 
     plt.tight_layout()
-    st.pyplot(plt) 
-
-  # Count word co-occurrences
+    st.pyplot(plt)  
+    
+    # Count word co-occurrences
     word_cooccurrences = count_word_cooccurrences(section_text)
     
     # Convert to DataFrame and select top 10 word pairs
@@ -128,3 +132,4 @@ if st.button('Analyze'):
     plt.ylabel('First Word')
     
     st.pyplot(plt)
+
