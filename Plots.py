@@ -20,7 +20,7 @@ def count_pos(text):
 
 st.title('Plots for Adi Parva Sections')
 
-section_number = st.number_input("Enter section number:", min_value=1, max_value=236, value=1, step=1)
+section_number = st.number_input("Enter section number: (1 to 236)", min_value=1, max_value=236, value=1, step=1)
 
 # Define the file paths and translations
 translations = {
