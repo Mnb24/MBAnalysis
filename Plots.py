@@ -26,7 +26,6 @@ section_number = st.number_input("Enter section number: (1 to 236)", min_value=1
 translations = {
     'Bibek Debroy': 'BD',
     'KM Ganguly': 'KMG',
-    'MN Dutt': 'MND'
 }
 
 selected_translation = st.selectbox("Select translation:", list(translations.keys()))
@@ -35,7 +34,7 @@ selected_translation = st.selectbox("Select translation:", list(translations.key
 selected_translation_path = {
     'Bibek Debroy': 'https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/BD1.txt', 
     'KM Ganguly': 'https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/KMG1.txt', 
-    'MN Dutt': 'https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/MND1.txt'
+    
 }[selected_translation]
 
 if st.button('Analyze'):
