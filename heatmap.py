@@ -7,16 +7,6 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 from nltk import pos_tag, word_tokenize
 from wordcloud import STOPWORDS
-import nltk
-
-nltk.download('punkt')  # Download NLTK data for tokenization
-
-# Function to count word co-occurrences in text
-def count_word_cooccurrences(text):
-    words_text = re.findall(r'\b\w+\b', text.lower())
-    word_pairs = [(words_text[i], words_text[i+1]) for i in range(len(words_text)-1)]
-    word_cooccurrences = Counter(word_pairs)
-    return word_cooccurrences
 
 def count_words_in_text(text):
     words_text = re.findall(r'\b[A-Za-z]+\b', text)  # Omit numbers and punctuation marks
@@ -138,3 +128,4 @@ if st.button('Analyze'):
     plt.ylabel('First Word')
     
     st.pyplot(plt)
+
