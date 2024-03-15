@@ -7,6 +7,9 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 from nltk import pos_tag, word_tokenize
 from wordcloud import STOPWORDS
+import nltk
+
+nltk.download('punkt')  # Download NLTK data for tokenization
 
 # Function to count word co-occurrences in text
 def count_word_cooccurrences(text):
@@ -120,8 +123,6 @@ if st.button('Analyze'):
     plt.tight_layout()
     st.pyplot(plt)  
     
-# Integrate heatmap generation
-if st.button('Generate Heatmap'):
     # Count word co-occurrences
     word_cooccurrences = count_word_cooccurrences(section_text)
     
