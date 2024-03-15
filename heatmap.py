@@ -8,23 +8,32 @@ import pandas as pd
 from nltk import pos_tag, word_tokenize
 from wordcloud import STOPWORDS
 
-# Function to count word co-occurrences in text
-def count_word_cooccurrences(text):
-    words_text = re.findall(r'\b\w+\b', text.lower())
-    word_pairs = [(words_text[i], words_text[i+1]) for i in range(len(words_text)-1)]
-    word_cooccurrences = Counter(word_pairs)
-    return word_cooccurrences
-
 def count_words_in_text(text):
     words_text = re.findall(r'\b[A-Za-z]+\b', text)  # Omit numbers and punctuation marks
     return Counter(words_text)
-   
+
 def count_pos(text):
     words = word_tokenize(text)
     pos_tags = pos_tag(words)
     pos_counts = Counter(tag for word, tag in pos_tags)
     return pos_counts
+
+def generate_co_occurrence_matrix(text):
+    words = re.findall(r'\b\w+\b', text.lower())  # Extract words
+    word_counts = Counter(words)  # Count occurrences of each word
+    top_words = [word for word, _ in word_counts.most_common(10)]  # Select top 10 words
+    co_occurrence_matrix = pd.DataFrame(0, index=top_words, columns=top_words)  # Initialize matrix with zeros
     
+    # Iterate over the text to count co-occurrences
+    for i in range(len(words) - 1):
+        if words[i] in top_words:
+            for j in range(i + 1, min(i + 6, len(words))):
+                if words[j] in top_words:
+                    co_occurrence_matrix.at[words[i], words[j]] += 1
+                    co_occurrence_matrix.at[words[j], words[i]] += 1
+                    
+    return co_occurrence_matrix
+
 st.title('Plots for Adi Parva Sections')
 
 section_number = st.number_input("Enter section number:", min_value=1, max_value=236, value=1, step=1)
@@ -63,10 +72,10 @@ if st.button('Analyze'):
     sorted_word_counts = sorted(word_counts.items(), key=lambda x: x[1], reverse=True)
     
     # Get top 10 words
-    top_words = sorted_word_counts[:10]
+    top_words = [word for word, _ in sorted_word_counts[:10]]
     
     # Create a DataFrame for the top words
-    df = pd.DataFrame(top_words, columns=['Word', 'Frequency'])
+    df = pd.DataFrame(sorted_word_counts[:10], columns=['Word', 'Frequency'])
     
     plt.figure(figsize=(10, 6))
     ax = sns.barplot(x='Word', y='Frequency', data=df)
@@ -118,21 +127,18 @@ if st.button('Analyze'):
                  ha='center', va='bottom', fontsize=12)
 
     plt.tight_layout()
-    st.pyplot(plt)  
-    
-    # Count word co-occurrences
-    word_cooccurrences = count_word_cooccurrences(section_text)
-    
-    # Convert to DataFrame and select top 10 word pairs
-    df_heatmap = pd.DataFrame.from_dict(word_cooccurrences, orient='index', columns=['Frequency'])
-    df_heatmap = df_heatmap.sort_values(by='Frequency', ascending=False).head(10)
-    
-    # Create heatmap
-    plt.figure(figsize=(10, 8))
-    sns.heatmap(df_heatmap, cmap="YlGnBu", annot=True, fmt="d", cbar_kws={'label': 'Frequency'})
-    plt.title('Top 10 Word Pairs Co-occurrence Heatmap')
-    plt.xlabel('Second Word')
-    plt.ylabel('First Word')
-    
     st.pyplot(plt)
+
+    # Generate co-occurrence matrix and create a heatmap
+    co_occurrence_matrix = generate_co_occurrence_matrix(section_text)
+    
+    plt.figure(figsize=(10, 6))
+    sns.heatmap(co_occurrence_matrix, annot=True, cmap="YlGnBu")
+    plt.title('Top 10 Word Co-occurrences\n\n\n', fontsize=20, fontweight='bold')  # Increase font size and make it bold
+    plt.xlabel('Word', fontsize=14)  # Increase font size
+    plt.ylabel('Word', fontsize=14)  # Increase font size
+    plt.xticks(rotation=45, fontsize=12)  # Increase font size
+    plt.yticks(fontsize=12)  # Increase font size
+
+    st.pyplot
 
