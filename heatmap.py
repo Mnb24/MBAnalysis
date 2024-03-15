@@ -15,6 +15,10 @@ def count_word_cooccurrences(text):
     word_cooccurrences = Counter(word_pairs)
     return word_cooccurrences
 
+def count_words_in_text(text):
+    words_text = re.findall(r'\b[A-Za-z]+\b', text)  # Omit numbers and punctuation marks
+    return Counter(words_text)
+    
 st.title('Plots for Adi Parva Sections')
 
 section_number = st.number_input("Enter section number:", min_value=1, max_value=236, value=1, step=1)
