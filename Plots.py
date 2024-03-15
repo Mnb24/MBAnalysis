@@ -50,6 +50,9 @@ if st.button('Analyze'):
         # Count words in the section text
         word_counts = count_words_in_text(section_text)
         
+        # Exclude the word 's' from word counts
+        word_counts.pop('s', None)
+        
         # Remove stopwords from word counts
         word_counts = {word: count for word, count in word_counts.items() if word.lower() not in STOPWORDS}
         
@@ -114,3 +117,4 @@ if st.button('Analyze'):
         st.pyplot(plt)
     else:
         st.write("No results found for this Section number.")
+
