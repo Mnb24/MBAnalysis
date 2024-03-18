@@ -4,7 +4,7 @@ from textblob import TextBlob
 import re
 
 def preprocess_text(text):
-    text = re.sub(r'[\'\"\”\“\’\‘0-9\s\t]', '', text)
+    text = re.sub(r'[\'\"\”\“\’\]', '', text)
     return text
 
 def get_section_content(translation_path, section_number):
