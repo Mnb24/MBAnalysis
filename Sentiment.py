@@ -2,6 +2,10 @@ import streamlit as st
 import requests
 from textblob import TextBlob
 
+def preprocess_text(text):
+    # Perform any necessary preprocessing steps
+    return text
+
 def get_section_content(translation_path, section_number):
     response = requests.get(translation_path)
     text = response.text
@@ -47,7 +51,7 @@ section_number = st.number_input("Enter section number:", min_value=1, max_value
 
 selected_sentiment = st.selectbox("Select sentiment:", ['Positive', 'Negative', 'Neutral'])
 
-if st.button('Generate Instances'):
+if st.button('Generate Evidence'):
     section_content = get_section_content(translations[selected_translation], section_number)
     section_content = preprocess_text(section_content)
     evidence = generate_evidence(section_content, selected_sentiment)
