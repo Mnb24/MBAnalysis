@@ -1,6 +1,7 @@
 import streamlit as st
 import requests
 from textblob import TextBlob
+import re
 
 def preprocess_text(text):
     text = re.sub(r'[^a-zA-Z\s]', '', text)
