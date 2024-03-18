@@ -4,22 +4,22 @@ import requests
 
 # Function to print colored differences between lines
 def print_colored_diff(line):
-    First_sentence = []
-    Second_sentence = []
+    original_sentence = []
+    modified_sentence = []
 
     for code, word in line:
         if code == ' ':
-            First_sentence.append(word)
-            Second_sentence.append(word)
+            original_sentence.append(word)
+            modified_sentence.append(word)
         elif code == '-':
-            First_sentence.append(f'<span style="color: blue">{word}</span>')
+            original_sentence.append(f'<span style="color: blue">{word}</span>')
         elif code == '+':
-            Second_sentence.append(f'<span style="color: red">{word}</span>')
+            modified_sentence.append(f'<span style="color: red">{word}</span>')
 
-    First_sentence = ' '.join(First_sentence)
-    Second_sentence = ' '.join(Second_sentence)
+    original_sentence = ' '.join(original_sentence)
+    modified_sentence = ' '.join(modified_sentence)
 
-    return f"First: {First_sentence}", f"Second: {Second_sentence}"
+    return f"Original: {original_sentence}", f"Modified: {modified_sentence}"
 
 # Function to find text differences line by line
 def find_text_differences(text1, text2):
@@ -59,34 +59,34 @@ if compare_button:
 
         # Compare lines from each pair of files
         for line_number in range(min_lines):
-            differences_12 = find_text_differences([texts[0][line_number]], [textsFirst[line_number]])
-            differences_23 = find_text_differences([textsFirst[line_number]], [textsSecond[line_number]])
-            differences_13 = find_text_differences([texts[0][line_number]], [textsSecond[line_number]])
+            differences_12 = find_text_differences([texts[0][line_number]], [texts[1][line_number]])
+            differences_23 = find_text_differences([texts[1][line_number]], [texts[2][line_number]])
+            differences_13 = find_text_differences([texts[0][line_number]], [texts[2][line_number]])
 
             # Print differences for each pair of files
             if differences_12:
-                First, Second = differences_12[0]First
+                original, modified = differences_12[0][1]
                 st.markdown(f"<h3>Line {line_number + 1}</h3>", unsafe_allow_html=True)
-                st.markdown("<h4>File1 - BORI</h4>", unsafe_allow_html=True)
-                st.markdown(First, unsafe_allow_html=True)
-                st.markdown("<h4>File2 - Kumbakonam</h4>", unsafe_allow_html=True)
-                st.markdown(Second, unsafe_allow_html=True)
+                st.markdown("File1 - BORI")
+                st.markdown(original, unsafe_allow_html=True)
+                st.markdown("File2 - Kumbakonam")
+                st.markdown(modified, unsafe_allow_html=True)
 
             if differences_23:
-                First, Second = differences_23[0]First
+                original, modified = differences_23[0][1]
                 st.markdown(f"<h3>Line {line_number + 1}</h3>", unsafe_allow_html=True)
-                st.markdown("<h4>File2 - Kumbakonam</h4>", unsafe_allow_html=True)
-                st.markdown(First, unsafe_allow_html=True)
-                st.markdown("<h4>File3 - Sastri Vavilla</h4>", unsafe_allow_html=True)
-                st.markdown(Second, unsafe_allow_html=True)
+                st.markdown("File2 - Kumbakonam")
+                st.markdown(original, unsafe_allow_html=True)
+                st.markdown("File3 - Sastri Vavilla")
+                st.markdown(modified, unsafe_allow_html=True)
 
             if differences_13:
-                First, Second = differences_13[0]First
+                original, modified = differences_13[0][1]
                 st.markdown(f"<h3>Line {line_number + 1}</h3>", unsafe_allow_html=True)
-                st.markdown("<h4>File1 - BORI</h4>", unsafe_allow_html=True)
-                st.markdown(First, unsafe_allow_html=True)
-                st.markdown("<h4>File3 - Sastri Vavilla</h4>", unsafe_allow_html=True)
-                st.markdown(Second, unsafe_allow_html=True)
+                st.markdown("File1 - BORI")
+                st.markdown(original, unsafe_allow_html=True)
+                st.markdown("File3 - Sastri Vavilla")
+                st.markdown(modified, unsafe_allow_html=True)
 
     except Exception as e:
         st.write(f"An error occurred: {str(e)}")
