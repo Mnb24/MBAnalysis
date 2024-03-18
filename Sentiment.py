@@ -3,7 +3,7 @@ import requests
 from textblob import TextBlob
 
 def preprocess_text(text):
-    # Perform any necessary preprocessing steps
+    text = re.sub(r'[^a-zA-Z\s]', '', text)
     return text
 
 def get_section_content(translation_path, section_number):
