@@ -4,22 +4,22 @@ import requests
 
 # Function to print colored differences between lines
 def print_colored_diff(line):
-    ^1_sentence = []
-    ^2_sentence = []
+    [1]_sentence = []
+    [2]_sentence = []
 
     for code, word in line:
         if code == ' ':
-            ^1_sentence.append(word)
-            ^2_sentence.append(word)
+            [1]_sentence.append(word)
+            [2]_sentence.append(word)
         elif code == '-':
-            ^1_sentence.append(f'<span style="color: blue">{word}</span>')
+            [1]_sentence.append(f'<span style="color: blue">{word}</span>')
         elif code == '+':
-            ^2_sentence.append(f'<span style="color: red">{word}</span>')
+            [2]_sentence.append(f'<span style="color: red">{word}</span>')
 
-    ^1_sentence = ' '.join(^1_sentence)
-    ^2_sentence = ' '.join(^2_sentence)
+    [1]_sentence = ' '.join([1]_sentence)
+    [2]_sentence = ' '.join([2]_sentence)
 
-    return f"^1: {^1_sentence}", f"^2: {^2_sentence}"
+    return f"[1]: {[1]_sentence}", f"[2]: {[2]_sentence}"
 
 # Function to find text differences line by line
 def find_text_differences(text1, text2):
@@ -65,28 +65,28 @@ if compare_button:
 
             # Print differences for each pair of files
             if differences_12:
-                ^1, ^2 = differences_12[0][1]
+                [1], [2] = differences_12[0][1]
                 st.markdown(f"<h3>Line {line_number + 1}</h3>", unsafe_allow_html=True)
                 st.markdown("<h4>File1 - BORI</h4>", unsafe_allow_html=True)
-                st.markdown(^1, unsafe_allow_html=True)
+                st.markdown([1], unsafe_allow_html=True)
                 st.markdown("<h4>File2 - Kumbakonam</h4>", unsafe_allow_html=True)
-                st.markdown(^2, unsafe_allow_html=True)
+                st.markdown([2], unsafe_allow_html=True)
 
             if differences_23:
-                ^1, ^2 = differences_23[0][1]
+                [1], [2] = differences_23[0][1]
                 st.markdown(f"<h3>Line {line_number + 1}</h3>", unsafe_allow_html=True)
                 st.markdown("<h4>File2 - Kumbakonam</h4>", unsafe_allow_html=True)
-                st.markdown(^1, unsafe_allow_html=True)
+                st.markdown([1], unsafe_allow_html=True)
                 st.markdown("<h4>File3 - Sastri Vavilla</h4>", unsafe_allow_html=True)
-                st.markdown(^2, unsafe_allow_html=True)
+                st.markdown([2], unsafe_allow_html=True)
 
             if differences_13:
-                ^1, ^2 = differences_13[0][1]
+                [1], [2] = differences_13[0][1]
                 st.markdown(f"<h3>Line {line_number + 1}</h3>", unsafe_allow_html=True)
                 st.markdown("<h4>File1 - BORI</h4>", unsafe_allow_html=True)
-                st.markdown(^1, unsafe_allow_html=True)
+                st.markdown([1], unsafe_allow_html=True)
                 st.markdown("<h4>File3 - Sastri Vavilla</h4>", unsafe_allow_html=True)
-                st.markdown(^2, unsafe_allow_html=True)
+                st.markdown([2], unsafe_allow_html=True)
 
     except Exception as e:
         st.write(f"An error occurred: {str(e)}")
