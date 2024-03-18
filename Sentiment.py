@@ -1,18 +1,6 @@
 import streamlit as st
 import requests
 from textblob import TextBlob
-import re
-
-def preprocess_text(text):
-    
-    # Remove special characters, punctuation, and digits
-    text = re.sub(r'[^a-zA-Z\s]', '', text)
-    
-    # Remove extra whitespace
-    text = re.sub(r'\s+', ' ', text)
-    
-    return text
-
 
 def get_section_content(translation_path, section_number):
     response = requests.get(translation_path)
@@ -46,7 +34,7 @@ def generate_evidence(section_content, selected_sentiment):
                 evidence.append(sentence)
     return evidence
 
-st.title('Sentiment Instance Generator')
+st.title('Sentiment Evidence Generator')
 
 translations = {
     'Bibek Debroy': 'https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/BD1.txt',
