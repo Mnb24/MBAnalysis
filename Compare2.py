@@ -66,29 +66,28 @@ if compare_button:
             # Print differences for each pair of files
             if differences_12:
                 original, modified = differences_12[0][1]
-                st.markdown(f"<h3>File1 - BORI</h3>", unsafe_allow_html=True)
+                st.markdown(f"<h3>Line {line_number + 1}</h3>", unsafe_allow_html=True)
+                st.markdown("<h4>File1 - BORI</h4>", unsafe_allow_html=True)
                 st.markdown(original, unsafe_allow_html=True)
-                st.markdown(f"<h3>File2 - Kumbakonam</h3>", unsafe_allow_html=True)
+                st.markdown("<h4>File2 - Kumbakonam</h4>", unsafe_allow_html=True)
                 st.markdown(modified, unsafe_allow_html=True)
 
             if differences_23:
                 original, modified = differences_23[0][1]
-                st.markdown(f"<h3>File2 - Kumbakonam</h3>", unsafe_allow_html=True)
+                st.markdown(f"<h3>Line {line_number + 1}</h3>", unsafe_allow_html=True)
+                st.markdown("<h4>File2 - Kumbakonam</h4>", unsafe_allow_html=True)
                 st.markdown(original, unsafe_allow_html=True)
-                st.markdown(f"<h3>File3 - Sastri Vavilla</h3>", unsafe_allow_html=True)
+                st.markdown("<h4>File3 - Sastri Vavilla</h4>", unsafe_allow_html=True)
                 st.markdown(modified, unsafe_allow_html=True)
 
             if differences_13:
                 original, modified = differences_13[0][1]
-                st.markdown(f"<h3>File1 - BORI</h3>", unsafe_allow_html=True)
+                st.markdown(f"<h3>Line {line_number + 1}</h3>", unsafe_allow_html=True)
+                st.markdown("<h4>File1 - BORI</h4>", unsafe_allow_html=True)
                 st.markdown(original, unsafe_allow_html=True)
-                st.markdown(f"<h3>File3 - Sastri Vavilla</h3>", unsafe_allow_html=True)
+                st.markdown("<h4>File3 - Sastri Vavilla</h4>", unsafe_allow_html=True)
                 st.markdown(modified, unsafe_allow_html=True)
 
     except Exception as e:
         st.write(f"An error occurred: {str(e)}")
 
-
-
-
-      
