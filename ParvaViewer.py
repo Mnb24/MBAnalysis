@@ -14,12 +14,11 @@ def get_parva(file_content, parva_number):
             elif found_parva:
                 break
         elif found_parva:
-            if line.strip().startswith("BR"):
-                parva_content.append('\n' + line)  # Add newline before each line starting with "BR"
+            if line.strip().startswith("BR-"):  # Check if line starts with "BR-"
+                parva_content.append('\n' + line)  # Add newline before lines starting with "BR-"
             else:
                 parva_content.append(line)
-    return ''.join(parva_content)
-
+    return '\n'.join(parva_content)
 
 # Streamlit UI
 st.title('Mahabharata Parva Viewer')
