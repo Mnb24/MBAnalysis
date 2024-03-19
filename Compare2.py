@@ -1,47 +1,50 @@
+import streamlit as st
+import difflib
+import requests
+
 # Function to print differences between lines
-def print_diff(line, sources):
-    sentences = []
+def print_diff(line):
+    original_sentence = []
+    modified_sentence = []
 
-    for source, code, word in line:
+    for code, word in line:
         if code == ' ':
-            sentences.append((source, word))
-        elif code == '-' or code == '+':
-            sentences.append((source, f'<span style="color: {"blue" if code == "-" else "red"}">{word}</span>'))
+            original_sentence.append(word)
+            modified_sentence.append(word)
+        elif code == '-':
+            original_sentence.append(word)
+        elif code == '+':
+            modified_sentence.append(word)
 
-    formatted_sentences = []
-    for source, word in sentences:
-        formatted_sentences.append(f"{source}: {word}")
+    original_sentence = ' '.join(original_sentence)
+    modified_sentence = ' '.join(modified_sentence)
 
-    return formatted_sentences
+    return f"BORI : {original_sentence} (line 1)", f"Kumbakonam: {modified_sentence} (line 1)"
 
 # Function to find text differences line by line
-def find_text_differences(texts, sources):
+def find_text_differences(text1, text2):
     differences = []
 
     differ = difflib.Differ()
 
     # Print the formatted differences with context
-    for line_number, sentences in enumerate(zip(*texts), start=1):
-        formatted_diffs = []
-        for i, (sentence1, sentence2) in enumerate(combinations(sentences, 2)):
-            diff = list(differ.compare(sentence1.split(), sentence2.split()))
-            formatted_diff = [(sources[i], code, word) for item in diff for code, word in [(item[:1], item[2:])]]
-            formatted_diffs.append(formatted_diff)
+    for line_number, (sentence1, sentence2) in enumerate(zip(text1, text2), start=1):
+        diff = list(differ.compare(sentence1.split(), sentence2.split()))
+        formatted_diff = [(code, word) for item in diff for code, word in [(item[:1], item[2:])]]
 
-        differences.append((line_number, print_diff(formatted_diffs, sources)))
+        differences.append((line_number, print_diff(formatted_diff)))
 
     return differences
 
 # Streamlit UI
 st.title("File Comparison App")
 
-# URLs of the text files and their respective sources
+# URLs of the text files
 file_paths = [
     'https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/BR_VS.txt', 
     'https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/KK_VS.txt',
     'https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/SV_VS.txt'
 ]
-sources = ["BORI", "Kumbakonam", "Sastri Vavilla"]
 
 compare_button = st.button("Compare Vishnu Sahasranama Files")
 
@@ -56,13 +59,34 @@ if compare_button:
 
         # Compare lines from each pair of files
         for line_number in range(min_lines):
-            differences = find_text_differences([text[line_number] for text in texts], sources)
+            differences_12 = find_text_differences([texts[0][line_number]], [texts[1][line_number]])
+            differences_13 = find_text_differences([texts[0][line_number]], [texts[2][line_number]])
+            differences_23 = find_text_differences([texts[1][line_number]], [texts[2][line_number]])
 
-            # Print differences for each line
-            for line_num, diffs in differences:
-                st.markdown(f"<h3>Line {line_num}</h3>", unsafe_allow_html=True)
-                for diff in diffs:
-                    st.markdown(' '.join(diff), unsafe_allow_html=True)
+            # Print differences for each pair of files
+            if differences_12:
+                original, modified = differences_12[0][1]
+                st.markdown(f"<h3>Line {line_number + 1}</h3>", unsafe_allow_html=True)
+                st.markdown("File1 - BORI")
+                st.markdown(original, unsafe_allow_html=True)
+                st.markdown("File2 - Kumbakonam")
+                st.markdown(modified, unsafe_allow_html=True)
+
+            if differences_13:
+                original, modified = differences_13[0][1]
+                st.markdown(f"<h3>Line {line_number + 1}</h3>", unsafe_allow_html=True)
+                st.markdown("File1 - BORI")
+                st.markdown(original, unsafe_allow_html=True)
+                st.markdown("File3 - Sastri Vavilla")
+                st.markdown(modified, unsafe_allow_html=True)
+
+            if differences_23:
+                original, modified = differences_23[0][1]
+                st.markdown(f"<h3>Line {line_number + 1}</h3>", unsafe_allow_html=True)
+                st.markdown("File2 - Kumbakonam")
+                st.markdown(original, unsafe_allow_html=True)
+                st.markdown("File3 - Sastri Vavilla")
+                st.markdown(modified, unsafe_allow_html=True)
 
     except Exception as e:
         st.write(f"An error occurred: {str(e)}")
