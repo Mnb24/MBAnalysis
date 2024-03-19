@@ -42,4 +42,3 @@ if st.button('View Parva'):
     parva_content = get_parva(file_content, parva_number)
     st.markdown(f"## {selected_parva}:")
     st.write(parva_content)
-
