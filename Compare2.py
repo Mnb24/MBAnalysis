@@ -4,22 +4,23 @@ import requests
 
 # Function to print colored differences between lines
 def print_colored_diff(line):
-    original_sentence = []
-    modified_sentence = []
+    sentence_1 = []
+    sentence_2 = []
 
     for code, word in line:
         if code == ' ':
-            original_sentence.append(word)
-            modified_sentence.append(word)
+            sentence_1.append(word)
+            sentence_2.append(word)
         elif code == '-':
-            original_sentence.append(f'<span style="color: blue">{word}</span>')
+            sentence_1.append(f'<span style="color: blue">{word}</span>')
         elif code == '+':
-            modified_sentence.append(f'<span style="color: red">{word}</span>')
+            sentence_2.append(f'<span style="color: red">{word}</span>')
 
-    original_sentence = ' '.join(original_sentence)
-    modified_sentence = ' '.join(modified_sentence)
+    sentence_1 = ' '.join(sentence_1)
+    sentence_2 = ' '.join(sentence_2)
 
-    return f"Original: {original_sentence}", f"Modified: {modified_sentence}"
+    return f"Sentence A: {sentence_1}", f"Sentence B: {sentence_2}"
+
 
 # Function to find text differences line by line
 def find_text_differences(text1, text2):
