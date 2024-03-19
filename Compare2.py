@@ -4,19 +4,22 @@ import requests
 
 # Function to print colored differences between lines
 def print_colored_diff(line):
-    sentence = []
+    sentence1 = []
+    sentence2 = []
 
     for code, word in line:
         if code == ' ':
-            sentence.append(word)
+            sentence1.append(word)
+            sentence2.append(word)
         elif code == '-':
-            sentence.append(f'<span style="color: blue">{word}</span>')
+            sentence1.append(f'<span style="color: blue">{word}</span>')
         elif code == '+':
-            sentence.append(f'<span style="color: red">{word}</span>')
+            sentence2.append(f'<span style="color: red">{word}</span>')
 
-    sentence = ' '.join(sentence)
+    sentence1 = ' '.join(sentence1)
+    sentence2 = ' '.join(sentence2)
 
-    return sentence
+    return sentence1, sentence2
 
 # Function to find text differences line by line
 def find_text_differences(text1, text2):
@@ -62,23 +65,28 @@ if compare_button:
 
             # Print differences for each pair of files
             if differences_12:
-                sentence = differences_12[0][1]
+                sentence1, sentence2 = differences_12[0][1]
                 st.markdown(f"<h3>Line {line_number + 1}</h3>", unsafe_allow_html=True)
-                st.markdown("File1 - BORI vs File2 - Kumbakonam")
-                st.markdown(sentence, unsafe_allow_html=True)
+                st.markdown("File1 - BORI")
+                st.markdown(sentence1, unsafe_allow_html=True)
+                st.markdown("File2 - Kumbakonam")
+                st.markdown(sentence2, unsafe_allow_html=True)
 
             if differences_23:
-                sentence = differences_23[0][1]
+                sentence1, sentence2 = differences_23[0][1]
                 st.markdown(f"<h3>Line {line_number + 1}</h3>", unsafe_allow_html=True)
-                st.markdown("File2 - Kumbakonam vs File3 - Sastri Vavilla")
-                st.markdown(sentence, unsafe_allow_html=True)
+                st.markdown("File2 - Kumbakonam")
+                st.markdown(sentence1, unsafe_allow_html=True)
+                st.markdown("File3 - Sastri Vavilla")
+                st.markdown(sentence2, unsafe_allow_html=True)
 
             if differences_13:
-                sentence = differences_13[0][1]
+                sentence1, sentence2 = differences_13[0][1]
                 st.markdown(f"<h3>Line {line_number + 1}</h3>", unsafe_allow_html=True)
-                st.markdown("File1 - BORI vs File3 - Sastri Vavilla")
-                st.markdown(sentence, unsafe_allow_html=True)
+                st.markdown("File1 - BORI")
+                st.markdown(sentence1, unsafe_allow_html=True)
+                st.markdown("File3 - Sastri Vavilla")
+                st.markdown(sentence2, unsafe_allow_html=True)
 
     except Exception as e:
         st.write(f"An error occurred: {str(e)}")
-
