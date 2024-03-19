@@ -66,27 +66,24 @@ if compare_button:
             # Print differences for each pair of files
             if differences_12:
                 sentence1, sentence2 = differences_12[0][1]
-                st.markdown(f"<h3>Line {line_number + 1}</h3>", unsafe_allow_html=True)
                 st.markdown("File1 - BORI")
-                st.markdown(sentence1, unsafe_allow_html=True)
+                st.markdown(f"{sentence1} (line {line_number + 1})", unsafe_allow_html=True)
                 st.markdown("File2 - Kumbakonam")
-                st.markdown(sentence2, unsafe_allow_html=True)
+                st.markdown(f"{sentence2} (line {line_number + 1})", unsafe_allow_html=True)
 
             if differences_23:
                 sentence1, sentence2 = differences_23[0][1]
-                st.markdown(f"<h3>Line {line_number + 1}</h3>", unsafe_allow_html=True)
                 st.markdown("File2 - Kumbakonam")
-                st.markdown(sentence1, unsafe_allow_html=True)
+                st.markdown(f"{sentence1} (line {line_number + 1})", unsafe_allow_html=True)
                 st.markdown("File3 - Sastri Vavilla")
-                st.markdown(sentence2, unsafe_allow_html=True)
+                st.markdown(f"{sentence2} (line {line_number + 1})", unsafe_allow_html=True)
 
             if differences_13:
                 sentence1, sentence2 = differences_13[0][1]
-                st.markdown(f"<h3>Line {line_number + 1}</h3>", unsafe_allow_html=True)
                 st.markdown("File1 - BORI")
-                st.markdown(sentence1, unsafe_allow_html=True)
+                st.markdown(f"{sentence1} (line {line_number + 1})", unsafe_allow_html=True)
                 st.markdown("File3 - Sastri Vavilla")
-                st.markdown(sentence2, unsafe_allow_html=True)
+                st.markdown(f"{sentence2} (line {line_number + 1})", unsafe_allow_html=True)
 
     except Exception as e:
         st.write(f"An error occurred: {str(e)}")
