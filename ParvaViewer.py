@@ -14,12 +14,12 @@ def get_parva(file_content, parva_number):
             elif found_parva:
                 break
         elif found_parva:
-            markers = ["BR-18-01-001-001", "another_marker", "yet_another_marker"]  # Add your markers here
-            if any(line.strip().startswith(marker) for marker in markers):
-                parva_content.append('\n' + line + '\n')  # Add newline after each marker
+            if line.strip().startswith("BR-18-01-001-001"):
+                parva_content.append('\n' + line)
             else:
-                parva_content.append(line)
-    return '\n'.join(parva_content)
+                parva_content.append('\n' + line)  # Add newline before each line
+    return ''.join(parva_content)
+
 
 # Streamlit UI
 st.title('Mahabharata Parva Viewer')
