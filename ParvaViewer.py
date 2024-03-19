@@ -15,7 +15,7 @@ def get_parva(file_content, parva_number):
                 break
         elif found_parva:
             if line.strip().startswith("BR-18-01-001-001"):
-                parva_content.append('\n' + line)
+                parva_content.append('\n' + line + '\n')  # Add newline after each verse
             else:
                 parva_content.append(line)
     return '\n'.join(parva_content)
