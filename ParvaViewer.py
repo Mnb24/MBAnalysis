@@ -14,8 +14,9 @@ def get_parva(file_content, parva_number):
             elif found_parva:
                 break
         elif found_parva:
-            if line.strip().startswith("BR-18-01-001-001"):
-                parva_content.append('\n' + line + '\n')  # Add newline after each verse
+            markers = ["BR-18-01-001-001", "another_marker", "yet_another_marker"]  # Add your markers here
+            if any(line.strip().startswith(marker) for marker in markers):
+                parva_content.append('\n' + line + '\n')  # Add newline after each marker
             else:
                 parva_content.append(line)
     return '\n'.join(parva_content)
@@ -41,3 +42,4 @@ if st.button('View Parva'):
     parva_content = get_parva(file_content, parva_number)
     st.markdown(f"## {selected_parva}:")
     st.write(parva_content)
+
