@@ -14,7 +14,10 @@ def get_parva(file_content, parva_number):
             elif found_parva:
                 break
         elif found_parva:
-            parva_content.append(line)
+            if line.strip().startswith("BR-18-01-001-001"):
+                parva_content.append('\n' + line)
+            else:
+                parva_content.append(line)
     return '\n'.join(parva_content)
 
 # Streamlit UI
