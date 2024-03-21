@@ -1,30 +1,23 @@
 import streamlit as st
 import requests
-import zipfile
-import io
+from docx import Document
 
-# Parva names
-parva_names = ["Adi Parva", "Sabha Parva", "Vana Parva", "Virata Parva", "Udyoga Parva", "Bhishma Parva", "Drona Parva",
-               "Karna Parva", "Shalya Parva", "Sauptika Parva", "Stri Parva", "Shanti Parva", "Anushasana Parva", 
-               "Ashvamedhika Parva", "Ashramavasika Parva", "Mausala Parva", "Mahaprasthanika Parva", "Svargarohanika Parva"]
-
-def get_parva(file_content, parva_number):
-    parvas = file_content.split('\n')
+def get_parva(doc_content, parva_number):
     found_parva = False
     parva_content = []
-    for line in parvas:
-        if line.strip().startswith("Parva"):
-            current_parva_number = line.strip().split(" ")[1]
+    for paragraph in doc_content.paragraphs:
+        if paragraph.text.startswith("Parva"):
+            current_parva_number = paragraph.text.split(" ")[1]
             if current_parva_number == str(parva_number):
                 found_parva = True
-                parva_content.append(line)
+                parva_content.append(paragraph.text)
             elif found_parva:
                 break
         elif found_parva:
-            if line.strip().startswith("BR-") or line.strip().startswith("KK-"):  # Check if line starts with "BR-" or "KK-"
-                parva_content.append('\n' + line)  # Add newline before lines starting with "BR-" or "KK-"
+            if paragraph.text.startswith("BR-") or paragraph.text.startswith("KK-"):
+                parva_content.append('\n' + paragraph.text)
             else:
-                parva_content.append(line)
+                parva_content.append(paragraph.text)
     return '\n'.join(parva_content)
 
 # Streamlit UI
@@ -33,8 +26,13 @@ st.title('Mahabharata Parva Viewer')
 # File paths
 file_paths = {
     "BORI (BR)": 'https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/BR-Complete.txt',
-    "Kumbakonam (KK)": 'https://github.com/Mnb24/MBAnalysis/blob/main/KK-%20Complete.zip?raw=true'  # Direct link to the ZIP file
+    "Kumbakonam (KK)": 'https://github.com/Mnb24/MBAnalysis/raw/main/KK-word.docx'  # Direct link to the Word file
 }
+
+# Parva names
+parva_names = ["Adi Parva", "Sabha Parva", "Vana Parva", "Virata Parva", "Udyoga Parva", "Bhishma Parva", "Drona Parva",
+               "Karna Parva", "Shalya Parva", "Sauptika Parva", "Stri Parva", "Shanti Parva", "Anushasana Parva", 
+               "Ashvamedhika Parva", "Ashramavasika Parva", "Mausala Parva", "Mahaprasthanika Parva", "Svargarohanika Parva"]
 
 # Allow user to select translation
 selected_translation = st.selectbox('Select Translation:', list(file_paths.keys()))
@@ -44,22 +42,9 @@ selected_parva = st.selectbox('Select the Parva:', parva_names)
 
 if st.button('View Parva'):
     file_path = file_paths[selected_translation]
-    if file_path.endswith(".zip"):
-        response = requests.get(file_path, stream=True)
-        with zipfile.ZipFile(io.BytesIO(response.content)) as z:
-            file_list = z.namelist()
-            for filename in file_list:
-                if filename.endswith(".txt"):
-                    with z.open(filename) as f:
-                        file_content = ""
-                        for chunk in f:
-                            file_content += chunk.decode('utf-8')
-                        break  # Stop after reading the first TXT file
-    else:
-        response = requests.get(file_path)
-        file_content = response.text
-    
+    response = requests.get(file_path)
+    doc_content = Document(io.BytesIO(response.content))
     parva_number = parva_names.index(selected_parva) + 1  # Parva numbers start from 1
-    parva_content = get_parva(file_content, parva_number)
+    parva_content = get_parva(doc_content, parva_number)
     st.markdown(f"## {selected_translation} - {selected_parva}:")
     st.write(parva_content)
