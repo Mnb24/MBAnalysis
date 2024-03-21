@@ -1,5 +1,7 @@
 import streamlit as st
 import requests
+import zipfile
+import io
 
 def get_parva(file_content, parva_number):
     parvas = file_content.split('\n')
@@ -26,7 +28,7 @@ st.title('Mahabharata Parva Viewer')
 # File paths
 file_paths = {
     "BORI (BR)": 'https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/BR-Complete.txt',
-    "Kumbakonam (KK)": 'https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/KK-Complete.txt'
+    "Kumbakonam (KK)": 'https://github.com/Mnb24/MBAnalysis/blob/main/KK-%20Complete.zip?raw=true'  # Direct link to the ZIP file
 }
 
 # Parva names
@@ -42,10 +44,19 @@ selected_parva = st.selectbox('Select the Parva:', parva_names)
 
 if st.button('View Parva'):
     file_path = file_paths[selected_translation]
-    response = requests.get(file_path)
-    file_content = response.text
+    if file_path.endswith(".zip"):
+        response = requests.get(file_path)
+        with zipfile.ZipFile(io.BytesIO(response.content)) as z:
+            file_list = z.namelist()
+            for filename in file_list:
+                if filename.endswith(".txt"):
+                    with z.open(filename) as f:
+                        file_content = f.read().decode('utf-8')
+    else:
+        response = requests.get(file_path)
+        file_content = response.text
+    
     parva_number = parva_names.index(selected_parva) + 1  # Parva numbers start from 1
     parva_content = get_parva(file_content, parva_number)
     st.markdown(f"## {selected_translation} - {selected_parva}:")
     st.write(parva_content)
-
