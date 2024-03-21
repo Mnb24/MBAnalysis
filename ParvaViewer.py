@@ -3,6 +3,11 @@ import requests
 import zipfile
 import io
 
+# Parva names
+parva_names = ["Adi Parva", "Sabha Parva", "Vana Parva", "Virata Parva", "Udyoga Parva", "Bhishma Parva", "Drona Parva",
+               "Karna Parva", "Shalya Parva", "Sauptika Parva", "Stri Parva", "Shanti Parva", "Anushasana Parva", 
+               "Ashvamedhika Parva", "Ashramavasika Parva", "Mausala Parva", "Mahaprasthanika Parva", "Svargarohanika Parva"]
+
 def get_parva(file_content, parva_number):
     parvas = file_content.split('\n')
     found_parva = False
