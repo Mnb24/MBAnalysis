@@ -54,6 +54,7 @@ if st.button('View Parva'):
                     print("Reading file:", filename)  # Print the name of the file being read
                     with z.open(filename) as f:
                         file_content = f.read().decode('utf-8')
+                        print("Content length:", len(file_content))  # Print length of the file content
                         break  # Stop after reading the first TXT file
     else:
         response = requests.get(file_path)
