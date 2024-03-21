@@ -31,11 +31,6 @@ file_paths = {
     "Kumbakonam (KK)": 'https://github.com/Mnb24/MBAnalysis/blob/main/KK-%20Complete.zip?raw=true'  # Direct link to the ZIP file
 }
 
-# Parva names
-parva_names = ["Adi Parva", "Sabha Parva", "Vana Parva", "Virata Parva", "Udyoga Parva", "Bhishma Parva", "Drona Parva",
-               "Karna Parva", "Shalya Parva", "Sauptika Parva", "Stri Parva", "Shanti Parva", "Anushasana Parva", 
-               "Ashvamedhika Parva", "Ashramavasika Parva", "Mausala Parva", "Mahaprasthanika Parva", "Svargarohanika Parva"]
-
 # Allow user to select translation
 selected_translation = st.selectbox('Select Translation:', list(file_paths.keys()))
 
@@ -48,8 +43,10 @@ if st.button('View Parva'):
         response = requests.get(file_path)
         with zipfile.ZipFile(io.BytesIO(response.content)) as z:
             file_list = z.namelist()
+            print("File list in ZIP archive:", file_list)  # Print list of files in ZIP archive
             for filename in file_list:
                 if filename.endswith(".txt"):
+                    print("Reading file:", filename)  # Print the name of the file being read
                     with z.open(filename) as f:
                         file_content = f.read().decode('utf-8')
                         break  # Stop after reading the first TXT file
