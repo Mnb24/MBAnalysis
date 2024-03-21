@@ -1,23 +1,23 @@
 import streamlit as st
 import requests
-from docx import Document
 
-def get_parva(doc_content, parva_number):
+def get_parva(file_content, parva_number):
+    parvas = file_content.split('\n')
     found_parva = False
     parva_content = []
-    for paragraph in doc_content.paragraphs:
-        if paragraph.text.startswith("Parva"):
-            current_parva_number = paragraph.text.split(" ")[1]
+    for line in parvas:
+        if line.strip().startswith("Parva"):
+            current_parva_number = line.strip().split(" ")[1]
             if current_parva_number == str(parva_number):
                 found_parva = True
-                parva_content.append(paragraph.text)
+                parva_content.append(line)
             elif found_parva:
                 break
         elif found_parva:
-            if paragraph.text.startswith("BR-") or paragraph.text.startswith("KK-"):
-                parva_content.append('\n' + paragraph.text)
+            if line.strip().startswith("BR-") or line.strip().startswith("KK-"):  # Check if line starts with "BR-" or "KK-"
+                parva_content.append('\n' + line)  # Add newline before lines starting with "BR-" or "KK-"
             else:
-                parva_content.append(paragraph.text)
+                parva_content.append(line)
     return '\n'.join(parva_content)
 
 # Streamlit UI
@@ -26,7 +26,7 @@ st.title('Mahabharata Parva Viewer')
 # File paths
 file_paths = {
     "BORI (BR)": 'https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/BR-Complete.txt',
-    "Kumbakonam (KK)": 'https://github.com/Mnb24/MBAnalysis/raw/main/KK-word.docx'  # Direct link to the Word file
+    "Kumbakonam (KK)": 'https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/KK-Complete.txt'
 }
 
 # Parva names
@@ -43,8 +43,8 @@ selected_parva = st.selectbox('Select the Parva:', parva_names)
 if st.button('View Parva'):
     file_path = file_paths[selected_translation]
     response = requests.get(file_path)
-    doc_content = Document(io.BytesIO(response.content))
+    file_content = response.text
     parva_number = parva_names.index(selected_parva) + 1  # Parva numbers start from 1
-    parva_content = get_parva(doc_content, parva_number)
+    parva_content = get_parva(file_content, parva_number)
     st.markdown(f"## {selected_translation} - {selected_parva}:")
     st.write(parva_content)
