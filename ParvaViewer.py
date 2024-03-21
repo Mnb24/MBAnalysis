@@ -52,6 +52,7 @@ if st.button('View Parva'):
                 if filename.endswith(".txt"):
                     with z.open(filename) as f:
                         file_content = f.read().decode('utf-8')
+                        break  # Stop after reading the first TXT file
     else:
         response = requests.get(file_path)
         file_content = response.text
