@@ -14,7 +14,10 @@ def get_adhyaya(file_content, adhyaya_number):
             elif found_adhyaya:
                 break
         elif found_adhyaya:
-            adhyaya_content.append(line)
+            if line.strip().startswith("MT-"):
+                adhyaya_content.append('\n' + line)  # Add newline before lines starting with "MT-"
+            else:
+                adhyaya_content.append(line)
     return '\n'.join(adhyaya_content)
 
 def get_parva(file_content, parva_number):
