@@ -1,6 +1,22 @@
 import streamlit as st
 import requests
 
+def get_adhyaya(file_content, adhyaya_number):
+    adhyayas = file_content.split('\n')
+    found_adhyaya = False
+    adhyaya_content = []
+    for line in adhyayas:
+        if line.strip().startswith("Adhyaya"):
+            current_adhyaya_number = line.strip().split(" ")[1]
+            if current_adhyaya_number == str(adhyaya_number):
+                found_adhyaya = True
+                adhyaya_content.append(line)
+            elif found_adhyaya:
+                break
+        elif found_adhyaya:
+            adhyaya_content.append(line)
+    return '\n'.join(adhyaya_content)
+
 def get_parva(file_content, parva_number):
     parvas = file_content.split('\n')
     found_parva = False
@@ -51,7 +67,7 @@ if st.button('View Content'):
     response = requests.get(file_path)
     file_content = response.text
     if selected_translation == "Mahabharata Tatparya Nirnaya (MBTN)":
-        content = get_parva(file_content, selected_adhyaya)
+        content = get_adhyaya(file_content, selected_adhyaya)
     else:
         parva_number = parva_names.index(selected_parva) + 1  # Parva numbers start from 1
         content = get_parva(file_content, parva_number)
