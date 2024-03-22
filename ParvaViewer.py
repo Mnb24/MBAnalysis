@@ -40,7 +40,7 @@ def get_parva(file_content, parva_number):
     return '\n'.join(parva_content)
 
 # Streamlit UI
-st.title('Mahabharata Sanskrit Text Viewer')
+st.title('Mahabharata Text Viewer')
 
 # File paths
 file_paths = {
@@ -63,7 +63,7 @@ if selected_translation == "Mahabharata Tatparya Nirnaya (MBTN)":
     section_identifier = "Adhyaya"
 else:
     selected_parva = st.selectbox('Select the Parva:', parva_names)
-    section_identifier = "Section"
+    section_identifier = "Parva" if selected_translation != "Mahabharata Tatparya Nirnaya (MBTN)" else "Section"
 
 if st.button('View Content'):
     file_path = file_paths[selected_translation]
@@ -74,5 +74,5 @@ if st.button('View Content'):
     else:
         parva_number = parva_names.index(selected_parva) + 1  # Parva numbers start from 1
         content = get_parva(file_content, parva_number)
-    st.markdown(f"## {selected_translation} - {section_identifier} {selected_adhyaya if selected_translation == 'Mahabharata Tatparya Nirnaya (MBTN)' else selected_parva}:")
+    st.markdown(f"## {selected_translation} - {selected_parva if selected_translation != 'Mahabharata Tatparya Nirnaya (MBTN)' else selected_adhyaya}:")
     st.write(content)
