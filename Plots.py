@@ -4,10 +4,11 @@ from collections import Counter
 import re
 import matplotlib.pyplot as plt
 import seaborn as sns
+import nltk
 import pandas as pd
 from nltk import pos_tag, word_tokenize
 from wordcloud import STOPWORDS
-import nltk
+
 nltk.download('punkt')
 
 def count_words_in_text(text):
