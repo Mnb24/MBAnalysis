@@ -8,6 +8,9 @@ import pandas as pd
 from nltk import pos_tag, word_tokenize
 from wordcloud import STOPWORDS
 
+import nltk
+nltk.download('punkt')
+
 def count_words_in_text(text):
     words_text = re.findall(r'\b[A-Za-z]+\b', text)  # Omit numbers and punctuation marks
     return Counter(words_text)
