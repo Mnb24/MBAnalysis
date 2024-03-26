@@ -1,8 +1,11 @@
 import requests
 import streamlit as st
+import nltk
 from nltk.tokenize import word_tokenize
 from nltk.corpus import stopwords
 import string
+nltk.download('punkt')
+nltk.download('stopwords')
 
 def preprocess_text(text):
     # Tokenize the text
