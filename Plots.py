@@ -8,7 +8,7 @@ import nltk
 import pandas as pd
 from nltk import pos_tag, word_tokenize
 from wordcloud import STOPWORDS
-
+nltk.download('averaged_perceptron_tagger')
 nltk.download('punkt')
 
 def count_words_in_text(text):
