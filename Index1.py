@@ -37,8 +37,17 @@ if devanagari_letter:
         responses = [requests.get(file_path) for file_path in file_paths]
         texts = [response.text.splitlines() for response in responses]
 
+        # Debug: print out the fetched texts
+        for i, text in enumerate(texts):
+            st.write(f"Fetched text from {file_names[i]}:")
+            st.write(text)
+
         # Fetch verses beginning with the specified letter
         verses = fetch_verses(devanagari_letter, texts)
+
+        # Debug: print out the fetched verses
+        st.write(f"Verses fetched with '{devanagari_letter}':")
+        st.write(verses)
 
         # Display verses
         if verses:
