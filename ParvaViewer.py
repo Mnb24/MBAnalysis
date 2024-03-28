@@ -46,7 +46,8 @@ st.title('Mahabharata Text Viewer')
 file_paths = {
     "BORI (BR)": 'https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/BR-Complete.txt',
     "Kumbakonam (KK)": 'https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/KK-Complete.txt',
-    "Mahabharata Tatparya Nirnaya (MBTN)": 'https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/MBTN.txt'
+    "Mahabharata Tatparya Nirnaya (MBTN)": 'https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/MBTN.txt',
+    "Sastri Vavilla (SV):
 }
 
 # Parva names
