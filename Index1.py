@@ -18,9 +18,10 @@ st.title("Index - Adi Parva")
 
 # URLs of the text files
 file_paths = [
-    'https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/BR-01-Complete.txt', 
-    'https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/KK-01-Complete.txt',
-    'https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/SV-01-Complete.txt'
+    'https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/BR-Complete.txt',
+    'https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/KK-Complete.txt',
+    'https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/SV-Complete.txt',
+    'https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/MBTN.txt'
 ]
 
 
@@ -28,7 +29,7 @@ file_paths = [
 devanagari_letter = st.text_input("Enter a Devanagari letter:")
 
 # Dictionary to map file names to their index
-file_names = {0: "BORI", 1: "Kumbakonam", 2: "Sastri-Vavilla"}
+file_names = {0: "BORI", 1: "Kumbakonam", 2: "Sastri-Vavilla", 3: "Mahabharata Tatparya Nirnaya" }
 
 if devanagari_letter:
     try:
