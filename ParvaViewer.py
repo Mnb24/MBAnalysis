@@ -47,7 +47,7 @@ file_paths = {
     "BORI (BR)": 'https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/BR-Complete.txt',
     "Kumbakonam (KK)": 'https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/KK-Complete.txt',
     "Mahabharata Tatparya Nirnaya (MBTN)": 'https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/MBTN.txt',
-    "Sastri Vavilla (SV):
+    "Sastri Vavilla (SV)": 'https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/SV-Complete.txt'
 }
 
 # Parva names
