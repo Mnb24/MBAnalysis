@@ -33,8 +33,8 @@ def get_parva(file_content, parva_number):
             elif found_parva:
                 break
         elif found_parva:
-            if line.strip().startswith("BR-") or line.strip().startswith("KK-"):  # Check if line starts with "BR-" or "KK-"
-                parva_content.append('\n' + line)  # Add newline before lines starting with "BR-" or "KK-"
+            if line.strip().startswith("BR-") or line.strip().startswith("KK-") or : line.strip().startswith("SV-") 
+                parva_content.append('\n' + line)  
             else:
                 parva_content.append(line)
     return '\n'.join(parva_content)
