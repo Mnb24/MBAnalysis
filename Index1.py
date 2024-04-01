@@ -8,11 +8,14 @@ def fetch_verses(letter, texts):
     # Iterate through each file
     for text in texts:
         for verse in text:
-            # Split the verse by space and get the second part (after the marker)
-            marker, devanagari = verse.split(" ", 1)
-            # Check if the devanagari text starts with the specified letter
-            if devanagari.startswith(letter):
-                verses.append(verse)
+            # Split the verse by space
+            parts = verse.split(" ", 1)
+            # Check if there are at least two parts after splitting
+            if len(parts) == 2:
+                marker, devanagari = parts
+                # Check if the devanagari text starts with the specified letter
+                if devanagari.startswith(letter):
+                    verses.append(verse)
     
     return verses
 
@@ -58,4 +61,3 @@ if devanagari_letter:
             st.write(f"No verses found beginning with '{devanagari_letter}'.")
     except Exception as e:
         st.write(f"An error occurred: {str(e)}")
-
