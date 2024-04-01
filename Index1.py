@@ -49,7 +49,7 @@ if devanagari_letter:
             st.write(f"Verses beginning with '{devanagari_letter}':")
             for i, text in enumerate(texts):
                 st.markdown(f"<h3 style='font-size:24px'>{file_names[i]}</h3>", unsafe_allow_html=True)
-                file_verses = [verse for verse in text if verse.split(" ", 1)[-1].strip()[0] == devanagari_letter]
+                file_verses = [verse for verse in text if verse.split(" ", 1)[-1].strip() and verse.split(" ", 1)[-1].strip()[0] == devanagari_letter]
                 if file_verses:
                     for verse in file_verses:
                         highlighted_verse = verse.replace(devanagari_letter, f"<span style='color:red'>{devanagari_letter}</span>", 1)
