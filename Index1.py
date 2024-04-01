@@ -11,7 +11,7 @@ def fetch_verses(letter, texts):
             # Split the verse by space
             parts = verse.split(" ", 1)
             # Check if there are at least two parts after splitting
-            if len(parts) == 2:
+            if len(parts) >= 2:
                 marker, devanagari = parts
                 # Check if the devanagari text starts with the specified letter
                 if devanagari.startswith(letter):
@@ -28,7 +28,6 @@ file_paths = [
     'https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/KK-Complete.txt',
     'https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/SV-Complete.txt'
 ]
-
 
 # User input for Devanagari letter
 devanagari_letter = st.text_input("Enter a Devanagari letter:")
@@ -50,7 +49,7 @@ if devanagari_letter:
             st.write(f"Verses beginning with '{devanagari_letter}':")
             for i, text in enumerate(texts):
                 st.markdown(f"<h3 style='font-size:24px'>{file_names[i]}</h3>", unsafe_allow_html=True)
-                file_verses = [verse for verse in text if verse.split(" ", 1)[1].startswith(devanagari_letter)]
+                file_verses = [verse for verse in text if len(verse.split(" ", 1)) >= 2 and verse.split(" ", 1)[1].startswith(devanagari_letter)]
                 if file_verses:
                     for verse in file_verses:
                         highlighted_verse = verse.replace(devanagari_letter, f"<span style='color:red'>{devanagari_letter}</span>", 1)
@@ -61,3 +60,4 @@ if devanagari_letter:
             st.write(f"No verses found beginning with '{devanagari_letter}'.")
     except Exception as e:
         st.write(f"An error occurred: {str(e)}")
+
