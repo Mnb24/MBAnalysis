@@ -20,7 +20,7 @@ def fetch_verses(letter, texts):
     return verses
 
 # Streamlit UI
-st.title("Index - Adi Parva")
+st.title("Index - Mahabharata Verses")
 
 # URLs of the text files
 file_paths = [
