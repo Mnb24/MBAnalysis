@@ -9,12 +9,13 @@ def fetch_verses(letter, texts):
     for text in texts:
         for verse in text:
             # Split the verse by space
-            parts = verse.split(" ", 1)
+            parts = verse.split(" ")
             # Check if there are at least two parts after splitting
             if len(parts) >= 2:
-                marker, devanagari = parts
-                # Check if the devanagari text starts with the specified letter
-                if devanagari.strip().startswith(letter):
+                # Get the first letter of the verse after the space
+                verse_first_letter = parts[1].strip()[0]
+                # Check if the first letter matches the user-input letter
+                if verse_first_letter == letter:
                     verses.append(verse)
     
     return verses
@@ -49,7 +50,7 @@ if devanagari_letter:
             st.write(f"Verses beginning with '{devanagari_letter}':")
             for i, text in enumerate(texts):
                 st.markdown(f"<h3 style='font-size:24px'>{file_names[i]}</h3>", unsafe_allow_html=True)
-                file_verses = [verse for verse in text if len(verse.split(" ", 1)) >= 2 and verse.split(" ", 1)[1].strip().startswith(devanagari_letter)]
+                file_verses = [verse for verse in text if verse.split(" ")[1].strip().startswith(devanagari_letter)]
                 if file_verses:
                     for verse in file_verses:
                         highlighted_verse = verse.replace(devanagari_letter, f"<span style='color:red'>{devanagari_letter}</span>", 1)
