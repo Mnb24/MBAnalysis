@@ -12,10 +12,9 @@ def fetch_verses(letter, texts):
             parts = verse.split(" ")
             # Check if there are at least two parts after splitting
             if len(parts) >= 2:
-                # Get the first letter of the verse after the space
-                verse_first_letter = parts[1].strip()[0]
-                # Check if the first letter matches the user-input letter
-                if verse_first_letter == letter:
+                # Get the first letter of the verse after the marker
+                verse_text = " ".join(parts[1:]).strip()
+                if verse_text.startswith(letter):
                     verses.append(verse)
     
     return verses
