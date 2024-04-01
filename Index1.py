@@ -8,18 +8,13 @@ def fetch_verses(letter, texts):
     # Iterate through each file
     for text in texts:
         for verse in text:
-            # Split the verse by space
-            parts = verse.split(" ")
-            # Check if there are at least two parts after splitting
-            if len(parts) >= 2:
-                # Concatenate parts from index 1 onwards to handle multiple spaces
-                verse_text = " ".join(parts[1:])
-                # Find the index of the first non-space character following the marker
-                i = 0
-                while i < len(verse_text) and verse_text[i].isspace():
-                    i += 1
-                # Check if the character at index 'i' matches the user-input letter
-                if i < len(verse_text) and verse_text[i] == letter:
+            # Check if there is a space following the marker
+            space_index = verse.find(" ")
+            if space_index != -1 and space_index + 1 < len(verse):
+                # Get the first character after the space
+                first_char = verse[space_index + 1]
+                # Check if the first character matches the user-input letter
+                if first_char == letter:
                     verses.append(verse)
     
     return verses
@@ -54,7 +49,7 @@ if devanagari_letter:
             st.write(f"Verses beginning with '{devanagari_letter}':")
             for i, text in enumerate(texts):
                 st.markdown(f"<h3 style='font-size:24px'>{file_names[i]}</h3>", unsafe_allow_html=True)
-                file_verses = [verse for verse in text if verse.split(" ", 1)[-1].lstrip().startswith(devanagari_letter)]
+                file_verses = [verse for verse in text if verse.split(" ", 1)[-1].strip()[0] == devanagari_letter]
                 if file_verses:
                     for verse in file_verses:
                         highlighted_verse = verse.replace(devanagari_letter, f"<span style='color:red'>{devanagari_letter}</span>", 1)
