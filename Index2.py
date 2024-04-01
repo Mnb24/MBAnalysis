@@ -17,9 +17,9 @@ st.title("Index - Adi Parva")
 
 # URLs of the text files
 file_paths = [
-     'https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/BR-01-Complete.txt',
-    'https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/KK-01-Complete.txt',
-    'https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/SV-01-Complete.txt'
+     'https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/BR-Complete.txt',
+    'https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/KK-Complete.txt',
+    'https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/SV-Complete.txt'
 ]
 
 # User input for Devanagari letter
