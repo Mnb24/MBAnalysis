@@ -31,12 +31,15 @@ def perform_concordance(texts, target_word):
         text_object = Text(tokens)
         concordance_lists.append((text_object.concordance_list(target_word), file_name))
 
-    # Print concordance results in groups of three occurrences
-    occurrences_count = 0
-    for group_index in range(0, max(len(cl) for cl, _ in concordance_lists)):
-        for concordance_list, file_name in concordance_lists:
-            if group_index < len(concordance_list):
-                entry = concordance_list[group_index]
+    # Initialize counters for each text file
+    counters = [0] * len(concordance_lists)
+    
+    # Iterate through occurrences until we have processed all occurrences
+    processed_occurrences = 0
+    while True:
+        for i, (concordance_list, file_name) in enumerate(concordance_lists):
+            if counters[i] < len(concordance_list):
+                entry = concordance_list[counters[i]]
                 left_context = " ".join(entry.left)
                 right_context = " ".join(entry.right)
                 line_number = text.count('\n', 0, entry.offset) + 1  # Calculate line number
@@ -44,14 +47,18 @@ def perform_concordance(texts, target_word):
                 # Highlight the target word with a color
                 highlighted_text = f"{left_context} <span style='color: red'>{target_word}</span> {right_context}"
                 st.write(f"Line {line_number} ({file_name}): {highlighted_text}", unsafe_allow_html=True)
-                
-                occurrences_count += 1
 
-        # Add a symbol after each group of three occurrences
-        if occurrences_count % 3 == 0:
-            st.write("***")
-        else:
-            st.write("\n\n")
+                counters[i] += 1
+                processed_occurrences += 1
+
+                if processed_occurrences % 3 == 0:
+                    st.write("***")
+
+                if processed_occurrences % 3 == 0:
+                    st.write("\n\n")
+                
+                if all(counter >= len(concordance_list) for counter, (concordance_list, _) in zip(counters, concordance_lists)):
+                    return
 
 def main():
     st.title("Concordance Analyzer - Adi Parva")
