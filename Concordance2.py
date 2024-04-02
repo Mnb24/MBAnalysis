@@ -32,6 +32,8 @@ def perform_concordance(texts, text_names, target_word):
     # Print concordance results in groups of three
     num_paragraphs = max(len(paragraphs_by_file[text_name]) for text_name in text_names)
     for i in range(num_paragraphs):
+        if i % 3 == 0 and i != 0:
+            st.write("****")
         for text_name in text_names:
             if i < len(paragraphs_by_file[text_name]):
                 st.write(f"**{text_name}:**")
@@ -64,4 +66,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
