@@ -1,11 +1,26 @@
 import streamlit as st
-from nltk.tokenize import word_tokenize
+from nltk.tokenize import word_tokenize, sent_tokenize
 from nltk.text import Text
 import requests
 import nltk
 
 # Download nltk resources
 nltk.download('punkt')
+
+def get_context_paragraphs(text, target_word, context_lines=2):
+    sentences = sent_tokenize(text)
+    paragraphs = []
+
+    # Find sentences containing the target word
+    for i, sentence in enumerate(sentences):
+        if target_word in word_tokenize(sentence):
+            start_index = max(0, i - context_lines)
+            end_index = min(len(sentences), i + context_lines + 1)
+            context_sentences = sentences[start_index:end_index]
+            context_paragraph = " ".join(context_sentences)
+            paragraphs.append(context_paragraph)
+
+    return paragraphs
 
 def perform_concordance(texts, target_word):
     # Initialize concordance lists for each text
@@ -16,14 +31,18 @@ def perform_concordance(texts, target_word):
         text_object = Text(tokens)
         concordance_lists.append((text_object.concordance_list(target_word), file_name))
 
-    # Print concordance results in groups of three occurrences
-    group_index = 0
-    occurrences_count = 0
-    while True:
-        group_found = False
+    # Determine the total number of occurrences across all texts
+    total_occurrences = sum(len(cl) for cl, _ in concordance_lists)
+    
+    # Initialize counters for each text file
+    counters = [0] * len(concordance_lists)
+    
+    # Iterate through occurrences until we have processed all occurrences
+    processed_occurrences = 0
+    while processed_occurrences < total_occurrences:
         for i, (concordance_list, file_name) in enumerate(concordance_lists):
-            if group_index < len(concordance_list):
-                entry = concordance_list[group_index]
+            if counters[i] < len(concordance_list):
+                entry = concordance_list[counters[i]]
                 left_context = " ".join(entry.left)
                 right_context = " ".join(entry.right)
                 line_number = text.count('\n', 0, entry.offset) + 1  # Calculate line number
@@ -31,25 +50,15 @@ def perform_concordance(texts, target_word):
                 # Highlight the target word with a color
                 highlighted_text = f"{left_context} <span style='color: red'>{target_word}</span> {right_context}"
                 st.write(f"Line {line_number} ({file_name}): {highlighted_text}", unsafe_allow_html=True)
+
+                counters[i] += 1
+                processed_occurrences += 1
                 
-                group_found = True
-                occurrences_count += 1
+                if processed_occurrences % 3 == 0:
+                    st.write("***")
 
-        if not group_found:
-            break
-
-        group_index += 1
-
-        # Add a symbol after each group of three occurrences
-        if occurrences_count % 3 == 0:
-            st.write("***")
-
-        # Add extra lines for readability
-        st.write("\n\n")
-
-    # Add extra lines at the end for readability
-    st.write("\n\n")
-
+                if processed_occurrences >= total_occurrences:
+                    break
 
 
 def main():
