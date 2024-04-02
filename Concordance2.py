@@ -1,48 +1,34 @@
 import streamlit as st
-from nltk.tokenize import word_tokenize
-from nltk.text import Text
+from nltk.tokenize import sent_tokenize
 import requests
 import nltk
 
 # Download nltk resources
 nltk.download('punkt')
 
+def get_context_sentences(text, target_word, context_lines=2):
+    sentences = sent_tokenize(text)
+    context_sentences = []
+
+    # Find sentences containing the target word
+    for i, sentence in enumerate(sentences):
+        if target_word in sentence:
+            start_index = max(0, i - context_lines)
+            end_index = min(len(sentences), i + context_lines + 1)
+            context_sentences.append((i, sentences[start_index:end_index]))
+
+    return context_sentences
+
 def perform_concordance(texts, target_word):
-    # Initialize concordance lists for each text
-    concordance_lists = []
-    file_names = ['BD', 'KMG', 'MND']
-    for text, file_name in zip(texts, file_names):
-        tokens = word_tokenize(text)
-        text_object = Text(tokens)
-        concordance_lists.append((text_object.concordance_list(target_word), file_name))
-
-    # Print concordance results in groups of three occurrences
-    group_index = 0
-    occurrences_count = 0
-    while True:
-        group_found = False
-        for i, (concordance_list, file_name) in enumerate(concordance_lists):
-            if group_index < len(concordance_list):
-                entry = concordance_list[group_index]
-                left_context = " ".join(entry.left)
-                right_context = " ".join(entry.right)
-                line_number = text.count('\n', 0, entry.offset) + 1  # Calculate line number
-
-                # Highlight the target word with a color
-                highlighted_text = f"{left_context} <span style='color: red'>{target_word}</span> {right_context}"
-                st.write(f"Line {line_number} ({file_name}): {highlighted_text}", unsafe_allow_html=True)
-                
-                group_found = True
-                occurrences_count += 1
-
-        if not group_found:
-            break
-
-        group_index += 1
-
-        # Add a symbol after each group of three occurrences
-        if occurrences_count % 3 == 0:
-            st.write("***")
+    # Print concordance results with context paragraphs for each text
+    for text_index, text in enumerate(texts):
+        st.write(f"\nConcordance Analysis for Text {text_index + 1}:")
+        context_sentences = get_context_sentences(text, target_word)
+        for sentence_index, (sentence_number, context) in enumerate(context_sentences):
+            st.write(f"Line {sentence_number} ({text_index}):")
+            for line in context:
+                st.write(line.strip())
+            st.write("")
 
 def main():
     st.title("Concordance Analyzer - Adi Parva")
