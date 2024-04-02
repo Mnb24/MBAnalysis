@@ -31,15 +31,14 @@ def perform_concordance(texts, target_word):
         text_object = Text(tokens)
         concordance_lists.append((text_object.concordance_list(target_word), file_name))
 
-    # Initialize counters for each text file
-    counters = [0] * len(concordance_lists)
-    
-    # Iterate through occurrences until we have processed all occurrences
-    processed_occurrences = 0
-    while True:
+    # Initialize indices for each file
+    indices = [0] * len(concordance_lists)
+
+    # Print concordance results in groups of three occurrences
+    while any(index < len(concordance_list) for index, concordance_list in zip(indices, concordance_lists)):
         for i, (concordance_list, file_name) in enumerate(concordance_lists):
-            if counters[i] < len(concordance_list):
-                entry = concordance_list[counters[i]]
+            if indices[i] < len(concordance_list):
+                entry = concordance_list[indices[i]]
                 left_context = " ".join(entry.left)
                 right_context = " ".join(entry.right)
                 line_number = text.count('\n', 0, entry.offset) + 1  # Calculate line number
@@ -48,17 +47,11 @@ def perform_concordance(texts, target_word):
                 highlighted_text = f"{left_context} <span style='color: red'>{target_word}</span> {right_context}"
                 st.write(f"Line {line_number} ({file_name}): {highlighted_text}", unsafe_allow_html=True)
 
-                counters[i] += 1
-                processed_occurrences += 1
+                # Move to the next index for the next iteration
+                indices[i] += 1
 
-                if processed_occurrences % 3 == 0:
-                    st.write("***")
-
-                if processed_occurrences % 3 == 0:
-                    st.write("\n\n")
-                
-                if all(counter >= len(concordance_list) for counter, (concordance_list, _) in zip(counters, concordance_lists)):
-                    return
+        # Add a symbol after each group of three occurrences
+        st.write("***")
 
 def main():
     st.title("Concordance Analyzer - Adi Parva")
