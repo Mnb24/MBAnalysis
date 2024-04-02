@@ -1,6 +1,5 @@
 import streamlit as st
-from nltk.tokenize import word_tokenize, sent_tokenize
-from nltk.text import Text
+from nltk.tokenize import sent_tokenize, word_tokenize
 import requests
 import nltk
 
@@ -22,63 +21,47 @@ def get_context_paragraphs(text, target_word, context_lines=2):
 
     return paragraphs
 
-def perform_concordance(texts, target_word):
-    # Initialize concordance lists for each text
-    concordance_lists = []
-    file_names = ['BD', 'KMG', 'MND']
-    for text, file_name in zip(texts, file_names):
-        tokens = word_tokenize(text)
-        text_object = Text(tokens)
-        concordance_lists.append((text_object.concordance_list(target_word), file_name))
+def perform_concordance(texts, text_names, target_word):
+    paragraphs_by_file = {text_name: [] for text_name in text_names}
 
-    # Determine the total number of occurrences across all texts
-    total_occurrences = sum(len(cl) for cl, _ in concordance_lists)
-    
-    # Initialize counters for each text file
-    counters = [0] * len(concordance_lists)
-    
-    # Iterate through occurrences until we have processed all occurrences
-    processed_occurrences = 0
-    while processed_occurrences < total_occurrences:
-        for i, (concordance_list, file_name) in enumerate(concordance_lists):
-            if counters[i] < len(concordance_list):
-                entry = concordance_list[counters[i]]
-                left_context = " ".join(entry.left)
-                right_context = " ".join(entry.right)
-                line_number = text.count('\n', 0, entry.offset) + 1  # Calculate line number
+    # Get context paragraphs for each text
+    for text, text_name in zip(texts, text_names):
+        context_paragraphs = get_context_paragraphs(text, target_word)
+        paragraphs_by_file[text_name] = context_paragraphs
 
-                # Highlight the target word with a color
-                highlighted_text = f"{left_context} <span style='color: red'>{target_word}</span> {right_context}"
-                st.write(f"Line {line_number} ({file_name}): {highlighted_text}", unsafe_allow_html=True)
-
-                counters[i] += 1
-                processed_occurrences += 1
-                
-                if processed_occurrences % 3 == 0:
-                    st.write("***")
-
-                if processed_occurrences >= total_occurrences:
-                    break
-
+    # Print concordance results in groups of three
+    num_paragraphs = max(len(paragraphs_by_file[text_name]) for text_name in text_names)
+    for i in range(num_paragraphs):
+        for text_name in text_names:
+            if i < len(paragraphs_by_file[text_name]):
+                st.write(f"**{text_name}:**")
+                highlighted_paragraph = paragraphs_by_file[text_name][i].replace(target_word, f"<span style='color: red'>{target_word}</span>")
+                st.write(highlighted_paragraph, unsafe_allow_html=True)
+                st.write("\n")
 
 def main():
-    st.title("Concordance Analyzer - Adi Parva")
+    # Displaying heading
+    st.title("Concordance Analyzer - Adi Parva (Sequential)")
+
     # URLs of the text files
     file_paths = [
         'https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/BD1.txt', 
         'https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/KMG1.txt', 
         'https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/MND1.txt'
     ]
-
+    text_names = ['BD1', 'KMG1', 'MND1']
+    
     texts = []
     for file_path in file_paths:
         response = requests.get(file_path)
-        texts.append(response.text)
+        text = response.text
+        texts.append(text)
 
     target_word = st.text_input("Enter the word for concordance analysis: ")
 
     if st.button('Perform Concordance Analysis'):
-        perform_concordance(texts, target_word)
+        perform_concordance(texts, text_names, target_word)
 
 if __name__ == "__main__":
     main()
+
