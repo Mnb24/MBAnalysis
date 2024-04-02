@@ -31,15 +31,14 @@ def perform_concordance(texts, text_names, target_word):
 
     # Print concordance results in groups of three
     num_paragraphs = max(len(paragraphs_by_file[text_name]) for text_name in text_names)
-    for i in range(num_paragraphs):
-        if i % 3 == 0 and i != 0:
-            st.write("****")
+    for i in range(0, num_paragraphs, 3):
         for text_name in text_names:
             if i < len(paragraphs_by_file[text_name]):
                 st.write(f"**{text_name}:**")
                 highlighted_paragraph = paragraphs_by_file[text_name][i].replace(target_word, f"<span style='color: red'>{target_word}</span>")
                 st.write(highlighted_paragraph, unsafe_allow_html=True)
                 st.write("\n")
+        st.write("********")  # Inserting special characters after each group of three instances
 
 def main():
     # Displaying heading
