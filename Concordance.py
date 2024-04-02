@@ -1,5 +1,5 @@
 import streamlit as st
-from nltk.tokenize import word_tokenize
+from nltk.tokenize import sent_tokenize, word_tokenize
 from nltk.text import Text
 import requests
 import nltk
@@ -7,23 +7,27 @@ import nltk
 # Download nltk resources
 nltk.download('punkt')
 
+def get_context_sentences(text, target_word, context_lines=2):
+    sentences = sent_tokenize(text)
+    context_sentences = []
+
+    # Find sentences containing the target word
+    for i, sentence in enumerate(sentences):
+        if target_word in word_tokenize(sentence):
+            start_index = max(0, i - context_lines)
+            end_index = min(len(sentences), i + context_lines + 1)
+            context_sentences.extend(sentences[start_index:end_index])
+
+    return context_sentences
+
 def perform_concordance(text, target_word):
-    tokens = word_tokenize(text)
-    text_object = Text(tokens)
+    context_sentences = get_context_sentences(text, target_word)
 
-    st.write(f"\nConcordance Analysis for '{target_word}':")
-    concordance_results = text_object.concordance_list(target_word)
-
-    # Print concordance results with line numbers
-    for entry in concordance_results:
-        left_context = " ".join(entry.left)
-        right_context = " ".join(entry.right)
-        line_number = text.count('\n', 0, entry.offset) + 1  # Calculate line number
-
+    # Print concordance results with context sentences
+    for i, sentence in enumerate(context_sentences, start=1):
         # Highlight the target word with a color
-        highlighted_text = f"{left_context} <span style='color: red'>{target_word}</span> {right_context}"
-        
-        st.write(f"Line {line_number}: {highlighted_text}", unsafe_allow_html=True)
+        highlighted_sentence = sentence.replace(target_word, f"<span style='color: red'>{target_word}</span>")
+        st.write(f"Context Sentence {i}: {highlighted_sentence}", unsafe_allow_html=True)
 
 def main():
     # Displaying heading
@@ -48,3 +52,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
