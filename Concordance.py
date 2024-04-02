@@ -1,6 +1,5 @@
 import streamlit as st
 from nltk.tokenize import sent_tokenize, word_tokenize
-from nltk.text import Text
 import requests
 import nltk
 
@@ -22,7 +21,7 @@ def get_context_paragraphs(text, target_word, context_lines=2):
 
     return paragraphs
 
-def perform_concordance(text, target_word):
+def perform_concordance(text, target_word, text_name):
     context_paragraphs = get_context_paragraphs(text, target_word)
 
     # Print concordance results with context paragraphs
@@ -51,8 +50,9 @@ def main():
         for file_path, text_name in zip(file_paths, text_names):
             response = requests.get(file_path)
             text = response.text
-            st.write(f"\nConcordance Analysis for {text_name}:")
-            perform_concordance(text, target_word)
+            st.markdown(f"<h2 style='font-size:24px'>{text_name}</h2>", unsafe_allow_html=True)
+            perform_concordance(text, target_word, text_name)
 
 if __name__ == "__main__":
     main()
+
