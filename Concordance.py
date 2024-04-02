@@ -24,10 +24,11 @@ def perform_concordance(text, target_word):
     context_sentences = get_context_sentences(text, target_word)
 
     # Print concordance results with context sentences
-    for i, sentence in enumerate(context_sentences, start=1):
+    if context_sentences:
+        concordance_text = " ".join(context_sentences)
         # Highlight the target word with a color
-        highlighted_sentence = sentence.replace(target_word, f"<span style='color: red'>{target_word}</span>")
-        st.write(f"Context Sentence {i}: {highlighted_sentence}", unsafe_allow_html=True)
+        highlighted_concordance = concordance_text.replace(target_word, f"<span style='color: red'>{target_word}</span>")
+        st.write(highlighted_concordance, unsafe_allow_html=True)
 
 def main():
     # Displaying heading
@@ -52,4 +53,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
