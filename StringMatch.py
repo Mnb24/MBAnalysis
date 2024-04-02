@@ -48,9 +48,9 @@ def main():
     st.title("String Match Tool - Mahabharata")
 
     files = {
-       'BR': 'https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/BR-Complete.txt',
-        'KK': 'https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/KK-Complete.txt',
-        'SV': 'https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/SV-Complete.txt'
+       'BD: https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/BD1.txt', 
+              'https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/KMG1.txt', 
+              'https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/MND1.txt'
     }
 
     # Input field for the target word
