@@ -7,28 +7,31 @@ import nltk
 # Download nltk resources
 nltk.download('punkt')
 
-def get_context_sentences(text, target_word, context_lines=2):
+def get_context_paragraphs(text, target_word, context_lines=2):
     sentences = sent_tokenize(text)
-    context_sentences = []
+    paragraphs = []
 
     # Find sentences containing the target word
     for i, sentence in enumerate(sentences):
         if target_word in word_tokenize(sentence):
             start_index = max(0, i - context_lines)
             end_index = min(len(sentences), i + context_lines + 1)
-            context_sentences.extend(sentences[start_index:end_index])
+            context_sentences = sentences[start_index:end_index]
+            context_paragraph = " ".join(context_sentences)
+            paragraphs.append(context_paragraph)
 
-    return context_sentences
+    return paragraphs
 
 def perform_concordance(text, target_word):
-    context_sentences = get_context_sentences(text, target_word)
+    context_paragraphs = get_context_paragraphs(text, target_word)
 
-    # Print concordance results with context sentences
-    if context_sentences:
-        concordance_text = " ".join(context_sentences)
-        # Highlight the target word with a color
-        highlighted_concordance = concordance_text.replace(target_word, f"<span style='color: red'>{target_word}</span>")
-        st.write(highlighted_concordance, unsafe_allow_html=True)
+    # Print concordance results with context paragraphs
+    if context_paragraphs:
+        for paragraph in context_paragraphs:
+            # Highlight the target word with a color
+            highlighted_paragraph = paragraph.replace(target_word, f"<span style='color: red'>{target_word}</span>")
+            st.write(highlighted_paragraph, unsafe_allow_html=True)
+            st.write("\n")
 
 def main():
     # Displaying heading
