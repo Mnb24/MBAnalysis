@@ -41,7 +41,7 @@ def perform_concordance(texts, text_names, target_word):
 
 def main():
     # Displaying heading
-    st.title("Concordance Analyzer - Adi Parva (Sequential)")
+    st.title("Concordance Analyzer - Adi Parva (Instance-wise)")
 
     # URLs of the text files
     file_paths = [
