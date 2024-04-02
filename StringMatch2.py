@@ -48,9 +48,9 @@ def main():
     st.title("String Match Tool - Adi Parva")
 
     files = {
-        'BR': 'https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/BR-01-Complete.txt',
-        'KK': 'https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/KK-01-Complete.txt',
-        'SV': 'https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/SV-01-Complete.txt'
+       'BR': 'https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/BR-Complete.txt',
+        'KK': 'https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/KK-Complete.txt',
+        'SV': 'https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/SV-Complete.txt'
     }
 
     # Input field for the target word
