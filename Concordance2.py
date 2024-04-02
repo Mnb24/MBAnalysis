@@ -20,15 +20,31 @@ def get_context_sentences(text, target_word, context_lines=2):
     return context_sentences
 
 def perform_concordance(texts, target_word):
-    # Print concordance results with context paragraphs for each text
+    # Initialize lists to store occurrences from each text
+    concordance_lists = [[] for _ in texts]
+
+    # Get occurrences with context for each text
     for text_index, text in enumerate(texts):
-        st.write(f"\nConcordance Analysis for Text {text_index + 1}:")
         context_sentences = get_context_sentences(text, target_word)
         for sentence_index, (sentence_number, context) in enumerate(context_sentences):
-            st.write(f"Line {sentence_number} ({text_index}):")
-            for line in context:
-                st.write(line.strip())
-            st.write("")
+            concordance_lists[text_index].append((sentence_number, context))
+
+    # Print occurrences together from each text
+    while True:
+        group_found = False
+        for text_index, concordance_list in enumerate(concordance_lists):
+            if len(concordance_list) > 0:
+                sentence_number, context = concordance_list.pop(0)
+                st.write(f"Line {sentence_number} ({text_index}):")
+                for line in context:
+                    if target_word in line:
+                        line = line.replace(target_word, f"<span style='color: red'>{target_word}</span>")
+                    st.write(line.strip())
+                st.write("")
+                group_found = True
+
+        if not group_found:
+            break
 
 def main():
     st.title("Concordance Analyzer - Adi Parva")
