@@ -1,44 +1,67 @@
 import streamlit as st
 import requests
+import pandas as pd
+import matplotlib.pyplot as plt
 
-def perform_string_matching(files, target_string):
-    st.write(f"String Matching Analysis for '{target_string}':")
+def perform_string_matching(files, target_word):
+    st.write(f"String Matching Analysis for '{target_word}':")
     st.write("")
 
-    # Iterate over each file
+    occurrences = {file_name: 0 for file_name in files.keys()}  # Dictionary to store occurrences per file
+
+    # Count occurrences in each file
+    for file_name, file_path in files.items():
+        response = requests.get(file_path)
+        lines = response.text.split('\n')
+
+        # Check each line for the target word
+        for line in lines:
+            if target_word in line:
+                occurrences[file_name] += 1
+
+    # Create DataFrame for word distribution
+    df = pd.DataFrame(list(occurrences.items()), columns=['File', 'Occurrences'])
+
+    # Plot word distribution
+    st.write("Word Distribution:")
+    st.bar_chart(df.set_index('File'))
+
+    st.write("")  # Empty line for spacing
+
+    # Display results for each file
+    st.write("Results:")
     for file_name, file_path in files.items():
         response = requests.get(file_path)
         lines = response.text.split('\n')
 
         st.write(f"Results from file: {file_name}")
         
-        # Check each line for the target string
+        # Check each line for the target word
         for line_number, line in enumerate(lines, start=1):
-            if target_string in line:
-                # Highlight the target string with a color
-                highlighted_line = line.replace(target_string, f"<span style='color: red'>{target_string}</span>")
+            if target_word in line:
+                # Highlight the target word with a color
+                highlighted_line = line.replace(target_word, f"<span style='color: red'>{target_word}</span>")
                 st.write(f"Line {line_number}: {highlighted_line}", unsafe_allow_html=True)
 
 def main():
     # Displaying heading
-    st.title("String Matcher")
+    st.title("String Match Tool - Mahabharata")
 
-    # Dictionary containing file names and their corresponding URLs
     files = {
-        'BR': 'https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/BR-Complete.txt',
+       'BR': 'https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/BR-Complete.txt',
         'KK': 'https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/KK-Complete.txt',
         'SV': 'https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/SV-Complete.txt'
     }
 
-    # Input field for the target string
-    target_string = st.text_input("Enter the Devanagari string for string matching:", "")
+    # Input field for the target word
+    target_word = st.text_input("Enter the Devanagari word for string matching:", "")
 
     # Button to trigger the string matching analysis
     if st.button('Perform String Matching'):
-        if target_string.strip() == "":
-            st.warning("Please enter a valid Devanagari string.")
+        if target_word.strip() == "":
+            st.warning("Please enter a valid Devanagari word.")
         else:
-            perform_string_matching(files, target_string)
+            perform_string_matching(files, target_word)
 
 if __name__ == "__main__":
     main()
