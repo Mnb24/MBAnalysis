@@ -45,12 +45,12 @@ def perform_string_matching(files, target_word):
 
 def main():
     # Displaying heading
-    st.title("String Match Tool - Mahabharata")
+    st.title("String Match Tool - Adi Parva")
 
     files = {
-       'BD: https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/BD1.txt', 
-              'https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/KMG1.txt', 
-              'https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/MND1.txt'
+         'BD':'https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/BD1.txt', 
+         'KMG':'https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/KMG1.txt', 
+         'MND':'https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/MND1.txt'
     }
 
     # Input field for the target word
@@ -59,7 +59,7 @@ def main():
     # Button to trigger the string matching analysis
     if st.button('Perform String Matching'):
         if target_word.strip() == "":
-            st.warning("Please enter a valid Devanagari word.")
+            st.warning("Please enter a valid word.")
         else:
             perform_string_matching(files, target_word)
 
