@@ -7,7 +7,7 @@ def fetch_verses(letter, texts):
 
     # Iterate through each file
     for text in texts:
-        file_verses = [verse for verse in text if verse.startswith(letter)]
+        file_verses = [verse for verse in text if verse.split(" ", 1)[-1].strip() and verse.split(" ", 1)[-1].strip()[0] == letter]
         verses.append(file_verses)
     
     return verses
