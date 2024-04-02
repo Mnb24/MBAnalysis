@@ -16,39 +16,21 @@ def perform_concordance(texts, target_word):
         text_object = Text(tokens)
         concordance_lists.append((text_object.concordance_list(target_word), file_name))
 
-    # Print concordance results in groups of three occurrences
-    group_index = 0
-    occurrences_count = 0
-    while True:
-        group_found = False
-        for i, (concordance_list, file_name) in enumerate(concordance_lists):
-            if group_index < len(concordance_list):
-                entry = concordance_list[group_index]
-                left_context = " ".join(entry.left)
-                right_context = " ".join(entry.right)
-                line_number = text.count('\n', 0, entry.offset) + 1  # Calculate line number
+    # Print concordance results with context
+    for concordance_list, file_name in concordance_lists:
+        for entry in concordance_list:
+            left_context = " ".join(entry.left[-2:])
+            right_context = " ".join(entry.right[:2])
+            line_number = text.count('\n', 0, entry.offset) + 1  # Calculate line number
 
-                # Highlight the target word with a color
-                highlighted_text = f"{left_context} <span style='color: red'>{target_word}</span> {right_context}"
-                st.write(f"Line {line_number} ({file_name}): {highlighted_text}", unsafe_allow_html=True)
-                
-                group_found = True
-                occurrences_count += 1
-
-        if not group_found:
-            break
-
-        group_index += 1
-
-        # Add a symbol after each group of three occurrences
-        if occurrences_count % 3 == 0:
-            st.write("***")
-
-        # Add extra lines for readability
-        st.write("\n\n")
+            # Highlight the target word with a color
+            highlighted_text = f"{left_context} <span style='color: red'>{target_word}</span> {right_context}"
+            st.write(f"Line {line_number} ({file_name}): {highlighted_text}", unsafe_allow_html=True)
+            st.write("\n")
 
     # Add extra lines at the end for readability
     st.write("\n\n")
+
 
 def main():
     st.title("Concordance Analyzer - Adi Parva")
