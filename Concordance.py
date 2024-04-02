@@ -31,14 +31,12 @@ def perform_concordance(texts, target_word):
         text_object = Text(tokens)
         concordance_lists.append((text_object.concordance_list(target_word), file_name))
 
-    # Initialize indices for each file
-    indices = [0] * len(concordance_lists)
-
     # Print concordance results in groups of three occurrences
-    while any(index < len(concordance_list) for index, concordance_list in zip(indices, concordance_lists)):
-        for i, (concordance_list, file_name) in enumerate(concordance_lists):
-            if indices[i] < len(concordance_list):
-                entry = concordance_list[indices[i]]
+    occurrences_count = 0
+    for group_index in range(0, max(len(cl) for cl, _ in concordance_lists)):
+        for concordance_list, file_name in concordance_lists:
+            if group_index < len(concordance_list):
+                entry = concordance_list[group_index]
                 left_context = " ".join(entry.left)
                 right_context = " ".join(entry.right)
                 line_number = text.count('\n', 0, entry.offset) + 1  # Calculate line number
@@ -46,12 +44,14 @@ def perform_concordance(texts, target_word):
                 # Highlight the target word with a color
                 highlighted_text = f"{left_context} <span style='color: red'>{target_word}</span> {right_context}"
                 st.write(f"Line {line_number} ({file_name}): {highlighted_text}", unsafe_allow_html=True)
-
-                # Move to the next index for the next iteration
-                indices[i] += 1
+                
+                occurrences_count += 1
 
         # Add a symbol after each group of three occurrences
-        st.write("***")
+        if occurrences_count % 3 == 0:
+            st.write("***")
+        else:
+            st.write("\n\n")
 
 def main():
     st.title("Concordance Analyzer - Adi Parva")
@@ -73,5 +73,5 @@ def main():
         perform_concordance(texts, target_word)
 
 if __name__ == "__main__":
-    main()
+    main() 
 
