@@ -54,7 +54,7 @@ def main():
     }
 
     # Input field for the target word
-    target_word = st.text_input("Enter the Devanagari word for string matching:", "")
+    target_word = st.text_input("Enter the word for string matching:", "")
 
     # Button to trigger the string matching analysis
     if st.button('Perform String Matching'):
