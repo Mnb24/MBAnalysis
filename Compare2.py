@@ -99,7 +99,7 @@ if compare_bhagavad_button:
     try:
         # Fetch content of files from GitHub
         responses = [requests.get(file_path) for file_path in bhagavad_gita_file_paths]
-        texts = [response.text.splitlines() for response in responses]
+        texts = [[response.text.splitlines()] for response in responses]
 
         # Get the number of lines in the shortest file
         min_lines = min(len(text) for text in texts)
