@@ -70,23 +70,23 @@ if compare_button:
             if differences_12:
                 sentence1, sentence2 = differences_12[0]
                 st.markdown("File1 - BORI")
-                st.markdown(f"{sentence1}", unsafe_allow_html=True)
+                st.markdown(sentence1, unsafe_allow_html=True)
                 st.markdown("File2 - Kumbakonam")
-                st.markdown(f"{sentence2}", unsafe_allow_html=True)
+                st.markdown(sentence2, unsafe_allow_html=True)
 
             if differences_23:
                 sentence1, sentence2 = differences_23[0]
                 st.markdown("File2 - Kumbakonam")
-                st.markdown(f"{sentence1}", unsafe_allow_html=True)
+                st.markdown(sentence1, unsafe_allow_html=True)
                 st.markdown("File3 - Sastri Vavilla")
-                st.markdown(f"{sentence2}", unsafe_allow_html=True)
+                st.markdown(sentence2, unsafe_allow_html=True)
 
             if differences_13:
                 sentence1, sentence2 = differences_13[0]
                 st.markdown("File1 - BORI")
-                st.markdown(f"{sentence1}", unsafe_allow_html=True)
+                st.markdown(sentence1, unsafe_allow_html=True)
                 st.markdown("File3 - Sastri Vavilla")
-                st.markdown(f"{sentence2}", unsafe_allow_html=True)
+                st.markdown(sentence2, unsafe_allow_html=True)
 
     except Exception as e:
         st.write(f"An error occurred: {str(e)}")
@@ -110,23 +110,23 @@ if compare_gita_button:
             if differences_12:
                 sentence1, sentence2 = differences_12[0]
                 st.markdown("File1 - BORI")
-                st.markdown(f"{sentence1}", unsafe_allow_html=True)
+                st.markdown(sentence1, unsafe_allow_html=True)
                 st.markdown("File2 - Kumbakonam")
-                st.markdown(f"{sentence2}", unsafe_allow_html=True)
+                st.markdown(sentence2, unsafe_allow_html=True)
 
             if differences_23:
                 sentence1, sentence2 = differences_23[0]
                 st.markdown("File2 - Kumbakonam")
-                st.markdown(f"{sentence1}", unsafe_allow_html=True)
+                st.markdown(sentence1, unsafe_allow_html=True)
                 st.markdown("File3 - Sastri Vavilla")
-                st.markdown(f"{sentence2}", unsafe_allow_html=True)
+                st.markdown(sentence2, unsafe_allow_html=True)
 
             if differences_13:
                 sentence1, sentence2 = differences_13[0]
                 st.markdown("File1 - BORI")
-                st.markdown(f"{sentence1}", unsafe_allow_html=True)
+                st.markdown(sentence1, unsafe_allow_html=True)
                 st.markdown("File3 - Sastri Vavilla")
-                st.markdown(f"{sentence2}", unsafe_allow_html=True)
+                st.markdown(sentence2, unsafe_allow_html=True)
 
     except Exception as e:
         st.write(f"An error occurred: {str(e)}")
