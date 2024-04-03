@@ -16,12 +16,12 @@ def print_colored_diff(line):
         elif code == '+':
             sentence2.append(f'<span style="color: red">{word}</span>')
 
-    sentence1 = ''.join(sentence1)
-    sentence2 = ''.join(sentence2)
+    sentence1 = ' '.join(sentence1)
+    sentence2 = ' '.join(sentence2)
 
     return sentence1, sentence2
 
-# Function to find text differences character by character
+# Function to find text differences line by line
 def find_text_differences(text1, text2):
     differences = []
 
@@ -29,7 +29,7 @@ def find_text_differences(text1, text2):
 
     # Print the formatted differences with context
     for line_number, (sentence1, sentence2) in enumerate(zip(text1, text2), start=1):
-        diff = list(differ.compare(sentence1, sentence2))
+        diff = list(differ.compare(sentence1.split(), sentence2.split()))
         formatted_diff = [(code, word) for item in diff for code, word in [(item[:1], item[2:])]]
 
         differences.append((line_number, print_colored_diff(formatted_diff)))
@@ -67,9 +67,9 @@ if compare_button:
 
         # Compare lines from each pair of files
         for line_number in range(min_lines):
-            differences_12 = find_text_differences(texts[0][line_number], texts[1][line_number])
-            differences_23 = find_text_differences(texts[1][line_number], texts[2][line_number])
-            differences_13 = find_text_differences(texts[0][line_number], texts[2][line_number])
+            differences_12 = find_text_differences([texts[0][line_number]], [texts[1][line_number]])
+            differences_23 = find_text_differences([texts[1][line_number]], [texts[2][line_number]])
+            differences_13 = find_text_differences([texts[0][line_number]], [texts[2][line_number]])
 
             # Print differences for each pair of files
             if differences_12:
@@ -107,9 +107,9 @@ if compare_gita_button:
 
         # Compare lines from each pair of files
         for line_number in range(min_lines):
-            differences_12 = find_text_differences(texts[0][line_number], texts[1][line_number])
-            differences_23 = find_text_differences(texts[1][line_number], texts[2][line_number])
-            differences_13 = find_text_differences(texts[0][line_number], texts[2][line_number])
+            differences_12 = find_text_differences([texts[0][line_number]], [texts[1][line_number]])
+            differences_23 = find_text_differences([texts[1][line_number]], [texts[2][line_number]])
+            differences_13 = find_text_differences([texts[0][line_number]], [texts[2][line_number]])
 
             # Print differences for each pair of files
             if differences_12:
@@ -135,4 +135,3 @@ if compare_gita_button:
 
     except Exception as e:
         st.write(f"An error occurred: {str(e)}")
-
