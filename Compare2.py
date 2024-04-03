@@ -112,17 +112,17 @@ if compare_gita_button:
             # Print differences for each pair of files
             if differences_12:
                 sentence1, sentence2 = differences_12[0][1]
-                st.markdown(f"BORI: {sentence1} (line {line_number + 1})", unsafe_allow_html=True)
-                st.markdown(f"Kumbakonam: {sentence2} (line {line_number + 1})", unsafe_allow_html=True)
+                st.markdown(f"Sastri Vavilla: {sentence1} (line {line_number + 1})", unsafe_allow_html=True)
+                st.markdown(f"BORI: {sentence2} (line {line_number + 1})", unsafe_allow_html=True)
 
             if differences_23:
                 sentence1, sentence2 = differences_23[0][1]
-                st.markdown(f"Kumbakonam: {sentence1} (line {line_number + 1})", unsafe_allow_html=True)
-                st.markdown(f"Sastri Vavilla: {sentence2} (line {line_number + 1})", unsafe_allow_html=True)
+                st.markdown(f"BORI: {sentence1} (line {line_number + 1})", unsafe_allow_html=True)
+                st.markdown(f"Kumbakonam: {sentence2} (line {line_number + 1})", unsafe_allow_html=True)
 
             if differences_13:
                 sentence1, sentence2 = differences_13[0][1]
-                st.markdown(f"BORI: {sentence1} (line {line_number + 1})", unsafe_allow_html=True)
+                st.markdown(f"Kumbakonam: {sentence1} (line {line_number + 1})", unsafe_allow_html=True)
                 st.markdown(f"Sastri Vavilla: {sentence2} (line {line_number + 1})", unsafe_allow_html=True)
 
             st.markdown("*****")
