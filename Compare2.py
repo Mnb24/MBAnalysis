@@ -8,32 +8,33 @@ def print_colored_diff(sentence1, sentence2):
     colored_sentence2 = ''
 
     differ = difflib.Differ()
-    diff = list(differ.compare(sentence1.split(), sentence2.split()))
+    diff = list(differ.compare(sentence1, sentence2))
 
     for item in diff:
         code = item[:1]
         word = item[2:]
         if code == ' ':
-            colored_sentence1 += word + ' '
-            colored_sentence2 += word + ' '
+            colored_sentence1 += word
+            colored_sentence2 += word
         elif code == '+':
-            colored_sentence1 += f'<span style="color: blue">{word}</span> '
+            colored_sentence1 += f'<span style="color: blue">{word}</span>'
         elif code == '-':
-            colored_sentence2 += f'<span style="color: red">{word}</span> '
+            colored_sentence2 += f'<span style="color: red">{word}</span>'
 
     return colored_sentence1, colored_sentence2
 
-# Function to find text differences sentence by sentence
+# Function to find text differences line by line
 def find_text_differences(text1, text2):
     differences = []
 
     differ = difflib.Differ()
 
     # Print the formatted differences with context
-    diff = list(differ.compare(text1.splitlines(keepends=True), text2.splitlines(keepends=True)))
-    formatted_diff = [(code, word) for item in diff for code, word in [(item[:1], item[2:])]]
+    for line_number, (sentence1, sentence2) in enumerate(zip(text1, text2), start=1):
+        diff = list(differ.compare(sentence1.split(), sentence2.split()))
+        formatted_diff = [(code, word) for item in diff for code, word in [(item[:1], item[2:])]]
 
-    differences.append(print_colored_diff(text1, text2))
+        differences.append((line_number, print_colored_diff(sentence1, sentence2)))
 
     return differences
 
@@ -61,19 +62,32 @@ if compare_button:
     try:
         # Fetch content of files from GitHub
         responses = [requests.get(file_path) for file_path in file_paths]
-        texts = [response.text for response in responses]
+        texts = [response.text.splitlines() for response in responses]
 
-        # Compare sentences from each pair of files
-        sentences_12 = difflib.ndiff(texts[0].splitlines(keepends=True), texts[1].splitlines(keepends=True))
-        sentences_23 = difflib.ndiff(texts[1].splitlines(keepends=True), texts[2].splitlines(keepends=True))
-        sentences_13 = difflib.ndiff(texts[0].splitlines(keepends=True), texts[2].splitlines(keepends=True))
+        # Get the number of lines in the shortest file
+        min_lines = min(len(text) for text in texts)
 
-        # Print differences for each pair of files
-        for diff_12, diff_23, diff_13 in zip(sentences_12, sentences_23, sentences_13):
-            if diff_12.startswith('-') or diff_12.startswith('+'):
-                sentence1, sentence2 = diff_12[2:], diff_23[2:] if diff_23.startswith((' ', '+')) else diff_13[2:]
-                st.markdown(f"File1 - BORI: {sentence1}", unsafe_allow_html=True)
-                st.markdown(f"File2 - Kumbakonam: {sentence2}", unsafe_allow_html=True)
+        # Compare lines from each pair of files
+        for line_number in range(min_lines):
+            differences_12 = find_text_differences([texts[0][line_number]], [texts[1][line_number]])
+            differences_23 = find_text_differences([texts[1][line_number]], [texts[2][line_number]])
+            differences_13 = find_text_differences([texts[0][line_number]], [texts[2][line_number]])
+
+            # Print differences for each pair of files
+            if differences_12:
+                sentence1, sentence2 = differences_12[0][1]
+                st.markdown(f"File1 - BORI: {sentence1} (line {line_number + 1})", unsafe_allow_html=True)
+                st.markdown(f"File2 - Kumbakonam: {sentence2} (line {line_number + 1})", unsafe_allow_html=True)
+
+            if differences_23:
+                sentence1, sentence2 = differences_23[0][1]
+                st.markdown(f"File2 - Kumbakonam: {sentence1} (line {line_number + 1})", unsafe_allow_html=True)
+                st.markdown(f"File3 - Sastri Vavilla: {sentence2} (line {line_number + 1})", unsafe_allow_html=True)
+
+            if differences_13:
+                sentence1, sentence2 = differences_13[0][1]
+                st.markdown(f"File1 - BORI: {sentence1} (line {line_number + 1})", unsafe_allow_html=True)
+                st.markdown(f"File3 - Sastri Vavilla: {sentence2} (line {line_number + 1})", unsafe_allow_html=True)
 
     except Exception as e:
         st.write(f"An error occurred: {str(e)}")
@@ -82,19 +96,32 @@ if compare_gita_button:
     try:
         # Fetch content of Bhagavad Gita files from GitHub
         responses = [requests.get(file_path) for file_path in bhagavad_gita_file_paths]
-        texts = [response.text for response in responses]
+        texts = [response.text.splitlines() for response in responses]
 
-        # Compare sentences from each pair of files
-        sentences_12 = difflib.ndiff(texts[0].splitlines(keepends=True), texts[1].splitlines(keepends=True))
-        sentences_23 = difflib.ndiff(texts[1].splitlines(keepends=True), texts[2].splitlines(keepends=True))
-        sentences_13 = difflib.ndiff(texts[0].splitlines(keepends=True), texts[2].splitlines(keepends=True))
+        # Get the number of lines in the shortest file
+        min_lines = min(len(text) for text in texts)
 
-        # Print differences for each pair of files
-        for diff_12, diff_23, diff_13 in zip(sentences_12, sentences_23, sentences_13):
-            if diff_12.startswith('-') or diff_12.startswith('+'):
-                sentence1, sentence2 = diff_12[2:], diff_23[2:] if diff_23.startswith((' ', '+')) else diff_13[2:]
-                st.markdown(f"File1 - BORI: {sentence1}", unsafe_allow_html=True)
-                st.markdown(f"File2 - Kumbakonam: {sentence2}", unsafe_allow_html=True)
+        # Compare lines from each pair of files
+        for line_number in range(min_lines):
+            differences_12 = find_text_differences([texts[0][line_number]], [texts[1][line_number]])
+            differences_23 = find_text_differences([texts[1][line_number]], [texts[2][line_number]])
+            differences_13 = find_text_differences([texts[0][line_number]], [texts[2][line_number]])
+
+            # Print differences for each pair of files
+            if differences_12:
+                sentence1, sentence2 = differences_12[0][1]
+                st.markdown(f"File1 - BORI: {sentence1} (line {line_number + 1})", unsafe_allow_html=True)
+                st.markdown(f"File2 - Kumbakonam: {sentence2} (line {line_number + 1})", unsafe_allow_html=True)
+
+            if differences_23:
+                sentence1, sentence2 = differences_23[0][1]
+                st.markdown(f"File2 - Kumbakonam: {sentence1} (line {line_number + 1})", unsafe_allow_html=True)
+                st.markdown(f"File3 - Sastri Vavilla: {sentence2} (line {line_number + 1})", unsafe_allow_html=True)
+
+            if differences_13:
+                sentence1, sentence2 = differences_13[0][1]
+                st.markdown(f"File1 - BORI: {sentence1} (line {line_number + 1})", unsafe_allow_html=True)
+                st.markdown(f"File3 - Sastri Vavilla: {sentence2} (line {line_number + 1})", unsafe_allow_html=True)
 
     except Exception as e:
         st.write(f"An error occurred: {str(e)}")
