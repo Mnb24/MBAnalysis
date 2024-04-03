@@ -39,7 +39,7 @@ def find_text_differences(text1, text2):
     return differences
 
 # Streamlit UI
-st.title("File Comparison App")
+st.title("Sacred Text Comparison")
 
 # URLs of the text files
 file_paths = [
@@ -55,7 +55,7 @@ bhagavad_gita_file_paths = [
     'https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/BG-SV.txt'
 ]
 
-compare_button = st.button("Compare Vishnu Sahasranama Files")
+compare_button = st.button("Compare Vishnu Sahasranama Versions")
 compare_gita_button = st.button("Compare Bhagavad Gita Versions")
 
 if compare_button:
@@ -76,18 +76,18 @@ if compare_button:
             # Print differences for each pair of files
             if differences_12:
                 sentence1, sentence2 = differences_12[0][1]
-                st.markdown(f"File1 - BORI: {sentence1} (line {line_number + 1})", unsafe_allow_html=True)
-                st.markdown(f"File2 - Kumbakonam: {sentence2} (line {line_number + 1})", unsafe_allow_html=True)
+                st.markdown(f"BORI: {sentence1} (line {line_number + 1})", unsafe_allow_html=True)
+                st.markdown(f"Kumbakonam: {sentence2} (line {line_number + 1})", unsafe_allow_html=True)
 
             if differences_23:
                 sentence1, sentence2 = differences_23[0][1]
-                st.markdown(f"File2 - Kumbakonam: {sentence1} (line {line_number + 1})", unsafe_allow_html=True)
-                st.markdown(f"File3 - Sastri Vavilla: {sentence2} (line {line_number + 1})", unsafe_allow_html=True)
+                st.markdown(f"Kumbakonam: {sentence1} (line {line_number + 1})", unsafe_allow_html=True)
+                st.markdown(f"Sastri Vavilla: {sentence2} (line {line_number + 1})", unsafe_allow_html=True)
 
             if differences_13:
                 sentence1, sentence2 = differences_13[0][1]
-                st.markdown(f"File1 - BORI: {sentence1} (line {line_number + 1})", unsafe_allow_html=True)
-                st.markdown(f"File3 - Sastri Vavilla: {sentence2} (line {line_number + 1})", unsafe_allow_html=True)
+                st.markdown(f"BORI: {sentence1} (line {line_number + 1})", unsafe_allow_html=True)
+                st.markdown(f"Sastri Vavilla: {sentence2} (line {line_number + 1})", unsafe_allow_html=True)
 
             st.markdown("*****")
 
@@ -112,18 +112,18 @@ if compare_gita_button:
             # Print differences for each pair of files
             if differences_12:
                 sentence1, sentence2 = differences_12[0][1]
-                st.markdown(f"File1 - BORI: {sentence1} (line {line_number + 1})", unsafe_allow_html=True)
-                st.markdown(f"File2 - Kumbakonam: {sentence2} (line {line_number + 1})", unsafe_allow_html=True)
+                st.markdown(f"BORI: {sentence1} (line {line_number + 1})", unsafe_allow_html=True)
+                st.markdown(f"Kumbakonam: {sentence2} (line {line_number + 1})", unsafe_allow_html=True)
 
             if differences_23:
                 sentence1, sentence2 = differences_23[0][1]
-                st.markdown(f"File2 - Kumbakonam: {sentence1} (line {line_number + 1})", unsafe_allow_html=True)
-                st.markdown(f"File3 - Sastri Vavilla: {sentence2} (line {line_number + 1})", unsafe_allow_html=True)
+                st.markdown(f"Kumbakonam: {sentence1} (line {line_number + 1})", unsafe_allow_html=True)
+                st.markdown(f"Sastri Vavilla: {sentence2} (line {line_number + 1})", unsafe_allow_html=True)
 
             if differences_13:
                 sentence1, sentence2 = differences_13[0][1]
-                st.markdown(f"File1 - BORI: {sentence1} (line {line_number + 1})", unsafe_allow_html=True)
-                st.markdown(f"File3 - Sastri Vavilla: {sentence2} (line {line_number + 1})", unsafe_allow_html=True)
+                st.markdown(f"BORI: {sentence1} (line {line_number + 1})", unsafe_allow_html=True)
+                st.markdown(f"Sastri Vavilla: {sentence2} (line {line_number + 1})", unsafe_allow_html=True)
 
             st.markdown("*****")
 
