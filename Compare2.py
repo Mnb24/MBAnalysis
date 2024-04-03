@@ -102,13 +102,13 @@ if compare_bhagavad_button:
         texts = [[response.text.splitlines()] for response in responses]
 
         # Get the number of lines in the shortest file
-        min_lines = min(len(text) for text in texts)
+        min_lines = min(len(text[0]) for text in texts)
 
         # Compare lines from each pair of files
         for line_number in range(min_lines):
-            differences_12 = find_text_differences([texts[0][line_number]], [texts[1][line_number]])
-            differences_23 = find_text_differences([texts[1][line_number]], [texts[2][line_number]])
-            differences_13 = find_text_differences([texts[0][line_number]], [texts[2][line_number]])
+            differences_12 = find_text_differences(texts[0][0][line_number], texts[1][0][line_number])
+            differences_23 = find_text_differences(texts[1][0][line_number], texts[2][0][line_number])
+            differences_13 = find_text_differences(texts[0][0][line_number], texts[2][0][line_number])
 
             # Print differences for each pair of files
             if differences_12:
