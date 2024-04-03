@@ -129,4 +129,3 @@ if compare_gita_button:
 
     except Exception as e:
         st.write(f"An error occurred: {str(e)}")
-
