@@ -89,6 +89,8 @@ if compare_button:
                 st.markdown(f"File1 - BORI: {sentence1} (line {line_number + 1})", unsafe_allow_html=True)
                 st.markdown(f"File3 - Sastri Vavilla: {sentence2} (line {line_number + 1})", unsafe_allow_html=True)
 
+            st.markdown("*****")
+
     except Exception as e:
         st.write(f"An error occurred: {str(e)}")
 
@@ -123,5 +125,8 @@ if compare_gita_button:
                 st.markdown(f"File1 - BORI: {sentence1} (line {line_number + 1})", unsafe_allow_html=True)
                 st.markdown(f"File3 - Sastri Vavilla: {sentence2} (line {line_number + 1})", unsafe_allow_html=True)
 
+            st.markdown("*****")
+
     except Exception as e:
         st.write(f"An error occurred: {str(e)}")
+
