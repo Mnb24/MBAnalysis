@@ -49,6 +49,7 @@ file_paths = [
 # URLs of the Bhagavad Gita files
 bhagavad_gita_file_paths = [
     'https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/BG-BR.txt', 
+    'https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/BG-KK.txt'
     'https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/BG-SV.txt'
 ]
 
