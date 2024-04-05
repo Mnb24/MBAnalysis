@@ -40,6 +40,15 @@ file_paths = [
     'https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/MBTN.txt'
 ]
 
+# User input for Devanagari letter
+devanagari_letter = st.text_input("Enter a Devanagari letter:")
+
+# Dropdown menu for selecting the version
+selected_version = st.selectbox("Select Mahabharata Version", ["BORI", "Kumbakonam", "Sastri-Vavilla", "MBTN"])
+
+# Index to get the selected version's file path
+selected_index = ["BORI", "Kumbakonam", "Sastri-Vavilla", "MBTN"].index(selected_version)
+
 if devanagari_letter:
     try:
         # Fetch content of the selected file from GitHub
