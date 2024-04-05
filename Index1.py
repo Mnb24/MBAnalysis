@@ -34,7 +34,7 @@ file_paths = [
 devanagari_letter = st.text_input("Enter a Devanagari letter:")
 
 # Dictionary to map file names to their index
-file_names = {0: "BORI", 1: "Kumbakonam", 2: "Sastri-Vavilla" }
+file_names = {0: "BORI", 1: "Kumbakonam", 2: "Sastri-Vavilla", 4: "MBTN"}
 
 if devanagari_letter:
     try:
