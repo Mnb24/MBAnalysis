@@ -8,24 +8,9 @@ def fetch_verses(letter, texts):
     # Iterate through each file
     for text in texts:
         for verse in text:
-            # Check if there is a space following the marker
-            space_index = verse.find(" ")
-            if space_index != -1 and space_index + 1 < len(verse):
-                # Get the first character after the space
-                start_index = space_index + 1
-                # Check if the verse starts with "BR", "MT", "KK", or "SV"
-                if verse[start_index:start_index + 2] in ["BR", "MT", "KK", "SV"]:
-                    # Skip the prefix and consider the next word
-                    next_space_index = verse.find(" ", start_index + 2)
-                    if next_space_index != -1 and next_space_index + 1 < len(verse):
-                        first_char = verse[next_space_index + 1]
-                        if first_char == letter:
-                            verses.append(verse)
-                else:
-                    # Check if the first character matches the user-input letter
-                    first_char = verse[start_index]
-                    if first_char == letter:
-                        verses.append(verse)
+            # Check if the verse starts with "MT" and the first character after "MT" matches the input letter
+            if verse.startswith("MT") and verse[3] == letter:
+                verses.append(verse)
     
     return verses
 
@@ -34,7 +19,7 @@ st.title("Index - Mahabharata Verses")
 
 # URLs of the text files
 file_paths = [
-   'https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/BR-Complete.txt',
+    'https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/BR-Complete.txt',
     'https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/KK-Complete.txt',
     'https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/SV-Complete.txt',
     'https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/MBTN.txt'
