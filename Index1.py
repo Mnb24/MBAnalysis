@@ -51,13 +51,13 @@ if devanagari_letter:
         # Display verses
         if verses:
             st.write(f"Verses beginning with '{devanagari_letter}' in {selected_version}:")
-            file_verses = [verse for verse in text if verse.split(" ", 1)[-1].strip() and verse.split(" ", 1)[-1].strip()[0] == devanagari_letter]
-            if file_verses:
-                for verse in file_verses:
-                    highlighted_verse = verse.replace(devanagari_letter, f"<span style='color:red'>{devanagari_letter}</span>", 1)
-                    st.write(highlighted_verse, unsafe_allow_html=True)
-            else:
-                st.write(f"No verses found beginning with '{devanagari_letter}' in {selected_version}.")
+            for verse in text:
+                # Assuming the first space separates the verse number from the text
+                space_index = verse.find(" ")
+                if space_index != -1 and space_index + 1 < len(verse):
+                    if verse[space_index + 1] == devanagari_letter:
+                        highlighted_verse = verse.replace(devanagari_letter, f"<span style='color:red'>{devanagari_letter}</span>", 1)
+                        st.write(highlighted_verse, unsafe_allow_html=True)
         else:
             st.write(f"No verses found beginning with '{devanagari_letter}'.")
     except Exception as e:
