@@ -8,9 +8,9 @@ def fetch_verses(letter, texts):
     # Iterate through each file
     for text in texts:
         for verse in text:
-            # For MBTN file, split at the very first space
+            # Check if there is a space following the marker
             space_index = verse.find(" ")
-            if space_index != -1:
+            if space_index != -1 and space_index + 1 < len(verse):
                 # Get the first character after the space
                 first_char = verse[space_index + 1]
                 # Check if the first character matches the user-input letter
@@ -50,7 +50,7 @@ if devanagari_letter:
             st.write(f"Verses beginning with '{devanagari_letter}':")
             for i, text in enumerate(texts):
                 st.markdown(f"<h3 style='font-size:24px'>{file_names[i]}</h3>", unsafe_allow_html=True)
-                file_verses = [verse for verse in text if verse.strip() and verse.split(" ", 1)[-1].strip() and verse.split(" ", 1)[-1].strip()[0] == devanagari_letter]
+                file_verses = [verse for verse in text if verse.startswith(file_names[i][:3]) and verse.split(" ", 1)[-1].strip() and verse.split(" ", 1)[-1].strip()[0] == devanagari_letter]
                 if file_verses:
                     for verse in file_verses:
                         highlighted_verse = verse.replace(devanagari_letter, f"<span style='color:red'>{devanagari_letter}</span>", 1)
@@ -61,3 +61,4 @@ if devanagari_letter:
             st.write(f"No verses found beginning with '{devanagari_letter}'.")
     except Exception as e:
         st.write(f"An error occurred: {str(e)}")
+
