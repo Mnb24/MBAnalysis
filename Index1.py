@@ -40,15 +40,6 @@ file_paths = [
     'https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/MBTN.txt'
 ]
 
-# User input for Devanagari letter
-devanagari_letter = st.text_input("Enter a Devanagari letter:")
-
-# Dropdown menu for selecting the version
-selected_version = st.selectbox("Select Mahabharata Version", ["BORI", "Kumbakonam", "Sastri-Vavilla", "Mahabharata Tatparya Nirnaya"])
-
-# Index to get the selected version's file path
-selected_index = ["BORI", "Kumbakonam", "Sastri-Vavilla", "Mahabharata Tatparya Nirnaya"].index(selected_version)
-
 if devanagari_letter:
     try:
         # Fetch content of the selected file from GitHub
@@ -61,13 +52,9 @@ if devanagari_letter:
         # Display verses
         if verses:
             st.write(f"Verses beginning with '{devanagari_letter}' in {selected_version}:")
-            for verse in text:
-                # Assuming the first space separates the verse number from the text
-                space_index = verse.find(" ")
-                if space_index != -1 and space_index + 1 < len(verse):
-                    if verse[space_index + 1] == devanagari_letter:
-                        highlighted_verse = verse.replace(devanagari_letter, f"<span style='color:red'>{devanagari_letter}</span>", 1)
-                        st.write(highlighted_verse, unsafe_allow_html=True)
+            for verse in verses:
+                highlighted_verse = verse.replace(devanagari_letter, f"<span style='color:red'>{devanagari_letter}</span>", 1)
+                st.write(highlighted_verse, unsafe_allow_html=True)
         else:
             st.write(f"No verses found beginning with '{devanagari_letter}'.")
     except Exception as e:
