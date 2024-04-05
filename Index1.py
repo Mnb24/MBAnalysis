@@ -37,7 +37,7 @@ file_paths = [
    'https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/BR-Complete.txt',
     'https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/KK-Complete.txt',
     'https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/SV-Complete.txt',
-    'https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/Mahabharata Tatparya Nirnaya.txt'
+    'https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/MBTN.txt'
 ]
 
 # User input for Devanagari letter
