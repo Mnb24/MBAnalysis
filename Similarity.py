@@ -26,7 +26,7 @@ def find_matches(target_words, br_text):
 def main():
     # Title and description
     st.title("File Similarity Finder")
-    st.write("This app allows you to find matches for words entered in the second text box within the content of the BR file.")
+    st.write("This app allows you to find matches for words from the Mahabharata Tatparya Nirnaya in the BORI version.")
 
     # Fetching file contents
     mbtn_text = fetch_text("https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/MBTN.txt")
@@ -37,8 +37,8 @@ def main():
         return
 
     # Sidebar with text boxes
-    st.sidebar.header("Text from File 1 (MBTN.txt)")
-    st.sidebar.text_area("Selected Text", mbtn_text, height=400)
+    st.sidebar.header("Text from Mahabharata Tatparya Nirnaya")
+    st.sidebar.text_area("MBTN", mbtn_text, height=400)
 
     target_words = st.sidebar.text_area("Enter words to find matches", height=200).split()
 
@@ -46,7 +46,7 @@ def main():
     if st.sidebar.button("Find Matches"):
         matched_lines = find_matches(target_words, br_complete_text)
         if matched_lines:
-            st.header("Matches Found in BR File:")
+            st.header("Matches Found in BORI edition:")
             for line in matched_lines:
                 st.markdown(line, unsafe_allow_html=True)
         else:
