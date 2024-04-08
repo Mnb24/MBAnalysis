@@ -24,7 +24,7 @@ def find_matches(target_words, br_text):
 # Main function
 def main():
     # Title and description
-    st.title("File Similarity Finder")
+    st.title("Phrase Finder")
     st.write("Find matches for words/phrases entered in the second text box (referring the text in the sidebar) within the BORI edition.")
 
     # Fetching file contents
