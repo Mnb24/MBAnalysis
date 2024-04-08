@@ -1,6 +1,7 @@
 import streamlit as st
 import requests
-from difflib import SequenceMatcher
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.metrics.pairwise import cosine_similarity
 
 # Function to fetch text from URL
 def fetch_text(url):
@@ -12,9 +13,18 @@ def fetch_text(url):
 
 # Function to find similar phrases between two texts
 def find_similar_phrases(text1, text2):
-    matcher = SequenceMatcher(None, text1, text2)
-    match = matcher.find_longest_match(0, len(text1), 0, len(text2))
-    return text1[match.a: match.a + match.size]
+    # Tokenize the text
+    vectorizer = TfidfVectorizer()
+    vectors = vectorizer.fit_transform([text1, text2])
+
+    # Compute cosine similarity between vectors
+    similarity = cosine_similarity(vectors[0], vectors[1])
+
+    # Find most similar phrases
+    max_sim_index = similarity.argmax()
+    similar_phrase = text1 if max_sim_index == 0 else text2
+
+    return similar_phrase
 
 # Main function
 def main():
