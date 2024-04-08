@@ -37,7 +37,8 @@ def main():
 
     # Sidebar with text boxes
     st.sidebar.header("Text from Sastri Vavilla")
-
+    selected_text = st.sidebar.text_area("SV", mbtn_text, height=400)
+    
     target_words = st.sidebar.text_area("Enter words to find matches", height=200).split()
 
     # Button to find matches
