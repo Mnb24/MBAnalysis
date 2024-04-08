@@ -25,7 +25,7 @@ def find_matches(target_words, br_text):
 def main():
     # Title and description
     st.title("File Similarity Finder")
-    st.write("This app allows you to find matches for words/phrases entered in the second text box (referring the text in the sidebar) within the BORI edition.")
+    st.write("Find matches for words/phrases entered in the second text box (referring the text in the sidebar) within the BORI edition.")
 
     # Fetching file contents
     mbtn_text = fetch_text("https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/SV-Complete.txt")
