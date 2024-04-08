@@ -10,51 +10,49 @@ def fetch_text(url):
     else:
         return None
 
-# Function to find matches for words in the second text box in the BR file
-def find_matches(text, br_text):
-    matches = []
-    for line in br_text.split("\n"):
-        if re.search(r'\b(?:{})\b'.format("|".join(re.escape(word) for word in text.split())), line):
-            # Highlight the target words
-            for word in text.split():
-                line = re.sub(r'\b({})\b'.format(re.escape(word)), r'<span style="background-color: #FFFF00">\1</span>', line, flags=re.IGNORECASE)
-            matches.append(line)
-    return matches
+# Function to find matches in the BR file and highlight the target word
+def find_matches(target_words, br_text):
+    lines = br_text.split('\n')
+    matched_lines = []
+    for line in lines:
+        for word in target_words:
+            if re.search(r'\b' + word + r'\b', line, flags=re.IGNORECASE):
+                line = re.sub(r'\b(' + word + r')\b', r'<mark>\1</mark>', line, flags=re.IGNORECASE)
+                matched_lines.append(line)
+                break  # If any target word is found, move to the next line
+    return matched_lines
 
 # Main function
 def main():
     # Title and description
     st.title("File Similarity Finder")
-    st.write("This app allows you to find matches for words/phrases in the second file (BR-Complete.txt).")
+    st.write("This app allows you to find matches for words entered in the second text box within the content of the BR file.")
 
     # Fetching file contents
+    mbtn_text = fetch_text("https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/MBTN.txt")
     br_complete_text = fetch_text("https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/BR-Complete.txt")
 
-    if br_complete_text is None:
+    if mbtn_text is None or br_complete_text is None:
         st.error("Failed to fetch file contents. Please try again later.")
         return
 
-    # Sidebar with text input and file display
+    # Sidebar with text boxes
     st.sidebar.header("Text from File 1 (MBTN.txt)")
-    selected_text = st.sidebar.text_area("Selected Text")
+    st.sidebar.text_area("Selected Text", mbtn_text, height=400)
 
-    # Text area for entering required text
-    st.sidebar.header("Enter Words to Find Matches")
-    required_words = st.sidebar.text_input("Enter words to find matches", "")
+    target_words = st.sidebar.text_area("Enter words to find matches", height=200).split()
 
     # Button to find matches
     if st.sidebar.button("Find Matches"):
-        if required_words.strip() == "":
-            st.error("Please enter words to find matches.")
+        matched_lines = find_matches(target_words, br_complete_text)
+        if matched_lines:
+            st.header("Matches Found in BR File:")
+            for line in matched_lines:
+                st.markdown(line, unsafe_allow_html=True)
         else:
-            matches = find_matches(required_words, br_complete_text)
-            if matches:
-                st.header("Matches Found in BR-Complete.txt:")
-                for match in matches:
-                    st.markdown(match, unsafe_allow_html=True)
-            else:
-                st.write("No matches found.")
+            st.header("No matches found.")
 
 # Run the main function
 if __name__ == "__main__":
     main()
+
