@@ -15,9 +15,9 @@ def find_matches(target_words, br_text):
     lines = br_text.split('\n')
     matched_lines = []
     for line in lines:
-        if all(re.search(r'\b' + word + r'\b', line, flags=re.IGNORECASE) for word in target_words):
+        if all(re.search(r'\b' + re.escape(word) + r'\b', line, flags=re.IGNORECASE) for word in target_words):
             for word in target_words:
-                line = re.sub(r'\b(' + word + r')\b', r'<span style="color:red">\1</span>', line, flags=re.IGNORECASE)
+                line = re.sub(r'\b(' + re.escape(word) + r')\b', r'<span style="color:red">\1</span>', line, flags=re.IGNORECASE)
             matched_lines.append(line)
     return matched_lines
 
@@ -39,7 +39,7 @@ def main():
     st.sidebar.header("Text from Sastri Vavilla")
     selected_text = st.sidebar.text_area("SV", mbtn_text, height=400)
     
-    target_words = st.sidebar.text_area("Enter words to find matches", height=200).split()
+    target_words = st.sidebar.text_area("Enter words to find matches", height=200).strip().split()
 
     # Button to find matches
     if st.sidebar.button("Find Matches"):
