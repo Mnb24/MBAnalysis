@@ -37,7 +37,7 @@ def main():
 
     # Sidebar with text boxes
     st.sidebar.header("Text from File 1 (MBTN.txt)")
-    st.sidebar.text_area("Selected Text", value=mbtn_text, height=400, disabled=True)
+    st.sidebar.text_area("Selected Text", mbtn_text, height=400, disabled=True)
 
     target_words = st.sidebar.text_area("Enter words to find matches", height=200).split()
 
@@ -54,4 +54,3 @@ def main():
 # Run the main function
 if __name__ == "__main__":
     main()
-
