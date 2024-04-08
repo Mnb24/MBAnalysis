@@ -1,7 +1,6 @@
 import streamlit as st
 import requests
-from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.metrics.pairwise import cosine_similarity
+from difflib import SequenceMatcher
 
 # Function to fetch text from URL
 def fetch_text(url):
@@ -13,18 +12,9 @@ def fetch_text(url):
 
 # Function to find similar phrases between two texts
 def find_similar_phrases(text1, text2):
-    # Tokenize the text
-    vectorizer = TfidfVectorizer()
-    vectors = vectorizer.fit_transform([text1, text2])
-
-    # Compute cosine similarity between vectors
-    similarity = cosine_similarity(vectors[0], vectors[1])
-
-    # Find most similar phrases
-    max_sim_index = similarity.argmax()
-    similar_phrase = text1 if max_sim_index == 0 else text2
-
-    return similar_phrase
+    matcher = SequenceMatcher(None, text1, text2)
+    match = matcher.find_longest_match(0, len(text1), 0, len(text2))
+    return text2[match.b: match.b + match.size]
 
 # Main function
 def main():
@@ -44,9 +34,13 @@ def main():
     st.sidebar.header("Select Portions of the First File")
     selected_text = st.sidebar.text_area("Selected Text", mbtn_text, height=400)
 
+    # Text area for inputting custom text
+    st.sidebar.header("Input Custom Text")
+    custom_text = st.sidebar.text_area("Enter text to find similarities", height=200)
+
     # Button to find similar phrases
     if st.sidebar.button("Find Similar Phrases"):
-        similar_phrases = find_similar_phrases(selected_text, br_complete_text)
+        similar_phrases = find_similar_phrases(custom_text, br_complete_text)
         st.write("Similar Phrases Found:")
         st.write(similar_phrases)
 
