@@ -28,16 +28,16 @@ def main():
     st.write("This app allows you to find matches for words entered in the second text box within the content of the BR file.")
 
     # Fetching file contents
-    sv_text = fetch_text("https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/SV-Complete.txt")
+    mbtn_text = fetch_text("https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/MBTN.txt")
     br_complete_text = fetch_text("https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/BR-Complete.txt")
 
-    if sv_text is None or br_complete_text is None:
+    if mbtn_text is None or br_complete_text is None:
         st.error("Failed to fetch file contents. Please try again later.")
         return
 
     # Sidebar with text boxes
-    st.sidebar.header("Text from File 1 (sv.txt)")
-    st.sidebar.text_area("Selected Text", sv_text, height=400)
+    st.sidebar.header("Text from File 1 (MBTN.txt)")
+    st.sidebar.text_area("Selected Text", value=mbtn_text, height=400, disabled=True)
 
     target_words = st.sidebar.text_area("Enter words to find matches", height=200).split()
 
