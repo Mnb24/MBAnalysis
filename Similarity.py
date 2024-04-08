@@ -11,13 +11,14 @@ def fetch_text(url):
         return None
 
 # Function to find matches in the BR file and highlight the target word by changing font color
-def find_matches(target_words, br_text):
+def find_matches(target_phrases, br_text):
     lines = br_text.split('\n')
     matched_lines = []
     for line in lines:
-        if all(re.search(r'\b' + re.escape(word) + r'\b', line, flags=re.IGNORECASE) for word in target_words):
-            for word in target_words:
-                line = re.sub(r'\b(' + re.escape(word) + r')\b', r'<span style="color:red">\1</span>', line, flags=re.IGNORECASE)
+        if all(any(re.search(r'\b' + re.escape(word) + r'\b', line, flags=re.IGNORECASE) for word in phrase.split()) for phrase in target_phrases):
+            for phrase in target_phrases:
+                for word in phrase.split():
+                    line = re.sub(r'\b(' + re.escape(word) + r')\b', r'<span style="color:red">\1</span>', line, flags=re.IGNORECASE)
             matched_lines.append(line)
     return matched_lines
 
@@ -39,11 +40,11 @@ def main():
     st.sidebar.header("Text from Sastri Vavilla")
     selected_text = st.sidebar.text_area("SV", mbtn_text, height=400)
     
-    target_words = st.sidebar.text_area("Enter words to find matches", height=200).strip().split()
+    target_phrases = st.sidebar.text_area("Enter phrases to find matches", height=200).strip().split('\n')
 
     # Button to find matches
     if st.sidebar.button("Find Matches"):
-        matched_lines = find_matches(target_words, br_complete_text)
+        matched_lines = find_matches(target_phrases, br_complete_text)
         if matched_lines:
             st.header("Matches Found in BORI edition:")
             for line in matched_lines:
