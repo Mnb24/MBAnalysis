@@ -16,10 +16,9 @@ def find_matches(target_words, br_text):
     matched_lines = []
     for line in lines:
         if all(re.search(r'\b' + word + r'\b', line, flags=re.IGNORECASE) for word in target_words):
-            line_highlighted = line
             for word in target_words:
-                line_highlighted = re.sub(r'\b(' + word + r')\b', r'<span style="color:red">\1</span>', line_highlighted, flags=re.IGNORECASE)
-            matched_lines.append(line_highlighted)
+                line = re.sub(r'\b(' + word + r')\b', r'<span style="color:red">\1</span>', line, flags=re.IGNORECASE)
+            matched_lines.append(line)
     return matched_lines
 
 # Main function
@@ -40,13 +39,10 @@ def main():
     st.sidebar.header("Text from File 1 (MBTN.txt)")
     st.sidebar.text_area("Selected Text", mbtn_text, height=400)
 
-    target_words = st.sidebar.text_area("Enter words to find matches (separated by spaces)", height=200).split()
+    target_words = st.sidebar.text_area("Enter words to find matches", height=200).split()
 
     # Button to find matches
     if st.sidebar.button("Find Matches"):
-        if len(target_words) < 2:
-            st.warning("Please enter at least two words to find matches.")
-            return
         matched_lines = find_matches(target_words, br_complete_text)
         if matched_lines:
             st.header("Matches Found in BR File:")
