@@ -30,17 +30,17 @@ def main():
         st.error("Failed to fetch file contents. Please try again later.")
         return
 
-    # Sidebar with file selection
-    st.sidebar.header("Select Portions of the First File")
-    selected_text = st.sidebar.text_area("Selected Text", mbtn_text, height=400)
+    # Displaying text from the first file
+    st.header("Text from File 1 (MBTN.txt)")
+    st.text(mbtn_text)
 
-    # Text area for inputting custom text
-    st.sidebar.header("Input Custom Text")
-    custom_text = st.sidebar.text_area("Enter text to find similarities", height=200)
+    # Text area for entering required text
+    st.header("Enter Required Text")
+    required_text = st.text_area("Enter the text you want to find similarities for", height=200)
 
     # Button to find similar phrases
-    if st.sidebar.button("Find Similar Phrases"):
-        similar_phrases = find_similar_phrases(custom_text, br_complete_text)
+    if st.button("Find Similar Phrases"):
+        similar_phrases = find_similar_phrases(required_text, br_complete_text)
         st.write("Similar Phrases Found:")
         st.write(similar_phrases)
 
