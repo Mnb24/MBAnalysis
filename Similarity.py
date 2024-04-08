@@ -37,7 +37,7 @@ def main():
 
     # Sidebar with text boxes
     st.sidebar.header("Text from File 1 (MBTN.txt)")
-    st.sidebar.text_input("Selected Text", mbtn_text, height=400, disabled=True)
+    st.sidebar.write(mbtn_text)
 
     target_words = st.sidebar.text_area("Enter words to find matches", height=200).split()
 
