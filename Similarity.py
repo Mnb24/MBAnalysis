@@ -26,7 +26,7 @@ def find_matches(target_words, br_text):
 def main():
     # Title and description
     st.title("File Similarity Finder")
-    st.write("This app allows you to find matches for words from the Mahabharata Tatparya Nirnaya in the BORI version.")
+    st.write("Allows you to find matches for words from the Mahabharata Tatparya Nirnaya in the BORI version.")
 
     # Fetching file contents
     mbtn_text = fetch_text("https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/MBTN.txt")
