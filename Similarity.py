@@ -10,14 +10,14 @@ def fetch_text(url):
     else:
         return None
 
-# Function to find matches in the BR file and highlight the target word
+# Function to find matches in the BR file and highlight the target word by changing font color
 def find_matches(target_words, br_text):
     lines = br_text.split('\n')
     matched_lines = []
     for line in lines:
         for word in target_words:
             if re.search(r'\b' + word + r'\b', line, flags=re.IGNORECASE):
-                line = re.sub(r'\b(' + word + r')\b', r'<mark>\1</mark>', line, flags=re.IGNORECASE)
+                line = re.sub(r'\b(' + word + r')\b', r'<span style="color:red">\1</span>', line, flags=re.IGNORECASE)
                 matched_lines.append(line)
                 break  # If any target word is found, move to the next line
     return matched_lines
@@ -55,4 +55,3 @@ def main():
 # Run the main function
 if __name__ == "__main__":
     main()
-
