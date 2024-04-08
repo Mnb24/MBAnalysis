@@ -15,18 +15,18 @@ def find_matches(target_words, br_text):
     lines = br_text.split('\n')
     matched_lines = []
     for line in lines:
-        for word in target_words:
-            if re.search(r'\b' + word + r'\b', line, flags=re.IGNORECASE):
-                line = re.sub(r'\b(' + word + r')\b', r'<span style="color:red">\1</span>', line, flags=re.IGNORECASE)
-                matched_lines.append(line)
-                break  # If any target word is found, move to the next line
+        if all(re.search(r'\b' + word + r'\b', line, flags=re.IGNORECASE) for word in target_words):
+            line_highlighted = line
+            for word in target_words:
+                line_highlighted = re.sub(r'\b(' + word + r')\b', r'<span style="color:red">\1</span>', line_highlighted, flags=re.IGNORECASE)
+            matched_lines.append(line_highlighted)
     return matched_lines
 
 # Main function
 def main():
     # Title and description
     st.title("File Similarity Finder")
-    st.write("Allows you to find matches for words from the Mahabharata Tatparya Nirnaya in the BORI version.")
+    st.write("This app allows you to find matches for words entered in the second text box within the content of the BR file.")
 
     # Fetching file contents
     mbtn_text = fetch_text("https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/MBTN.txt")
@@ -37,16 +37,19 @@ def main():
         return
 
     # Sidebar with text boxes
-    st.sidebar.header("Text from Mahabharata Tatparya Nirnaya")
-    st.sidebar.text_area("MBTN", mbtn_text, height=400)
+    st.sidebar.header("Text from File 1 (MBTN.txt)")
+    st.sidebar.text_area("Selected Text", mbtn_text, height=400)
 
-    target_words = st.sidebar.text_area("Enter words to find matches", height=200).split()
+    target_words = st.sidebar.text_area("Enter words to find matches (separated by spaces)", height=200).split()
 
     # Button to find matches
     if st.sidebar.button("Find Matches"):
+        if len(target_words) < 2:
+            st.warning("Please enter at least two words to find matches.")
+            return
         matched_lines = find_matches(target_words, br_complete_text)
         if matched_lines:
-            st.header("Matches Found in BORI edition:")
+            st.header("Matches Found in BR File:")
             for line in matched_lines:
                 st.markdown(line, unsafe_allow_html=True)
         else:
@@ -55,3 +58,4 @@ def main():
 # Run the main function
 if __name__ == "__main__":
     main()
+
