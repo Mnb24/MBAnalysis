@@ -8,7 +8,7 @@ import nltk
 nltk.download('punkt')
 
 # Streamlit UI
-st.title('Document Summarizer (LSA) - Adi Parva')
+st.title('Section Summarizer (LSA) - Adi Parva')
 
 # Function to extract a section from the content
 def get_section(file_content, section_number):
