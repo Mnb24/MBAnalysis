@@ -15,11 +15,10 @@ def find_matches(target_phrases, br_text):
     lines = br_text.split('\n')
     matched_lines = []
     for line in lines:
-        if all(any(re.search(r'\b' + re.escape(word) + r'\b', line, flags=re.IGNORECASE) for word in phrase.split()) for phrase in target_phrases):
-            for phrase in target_phrases:
-                for word in phrase.split():
-                    line = re.sub(r'\b(' + re.escape(word) + r')\b', r'<span style="color:red">\1</span>', line, flags=re.IGNORECASE)
-            matched_lines.append(line)
+        for phrase in target_phrases:
+            if re.search(r'\b' + re.escape(phrase) + r'\b', line, flags=re.IGNORECASE):
+                line = re.sub(r'\b(' + re.escape(phrase) + r')\b', r'<span style="color:red">\1</span>', line, flags=re.IGNORECASE)
+                matched_lines.append(line)
     return matched_lines
 
 # Main function
