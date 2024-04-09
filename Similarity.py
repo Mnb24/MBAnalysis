@@ -16,8 +16,8 @@ def find_matches(target_phrases, br_text):
     matched_lines = []
     for line in lines:
         for phrase in target_phrases:
-            if re.search(r'\b' + re.escape(phrase) + r'\b', line, flags=re.IGNORECASE):
-                line = re.sub(r'\b(' + re.escape(phrase) + r')\b', r'<span style="color:red">\1</span>', line, flags=re.IGNORECASE)
+            if re.search(re.escape(phrase), line, flags=re.IGNORECASE):
+                line = re.sub(re.escape(phrase), r'<span style="color:red">\g<0></span>', line, flags=re.IGNORECASE)
                 matched_lines.append(line)
     return matched_lines
 
