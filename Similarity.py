@@ -21,6 +21,16 @@ def find_matches(target_phrases, br_text):
                 matched_lines.append(line)
     return matched_lines
 
+# Function to find partial matches (individual words) in the BR file
+def find_partial_matches(target_phrases, br_text):
+    words = re.findall(r'\b\w+\b', br_text.lower())  # Extract individual words from the text
+    matched_words = set()
+    for phrase in target_phrases:
+        for word in words:
+            if re.search(re.escape(word), phrase.lower()):
+                matched_words.add(word)
+    return matched_words
+
 # Main function
 def main():
     # Title and description
@@ -43,13 +53,22 @@ def main():
 
     # Button to find matches
     if st.sidebar.button("Find Matches"):
-        matched_lines = find_matches(target_phrases, br_complete_text)
-        if matched_lines:
-            st.header("Matches Found in BORI edition:")
-            for line in matched_lines:
+        # Exact Matches
+        exact_matches = find_matches(target_phrases, br_complete_text)
+        if exact_matches:
+            st.header("Exact Matches Found in BORI edition:")
+            for line in exact_matches:
                 st.markdown(line, unsafe_allow_html=True)
         else:
-            st.header("No matches found.")
+            st.header("No exact matches found.")
+
+        # Partial Matches
+        partial_matches = find_partial_matches(target_phrases, br_complete_text)
+        if partial_matches:
+            st.header("Partial Matches Found in BORI edition:")
+            st.write(", ".join(partial_matches))
+        else:
+            st.header("No partial matches found.")
 
 # Run the main function
 if __name__ == "__main__":
