@@ -10,33 +10,32 @@ def fetch_text(url):
     else:
         return None
 
-# Function to find matches in the BR file and highlight the target word by changing font color
-def find_matches(target_phrases, br_text):
+# Function to find exact matches in the BR file and highlight the target word by changing font color
+def find_exact_matches(target_phrases, br_text):
     lines = br_text.split('\n')
-    exact_matched_lines = []
-    partial_matched_lines = []
+    matched_lines = []
     for line in lines:
-        exact_matched = False
-        partial_matched = False
         for phrase in target_phrases:
             if re.search(re.escape(phrase), line, flags=re.IGNORECASE):
-                line_highlighted = re.sub(re.escape(phrase), r'<span style="color:red">\g<0></span>', line, flags=re.IGNORECASE)
-                line = line_highlighted
-                if re.match(re.escape(phrase), line, flags=re.IGNORECASE):
-                    exact_matched = True
-                else:
-                    partial_matched = True
-        if exact_matched:
-            exact_matched_lines.append(line)
-        elif partial_matched:
-            partial_matched_lines.append(line)
-    return exact_matched_lines, partial_matched_lines
+                line = re.sub(re.escape(phrase), r'<span style="color:red">\g<0></span>', line, flags=re.IGNORECASE)
+                matched_lines.append(line)
+    return matched_lines
+
+# Function to find partial matches (individual words) in the BR file
+def find_partial_matches(target_phrases, br_text):
+    words = re.findall(r'\b\w+\b', br_text.lower())  # Extract individual words from the text
+    matched_words = set()
+    for phrase in target_phrases:
+        for word in words:
+            if re.search(re.escape(word), phrase.lower()):
+                matched_words.add(word)
+    return matched_words
 
 # Main function
 def main():
     # Title and description
     st.title("Parallel Phrase Finder")
-    st.write("Find matches for words/phrases entered in the second text box (referring the text in the sidebar) within the BORI edition.")
+    st.write("Find exact and partial matches for words/phrases entered in the second text box (referring the text in the sidebar) within the BORI edition.")
 
     # Fetching file contents
     mbtn_text = fetch_text("https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/SV-Complete.txt")
@@ -54,18 +53,20 @@ def main():
 
     # Button to find matches
     if st.sidebar.button("Find Matches"):
-        exact_matched_lines, partial_matched_lines = find_matches(target_phrases, br_complete_text)
-        if exact_matched_lines:
+        # Exact Matches
+        exact_matches = find_exact_matches(target_phrases, br_complete_text)
+        if exact_matches:
             st.header("Exact Matches Found in BORI edition:")
-            for line in exact_matched_lines:
+            for line in exact_matches:
                 st.markdown(line, unsafe_allow_html=True)
         else:
             st.header("No exact matches found.")
-        
-        if partial_matched_lines:
+
+        # Partial Matches
+        partial_matches = find_partial_matches(target_phrases, br_complete_text)
+        if partial_matches:
             st.header("Partial Matches Found in BORI edition:")
-            for line in partial_matched_lines:
-                st.markdown(line, unsafe_allow_html=True)
+            st.write(", ".join(partial_matches))
         else:
             st.header("No partial matches found.")
 
