@@ -11,8 +11,8 @@ def fetch_text(url):
         return None
 
 # Function to find matches in the BR file and highlight the target word by changing font color
-def find_matches(target_phrases, br_text):
-    lines = br_text.split('\n')
+def find_matches(target_phrases, text):
+    lines = text.split('\n')
     matched_lines = []
     for line in lines:
         for phrase in target_phrases:
@@ -28,12 +28,10 @@ def main():
     st.write("Find matches for words/phrases entered in the second text box (referring the text in the sidebar) within the BORI and KK editions.")
 
     # Fetching file contents
-    texts = fetch_text([
-        "https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/BR-Complete.txt",
-        "https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/KK-Complete.txt"
-    ])
+    br_complete_text = fetch_text("https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/BR-Complete.txt")
+    kk_complete_text = fetch_text("https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/KK-Complete.txt")
 
-    if None in texts:
+    if br_complete_text is None or kk_complete_text is None:
         st.error("Failed to fetch file contents. Please try again later.")
         return
 
@@ -45,11 +43,19 @@ def main():
 
     # Button to find matches
     if st.sidebar.button("Find Matches"):
-        matched_lines = find_matches(target_phrases, texts)
-        if matched_lines:
-            st.header("Matches Found in BORI and KK editions:")
-            for line in matched_lines:
-                st.markdown(line, unsafe_allow_html=True)
+        br_matched_lines = find_matches(target_phrases, br_complete_text)
+        kk_matched_lines = find_matches(target_phrases, kk_complete_text)
+
+        if br_matched_lines or kk_matched_lines:
+            st.header("Matches Found:")
+            if br_matched_lines:
+                st.subheader("BORI edition:")
+                for line in br_matched_lines:
+                    st.markdown(line, unsafe_allow_html=True)
+            if kk_matched_lines:
+                st.subheader("KK edition:")
+                for line in kk_matched_lines:
+                    st.markdown(line, unsafe_allow_html=True)
         else:
             st.header("No matches found.")
 
