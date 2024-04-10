@@ -2,27 +2,23 @@ import streamlit as st
 import requests
 import re
 
-# Function to fetch text from URL(s)
-def fetch_text(urls):
-    texts = []
-    for url in urls:
-        response = requests.get(url)
-        if response.status_code == 200:
-            texts.append(response.text)
-        else:
-            texts.append(None)
-    return texts
+# Function to fetch text from URL
+def fetch_text(url):
+    response = requests.get(url)
+    if response.status_code == 200:
+        return response.text
+    else:
+        return None
 
-# Function to find matches in the BR and KK files and highlight the target word by changing font color
-def find_matches(target_phrases, texts):
+# Function to find matches in the BR file and highlight the target word by changing font color
+def find_matches(target_phrases, br_text):
+    lines = br_text.split('\n')
     matched_lines = []
-    for text in texts:
-        lines = text.split('\n')
-        for line in lines:
-            for phrase in target_phrases:
-                if re.search(re.escape(phrase), line, flags=re.IGNORECASE):
-                    line = re.sub(re.escape(phrase), r'<span style="color:red">\g<0></span>', line, flags=re.IGNORECASE)
-                    matched_lines.append(line)
+    for line in lines:
+        for phrase in target_phrases:
+            if re.search(re.escape(phrase), line, flags=re.IGNORECASE):
+                line = re.sub(re.escape(phrase), r'<span style="color:red">\g<0></span>', line, flags=re.IGNORECASE)
+                matched_lines.append(line)
     return matched_lines
 
 # Main function
