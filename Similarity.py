@@ -10,22 +10,22 @@ def fetch_text(url):
     else:
         return None
 
-# Function to find matches in the BR file and highlight the target word by changing font color
+# Function to find exact matches and partial matches in the BR file
 def find_matches(target_phrases, br_text):
-    lines = br_text.split('\n')
     exact_matched_lines = []
     partial_matched_lines = []
+    lines = br_text.split('\n')
     for line in lines:
         exact_matched = False
         partial_matched = False
         for phrase in target_phrases:
             if re.search(re.escape(phrase), line, flags=re.IGNORECASE):
                 line_highlighted = re.sub(re.escape(phrase), r'<span style="color:red">\g<0></span>', line, flags=re.IGNORECASE)
-                line = line_highlighted
                 if re.match(re.escape(phrase), line, flags=re.IGNORECASE):
                     exact_matched = True
                 else:
                     partial_matched = True
+                line = line_highlighted
         if exact_matched:
             exact_matched_lines.append(line)
         elif partial_matched:
