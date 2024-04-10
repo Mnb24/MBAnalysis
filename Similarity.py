@@ -10,8 +10,8 @@ def fetch_text(url):
     else:
         return None
 
-# Function to find exact matches in the BR file and highlight the target word by changing font color
-def find_exact_matches(target_phrases, br_text):
+# Function to find matches in the BR file and highlight the target word by changing font color
+def find_matches(target_phrases, br_text):
     lines = br_text.split('\n')
     matched_lines = []
     for line in lines:
@@ -21,21 +21,11 @@ def find_exact_matches(target_phrases, br_text):
                 matched_lines.append(line)
     return matched_lines
 
-# Function to find partial matches (individual words) in the BR file
-def find_partial_matches(target_phrases, br_text):
-    words = re.findall(r'\b\w+\b', br_text.lower())  # Extract individual words from the text
-    matched_words = set()
-    for phrase in target_phrases:
-        for word in words:
-            if re.search(re.escape(word), phrase.lower()):
-                matched_words.add(word)
-    return matched_words
-
 # Main function
 def main():
     # Title and description
     st.title("Parallel Phrase Finder")
-    st.write("Find exact and partial matches for words/phrases entered in the second text box (referring the text in the sidebar) within the BORI edition.")
+    st.write("Find matches for words/phrases entered in the second text box (referring the text in the sidebar) within the BORI edition.")
 
     # Fetching file contents
     mbtn_text = fetch_text("https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/SV-Complete.txt")
@@ -54,21 +44,13 @@ def main():
     # Button to find matches
     if st.sidebar.button("Find Matches"):
         # Exact Matches
-        exact_matches = find_exact_matches(target_phrases, br_complete_text)
+        exact_matches = find_matches(target_phrases, br_complete_text)
         if exact_matches:
             st.header("Exact Matches Found in BORI edition:")
             for line in exact_matches:
                 st.markdown(line, unsafe_allow_html=True)
         else:
             st.header("No exact matches found.")
-
-        # Partial Matches
-        partial_matches = find_partial_matches(target_phrases, br_complete_text)
-        if partial_matches:
-            st.header("Partial Matches Found in BORI edition:")
-            st.write(", ".join(partial_matches))
-        else:
-            st.header("No partial matches found.")
 
 # Run the main function
 if __name__ == "__main__":
