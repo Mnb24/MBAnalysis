@@ -21,14 +21,13 @@ def find_matches(target_phrases, br_text):
                 matched_lines.append(line)
     return matched_lines
 
-# Function to find partial matches (individual words) in the BR file
-def find_partial_matches(target_words, br_text):
-    words = re.findall(r'\b\w+\b', br_text.lower())  # Extract individual words from the text
-    matched_words = set()
-    for word in target_words:
-        if word.lower() in words:
-            matched_words.add(word)
-    return matched_words
+# Function to find partial matches (parts of input text) in the BR file
+def find_partial_matches(input_text, br_text):
+    matches = []
+    for phrase in input_text:
+        if re.search(re.escape(phrase), br_text, flags=re.IGNORECASE):
+            matches.append(phrase)
+    return matches
 
 # Main function
 def main():
@@ -50,8 +49,8 @@ def main():
     
     target_phrases = st.sidebar.text_area("Enter phrases to find matches", height=200).strip().split('\n')
 
-    # Extract individual words from the input text
-    input_words = re.findall(r'\b\w+\b', selected_text)
+    # Extract individual parts (phrases) from the input text
+    input_phrases = [phrase.strip() for phrase in selected_text.split('\n') if phrase.strip()]
 
     # Button to find matches
     if st.sidebar.button("Find Matches"):
@@ -65,7 +64,7 @@ def main():
             st.header("No exact matches found.")
 
         # Partial Matches
-        partial_matches = find_partial_matches(input_words, br_complete_text)
+        partial_matches = find_partial_matches(input_phrases, br_complete_text)
         if partial_matches:
             st.header("Partial Matches Found in BORI edition:")
             st.write(", ".join(partial_matches))
