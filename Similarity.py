@@ -10,31 +10,28 @@ def fetch_text(url):
     else:
         return None
 
-# Function to find matches in the BR and KK files and highlight the target word by changing font color
-def find_matches(target_phrases, br_text, kk_text):
-    texts = {'BORI edition': br_text, 'KK edition': kk_text}
-    matched_lines = {name: [] for name in texts.keys()}
-    for name, text in texts.items():
-        lines = text.split('\n')
-        for line in lines:
-            for phrase in target_phrases:
-                if re.search(re.escape(phrase), line, flags=re.IGNORECASE):
-                    line = re.sub(re.escape(phrase), r'<span style="color:red">\g<0></span>', line, flags=re.IGNORECASE)
-                    matched_lines[name].append(line)
+# Function to find matches in the BR file and highlight the target word by changing font color
+def find_matches(target_phrases, br_text):
+    lines = br_text.split('\n')
+    matched_lines = []
+    for line in lines:
+        for phrase in target_phrases:
+            if re.search(re.escape(phrase), line, flags=re.IGNORECASE):
+                line = re.sub(re.escape(phrase), r'<span style="color:red">\g<0></span>', line, flags=re.IGNORECASE)
+                matched_lines.append(line)
     return matched_lines
 
 # Main function
 def main():
     # Title and description
     st.title("Parallel Phrase Finder")
-    st.write("Find matches for words/phrases entered in the second text box (referring the text in the sidebar) within the BORI and KK editions.")
+    st.write("Find matches for words/phrases entered in the second text box (referring the text in the sidebar) within the BORI edition.")
 
     # Fetching file contents
     mbtn_text = fetch_text("https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/SV-Complete.txt")
     br_complete_text = fetch_text("https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/BR-Complete.txt")
-    kk_complete_text = fetch_text("https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/KK-Complete.txt")
 
-    if mbtn_text is None or br_complete_text is None or kk_complete_text is None:
+    if mbtn_text is None or br_complete_text is None:
         st.error("Failed to fetch file contents. Please try again later.")
         return
 
@@ -46,14 +43,13 @@ def main():
 
     # Button to find matches
     if st.sidebar.button("Find Matches"):
-        matched_lines = find_matches(target_phrases, br_complete_text, kk_complete_text)
-        for name, lines in matched_lines.items():
-            if lines:
-                st.header(f"Matches Found in {name}:")
-                for line in lines:
-                    st.markdown(line, unsafe_allow_html=True)
-            else:
-                st.header(f"No matches found in {name}.")
+        matched_lines = find_matches(target_phrases, br_complete_text)
+        if matched_lines:
+            st.header("Matches Found in BORI edition:")
+            for line in matched_lines:
+                st.markdown(line, unsafe_allow_html=True)
+        else:
+            st.header("No matches found.")
 
 # Run the main function
 if __name__ == "__main__":
