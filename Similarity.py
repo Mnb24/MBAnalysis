@@ -43,14 +43,13 @@ def main():
 
     # Button to find matches
     if st.sidebar.button("Find Matches"):
-        # Exact Matches
-        exact_matches = find_matches(target_phrases, br_complete_text)
-        if exact_matches:
-            st.header("Exact Matches Found in BORI edition:")
-            for line in exact_matches:
+        matched_lines = find_matches(target_phrases, br_complete_text)
+        if matched_lines:
+            st.header("Matches Found in BORI edition:")
+            for line in matched_lines:
                 st.markdown(line, unsafe_allow_html=True)
         else:
-            st.header("No exact matches found.")
+            st.header("No matches found.")
 
 # Run the main function
 if __name__ == "__main__":
