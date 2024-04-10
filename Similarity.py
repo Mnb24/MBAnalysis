@@ -26,8 +26,8 @@ def find_partial_matches(target_phrases, br_text):
     words = re.findall(r'\b\w+\b', br_text.lower())  # Extract individual words from the text
     matched_words = set()
     for phrase in target_phrases:
-        for word in words:
-            if re.search(re.escape(word), phrase.lower()):
+        for word in phrase.split():
+            if word.lower() in words:
                 matched_words.add(word)
     return matched_words
 
