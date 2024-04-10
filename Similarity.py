@@ -13,13 +13,24 @@ def fetch_text(url):
 # Function to find matches in the BR file and highlight the target word by changing font color
 def find_matches(target_phrases, br_text):
     lines = br_text.split('\n')
-    matched_lines = []
+    exact_matched_lines = []
+    partial_matched_lines = []
     for line in lines:
+        exact_matched = False
+        partial_matched = False
         for phrase in target_phrases:
             if re.search(re.escape(phrase), line, flags=re.IGNORECASE):
-                line = re.sub(re.escape(phrase), r'<span style="color:red">\g<0></span>', line, flags=re.IGNORECASE)
-                matched_lines.append(line)
-    return matched_lines
+                line_highlighted = re.sub(re.escape(phrase), r'<span style="color:red">\g<0></span>', line, flags=re.IGNORECASE)
+                line = line_highlighted
+                if re.match(re.escape(phrase), line, flags=re.IGNORECASE):
+                    exact_matched = True
+                else:
+                    partial_matched = True
+        if exact_matched:
+            exact_matched_lines.append(line)
+        elif partial_matched:
+            partial_matched_lines.append(line)
+    return exact_matched_lines, partial_matched_lines
 
 # Main function
 def main():
@@ -43,13 +54,20 @@ def main():
 
     # Button to find matches
     if st.sidebar.button("Find Matches"):
-        matched_lines = find_matches(target_phrases, br_complete_text)
-        if matched_lines:
-            st.header("Matches Found in BORI edition:")
-            for line in matched_lines:
+        exact_matched_lines, partial_matched_lines = find_matches(target_phrases, br_complete_text)
+        if exact_matched_lines:
+            st.header("Exact Matches Found in BORI edition:")
+            for line in exact_matched_lines:
                 st.markdown(line, unsafe_allow_html=True)
         else:
-            st.header("No matches found.")
+            st.header("No exact matches found.")
+        
+        if partial_matched_lines:
+            st.header("Partial Matches Found in BORI edition:")
+            for line in partial_matched_lines:
+                st.markdown(line, unsafe_allow_html=True)
+        else:
+            st.header("No partial matches found.")
 
 # Run the main function
 if __name__ == "__main__":
