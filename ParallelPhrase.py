@@ -28,16 +28,16 @@ def main():
     st.write("Find matches for words/phrases entered in the second text box (referring the text in the sidebar) within the BORI edition.")
 
     # Fetching file contents
-    mbtn_text = fetch_text("https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/SV-Complete.txt")
+    sv_text = fetch_text("https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/SV-Complete.txt")
     br_complete_text = fetch_text("https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/BR-Complete.txt")
 
-    if mbtn_text is None or br_complete_text is None:
+    if sv_text is None or br_complete_text is None:
         st.error("Failed to fetch file contents. Please try again later.")
         return
 
     # Sidebar with text boxes
     st.sidebar.header("Text from Sastri Vavilla")
-    selected_text = st.sidebar.text_area("SV", mbtn_text, height=400)
+    selected_text = st.sidebar.text_area("SV", sv_text, height=400)
     
     target_phrases = st.sidebar.text_area("Enter phrases to find matches", height=200).strip().split('\n')
 
