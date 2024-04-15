@@ -39,7 +39,7 @@ def find_text_differences(text1, text2):
     return differences
 
 # Streamlit UI
-st.title("Sacred Text Comparison")
+st.title("Major Section Comparison Tool")
 
 # URLs of the text files
 file_paths = [
