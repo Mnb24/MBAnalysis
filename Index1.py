@@ -20,7 +20,7 @@ def fetch_verses(letter, texts):
     return verses
 
 # Streamlit UI
-st.title("Index - Sanskrit Editions")
+st.title("Index - Sanskrit Editions (Sequential)")
 
 # URLs of the text files
 file_paths = [
