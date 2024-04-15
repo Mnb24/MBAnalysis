@@ -39,7 +39,7 @@ def generate_evidence(section_content, selected_sentiment):
                 evidence.append(sentence)
     return evidence
 
-st.title('Sentiment Instance Generator')
+st.title('Sentiment Instance Generator - Adi Parva')
 
 translations = {
     'Bibek Debroy': 'https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/BD1.txt',
