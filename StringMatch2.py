@@ -50,7 +50,8 @@ def main():
     files = {
        'BR': 'https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/BR-Complete.txt',
         'KK': 'https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/KK-Complete.txt',
-        'SV': 'https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/SV-Complete.txt'
+        'SV': 'https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/SV-Complete.txt',
+        'MBTN': 'https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/MBTN.txt'
     }
 
     # Input field for the target word
