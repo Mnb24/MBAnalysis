@@ -16,7 +16,7 @@ def get_section(file_content, section_number):
     return '\n'.join(found_sections)
 
 # Streamlit UI
-st.title('Document Viewer - Adi Parva')
+st.title('Text Viewer - Adi Parva')
 
 # File paths
 file_paths = ['https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/BD1.txt', 
