@@ -46,7 +46,7 @@ def jaccard_similarity(text1, text2):
     return intersection / union if union != 0 else 0
 
 # Streamlit UI
-st.title('Compare Sections - Adi Parva')
+st.title('Section Comparison Tool - Adi Parva')
 
 # File paths
 file_paths = ['https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/BD1.txt', 
