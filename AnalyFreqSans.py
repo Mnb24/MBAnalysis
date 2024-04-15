@@ -18,7 +18,7 @@ words_to_search = st.text_input("Enter words to analyze (comma separated):")
 file_paths = ['https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/BR-Complete.txt', 
               'https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/KK-Complete.txt', 
               'https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/SV-Complete.txt',
-             ]
+              'https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/MBTN.txt']
 
 # Define the file names
 file_names = ['BD', 'KMG', 'MND']
