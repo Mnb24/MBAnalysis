@@ -45,7 +45,7 @@ def perform_string_matching(files, target_word):
 
 def main():
     # Displaying heading
-    st.title("String-Matching Tool (Adi Parva)")
+    st.title("String-Matching Tool - Sanskrit Editions")
 
     files = {
        'BR': 'https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/BR-Complete.txt',
