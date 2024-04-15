@@ -62,7 +62,7 @@ if st.button('Analyze'):
         sorted_word_counts = sorted(word_counts.items(), key=lambda x: x[1], reverse=True)
         
         # Get top 10 words
-        top_words = sorted_word_counts[:20]
+        top_words = sorted_word_counts[:10]
         
         # Create a DataFrame for the top words
         df = pd.DataFrame(top_words, columns=['Word', 'Frequency'])
