@@ -12,7 +12,7 @@ def count_words_in_text(text, words):
 
 st.title('Multi-Entity Frequency Analyzer - Adi Parva')
 
-words_to_search = st.text_input("Enter words to search (comma separated):")
+words_to_search = st.text_input("Enter words to analyze (comma separated):")
 
 # Define the file paths
 file_paths = ['https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/BD1.txt', 
