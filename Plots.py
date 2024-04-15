@@ -21,7 +21,7 @@ def count_pos(text):
     pos_counts = Counter(tag for word, tag in pos_tags)
     return pos_counts
 
-st.title('Plots for Adi Parva Sections')
+st.title('Visualization Tool - Adi Parva')
 
 section_number = st.number_input("Enter section number: (1 to 236)", min_value=1, max_value=236, value=1, step=1)
 
