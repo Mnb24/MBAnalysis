@@ -10,7 +10,6 @@ numpy
 networkx 
 gensim
 scikit-learn
-torch
 wordcloud==1.8.1
 textblob==0.15.3
 python-docx
