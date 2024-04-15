@@ -15,9 +15,10 @@ st.title('Multi-Entity Frequency Analyzer - Adi Parva')
 words_to_search = st.text_input("Enter words to analyze (comma separated):")
 
 # Define the file paths
-file_paths = ['https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/BD1.txt', 
-              'https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/KMG1.txt', 
-              'https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/MND1.txt']
+file_paths = ['https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/BR-Complete.txt', 
+              'https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/KK-Complete.txt', 
+              'https://raw.githubusercontent.com/Mnb24/MBAnalysis/main/SV-Complete.txt',
+             ]
 
 # Define the file names
 file_names = ['BD', 'KMG', 'MND']
