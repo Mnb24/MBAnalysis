@@ -40,7 +40,7 @@ def get_parva(file_content, parva_number):
     return '\n'.join(parva_content)
 
 # Streamlit UI
-st.title('Mahabharata Text Viewer')
+st.title('Text Viewer - Sanskrit Editions (Mahabharata)')
 
 # File paths
 file_paths = {
