@@ -17,9 +17,13 @@ def print_colored_diff(sentence1, sentence2):
             colored_sentence1 += word
             colored_sentence2 += word
         elif code == '+':
-            colored_sentence1 += f'<span style="color: blue">{word}</span>'
+            for char in word:
+                colored_sentence1 += f'<span style="color: blue">{char}</span>'
+            colored_sentence2 += word
         elif code == '-':
-            colored_sentence2 += f'<span style="color: red">{word}</span>'
+            colored_sentence1 += word
+            for char in word:
+                colored_sentence2 += f'<span style="color: red">{char}</span>'
 
     return colored_sentence1, colored_sentence2
 
