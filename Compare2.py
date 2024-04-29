@@ -3,27 +3,27 @@ import difflib
 import requests
 
 # Function to print colored differences between sentences
+# Function to print colored differences between sentences at character level
 def print_colored_diff(sentence1, sentence2):
     colored_sentence1 = ''
     colored_sentence2 = ''
 
-    differ = difflib.Differ()
-    diff = list(differ.compare(sentence1, sentence2))
+    # Ensure both sentences have the same length
+    min_len = min(len(sentence1), len(sentence2))
+    sentence1 = sentence1[:min_len]
+    sentence2 = sentence2[:min_len]
 
-    for item in diff:
-        code = item[:1]
-        word = item[2:]
-        if code == ' ':
-            colored_sentence1 += word
-            colored_sentence2 += word
-        elif code == '+':
-            for char in word:
-                colored_sentence1 += f'<span style="color: blue">{char}</span>'
-            colored_sentence2 += word
-        elif code == '-':
-            colored_sentence1 += word
-            for char in word:
-                colored_sentence2 += f'<span style="color: red">{char}</span>'
+    for char1, char2 in zip(sentence1, sentence2):
+        if char1 == char2:
+            colored_sentence1 += char1
+            colored_sentence2 += char2
+        else:
+            colored_sentence1 += f'<span style="color: blue">{char1}</span>'
+            colored_sentence2 += f'<span style="color: red">{char2}</span>'
+
+    # Add any remaining characters if one sentence is longer than the other
+    colored_sentence1 += sentence1[min_len:]
+    colored_sentence2 += sentence2[min_len:]
 
     return colored_sentence1, colored_sentence2
 
