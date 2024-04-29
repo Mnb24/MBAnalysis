@@ -9,7 +9,7 @@ def print_colored_diff(sentence1, sentence2):
     colored_sentence2 = ''
 
     differ = difflib.Differ()
-    diff = list(differ.compare(sentence1, sentence2))
+    diff = list(differ.compare(list(sentence1), list(sentence2)))  # Split into characters
 
     for item in diff:
         code = item[:1]
@@ -18,15 +18,12 @@ def print_colored_diff(sentence1, sentence2):
             colored_sentence1 += word
             colored_sentence2 += word
         elif code == '+':
-            for char in word:
-                colored_sentence1 += f'<span style="color: blue">{char}</span>'
-            colored_sentence2 += word
+            colored_sentence1 += f'<span style="color: blue">{word}</span>'
         elif code == '-':
-            colored_sentence1 += word
-            for char in word:
-                colored_sentence2 += f'<span style="color: red">{char}</span>'
+            colored_sentence2 += f'<span style="color: red">{word}</span>'
 
     return colored_sentence1, colored_sentence2
+
 
 # Function to find text differences line by line
 def find_text_differences(text1, text2):
